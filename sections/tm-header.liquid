@@ -3,6 +3,11 @@
 
 {%- liquid
   assign logo = section.settings.logo
+  assign nav_menu = section.settings.menu
+  assign use_menu = false
+  if nav_menu != blank and nav_menu.links.size > 0
+    assign use_menu = true
+  endif
 -%}
 <div class="tm-site-top tm-scope">
   <div class="tm-announcement">
@@ -63,9 +68,15 @@
 
   <nav class="tm-main-nav d-only" aria-label="Main">
     <div class="tm-container tm-main-nav__inner">
-      {%- for block in section.blocks -%}
-        <a href="{{ block.settings.url | default: '#' }}" {{ block.shopify_attributes }}>{{ block.settings.label | escape }}</a>
-      {%- endfor -%}
+      {%- if use_menu -%}
+        {%- for link in nav_menu.links -%}
+          <a href="{{ link.url }}">{{ link.title | escape }}</a>
+        {%- endfor -%}
+      {%- else -%}
+        {%- for block in section.blocks -%}
+          <a href="{{ block.settings.url | default: '#' }}" {{ block.shopify_attributes }}>{{ block.settings.label | escape }}</a>
+        {%- endfor -%}
+      {%- endif -%}
     </div>
   </nav>
 </div>
@@ -83,9 +94,15 @@
         <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
       </button>
     </div>
-    {%- for block in section.blocks -%}
-      <a href="{{ block.settings.url | default: '#' }}">{{ block.settings.label | escape }}</a>
-    {%- endfor -%}
+    {%- if use_menu -%}
+      {%- for link in nav_menu.links -%}
+        <a href="{{ link.url }}">{{ link.title | escape }}</a>
+      {%- endfor -%}
+    {%- else -%}
+      {%- for block in section.blocks -%}
+        <a href="{{ block.settings.url | default: '#' }}">{{ block.settings.label | escape }}</a>
+      {%- endfor -%}
+    {%- endif -%}
   </nav>
 </div>
 
@@ -109,6 +126,11 @@
       "type": "image_picker",
       "id": "logo",
       "label": "Logo"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu (source — overrides navigation links)"
     },
     {
       "type": "text",

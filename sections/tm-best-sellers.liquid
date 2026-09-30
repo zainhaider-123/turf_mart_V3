@@ -2,51 +2,102 @@
 
 {%- liquid
   assign fallbacks = 'product-supreme-35,turf-closeup-blades,product-pooldeluxe-30,product-classic-35,product-cooldeluxe-35' | split: ','
+  assign source_collection = section.settings.collection
+  assign use_collection = false
+  if source_collection != blank and source_collection.products.size > 0
+    assign use_collection = true
+  endif
+  assign products_limit = section.settings.products_to_show | default: 5
+  assign view_all_href = section.settings.view_all_url | default: source_collection.url | default: '#'
 -%}
 
 <section class="tm-section tm-section--best tm-scope" aria-labelledby="best-h">
   <div class="tm-container tm-stack">
     <h2 id="best-h" class="tm-section-title">{{ section.settings.heading | escape }}</h2>
     <div class="tm-grid tm-grid--products">
-      {%- for block in section.blocks -%}
-        {%- liquid
-          assign fallback = fallbacks[forloop.index0] | default: 'product-cooldeluxe-35'
-          if block.settings.image != blank
-            assign card_src = block.settings.image | image_url: width: 640
-            assign card_alt = block.settings.image.alt | default: block.settings.name
-            assign card_width = block.settings.image.width
-            assign card_height = block.settings.image.height
-          else
-            assign card_src = fallback | append: '.jpg' | asset_url
-            assign card_alt = block.settings.name
-            assign card_width = 278
-            assign card_height = 138
-          endif
-        -%}
-        <article class="product-card{% if block.settings.desktop_only %} d-only{% endif %}" {{ block.shopify_attributes }}>
-          <img
-            src="{{ card_src }}"
-            alt="{{ card_alt | escape }}"
-            width="{{ card_width }}"
-            height="{{ card_height }}"
-            loading="lazy"
-          >
-          <div class="product-card__body">
-            <span class="product-card__brand">{{ block.settings.vendor | escape }}</span>
-            <span class="product-card__name">{{ block.settings.name | escape }}</span>
-            <div class="price">
-              <span class="price__from">{{ block.settings.price_from | escape }}</span>
-              <span class="price__value">{{ block.settings.price_value | escape }}</span>
-              <span class="price__unit">{{ block.settings.price_unit | escape }}</span>
+      {%- if use_collection -%}
+        {%- for product in source_collection.products limit: products_limit -%}
+          {%- liquid
+            assign fallback = fallbacks[forloop.index0] | default: 'product-cooldeluxe-35'
+            if product.featured_image != blank
+              assign card_src = product.featured_image | image_url: width: 640
+              assign card_alt = product.featured_image.alt | default: product.title
+              assign card_width = product.featured_image.width
+              assign card_height = product.featured_image.height
+            else
+              assign card_src = fallback | append: '.jpg' | asset_url
+              assign card_alt = product.title
+              assign card_width = 278
+              assign card_height = 138
+            endif
+          -%}
+          <article class="product-card{% if section.settings.hide_extra_on_mobile and forloop.index > 4 %} d-only{% endif %}">
+            <img
+              src="{{ card_src }}"
+              alt="{{ card_alt | escape }}"
+              width="{{ card_width }}"
+              height="{{ card_height }}"
+              loading="lazy"
+            >
+            <div class="product-card__body">
+              <span class="product-card__brand">{{ product.vendor | escape }}</span>
+              <span class="product-card__name">{{ product.title | escape }}</span>
+              <div class="price">
+                {%- if section.settings.price_prefix != blank -%}
+                  <span class="price__from">{{ section.settings.price_prefix | escape }}</span>
+                {%- endif -%}
+                <span class="price__value">{{ product.price | money }}</span>
+                {%- if section.settings.price_unit != blank -%}
+                  <span class="price__unit">{{ section.settings.price_unit | escape }}</span>
+                {%- endif -%}
+              </div>
+              <a href="{{ product.url }}" class="tm-btn tm-btn--green">
+                {{- section.settings.button_label | escape -}}
+              </a>
             </div>
-            <a href="{{ block.settings.url | default: '#' }}" class="tm-btn tm-btn--green">
-              {{- section.settings.button_label | escape -}}
-            </a>
-          </div>
-        </article>
-      {%- endfor -%}
+          </article>
+        {%- endfor -%}
+      {%- else -%}
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign fallback = fallbacks[forloop.index0] | default: 'product-cooldeluxe-35'
+            if block.settings.image != blank
+              assign card_src = block.settings.image | image_url: width: 640
+              assign card_alt = block.settings.image.alt | default: block.settings.name
+              assign card_width = block.settings.image.width
+              assign card_height = block.settings.image.height
+            else
+              assign card_src = fallback | append: '.jpg' | asset_url
+              assign card_alt = block.settings.name
+              assign card_width = 278
+              assign card_height = 138
+            endif
+          -%}
+          <article class="product-card{% if block.settings.desktop_only %} d-only{% endif %}" {{ block.shopify_attributes }}>
+            <img
+              src="{{ card_src }}"
+              alt="{{ card_alt | escape }}"
+              width="{{ card_width }}"
+              height="{{ card_height }}"
+              loading="lazy"
+            >
+            <div class="product-card__body">
+              <span class="product-card__brand">{{ block.settings.vendor | escape }}</span>
+              <span class="product-card__name">{{ block.settings.name | escape }}</span>
+              <div class="price">
+                <span class="price__from">{{ block.settings.price_from | escape }}</span>
+                <span class="price__value">{{ block.settings.price_value | escape }}</span>
+                <span class="price__unit">{{ block.settings.price_unit | escape }}</span>
+              </div>
+              <a href="{{ block.settings.url | default: '#' }}" class="tm-btn tm-btn--green">
+                {{- section.settings.button_label | escape -}}
+              </a>
+            </div>
+          </article>
+        {%- endfor -%}
+      {%- endif -%}
     </div>
-    <a href="{{ section.settings.view_all_url | default: '#' }}" class="tm-btn tm-btn--outline-green view-all">
+    <a href="{{ view_all_href }}" class="tm-btn tm-btn--outline-green view-all">
       {{- section.settings.view_all_label | escape -}}
     </a>
   </div>
@@ -61,6 +112,38 @@
       "id": "heading",
       "label": "Heading",
       "default": "Best sellers"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection (source — overrides product cards)"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "Products to show",
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "default": 5
+    },
+    {
+      "type": "text",
+      "id": "price_prefix",
+      "label": "Price prefix",
+      "default": "From"
+    },
+    {
+      "type": "text",
+      "id": "price_unit",
+      "label": "Price unit",
+      "default": "/m²"
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_extra_on_mobile",
+      "label": "Hide cards after the 4th on mobile",
+      "default": true
     },
     {
       "type": "text",

@@ -5,6 +5,21 @@
   assign heading = section.settings.newsletter_heading
   assign heading_parts = heading | split: '|'
   assign heading_mobile = heading | replace: '|', ' '
+  assign shop_menu = section.settings.shop_menu
+  assign help_menu = section.settings.help_menu
+  assign trade_menu = section.settings.trade_menu
+  assign use_shop_menu = false
+  if shop_menu != blank and shop_menu.links.size > 0
+    assign use_shop_menu = true
+  endif
+  assign use_help_menu = false
+  if help_menu != blank and help_menu.links.size > 0
+    assign use_help_menu = true
+  endif
+  assign use_trade_menu = false
+  if trade_menu != blank and trade_menu.links.size > 0
+    assign use_trade_menu = true
+  endif
 -%}
 
 <footer class="tm-footer tm-scope">
@@ -56,28 +71,46 @@
     <div class="tm-footer__links">
       <nav aria-label="Shop" class="tm-footer__col">
         <span class="tm-footer__heading">Shop</span>
-        {%- for block in section.blocks -%}
-          {%- if block.settings.column == 'shop' -%}
-            <a href="{{ block.settings.url | default: '#' }}" class="{% if block.settings.mobile_only %}m-only{% elsif block.settings.desktop_only %}d-only{% endif %}" {{ block.shopify_attributes }}>{{ block.settings.label | escape }}</a>
-          {%- endif -%}
-        {%- endfor -%}
+        {%- if use_shop_menu -%}
+          {%- for link in shop_menu.links -%}
+            <a href="{{ link.url }}">{{ link.title | escape }}</a>
+          {%- endfor -%}
+        {%- else -%}
+          {%- for block in section.blocks -%}
+            {%- if block.settings.column == 'shop' -%}
+              <a href="{{ block.settings.url | default: '#' }}" class="{% if block.settings.mobile_only %}m-only{% elsif block.settings.desktop_only %}d-only{% endif %}" {{ block.shopify_attributes }}>{{ block.settings.label | escape }}</a>
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endif -%}
       </nav>
       <nav aria-label="Help" class="tm-footer__col">
         <span class="tm-footer__heading">Help</span>
-        {%- for block in section.blocks -%}
-          {%- if block.settings.column == 'help' -%}
-            <a href="{{ block.settings.url | default: '#' }}" class="{% if block.settings.mobile_only %}m-only{% elsif block.settings.desktop_only %}d-only{% endif %}" {{ block.shopify_attributes }}>{{ block.settings.label | escape }}</a>
-          {%- endif -%}
-        {%- endfor -%}
+        {%- if use_help_menu -%}
+          {%- for link in help_menu.links -%}
+            <a href="{{ link.url }}">{{ link.title | escape }}</a>
+          {%- endfor -%}
+        {%- else -%}
+          {%- for block in section.blocks -%}
+            {%- if block.settings.column == 'help' -%}
+              <a href="{{ block.settings.url | default: '#' }}" class="{% if block.settings.mobile_only %}m-only{% elsif block.settings.desktop_only %}d-only{% endif %}" {{ block.shopify_attributes }}>{{ block.settings.label | escape }}</a>
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endif -%}
       </nav>
       <span class="d-only"></span>
       <nav aria-label="Trade" class="tm-footer__col tm-footer__col--trade d-only">
         <span class="tm-footer__heading">Trade</span>
-        {%- for block in section.blocks -%}
-          {%- if block.settings.column == 'trade' -%}
-            <a href="{{ block.settings.url | default: '#' }}" class="{% if block.settings.mobile_only %}m-only{% elsif block.settings.desktop_only %}d-only{% endif %}" {{ block.shopify_attributes }}>{{ block.settings.label | escape }}</a>
-          {%- endif -%}
-        {%- endfor -%}
+        {%- if use_trade_menu -%}
+          {%- for link in trade_menu.links -%}
+            <a href="{{ link.url }}">{{ link.title | escape }}</a>
+          {%- endfor -%}
+        {%- else -%}
+          {%- for block in section.blocks -%}
+            {%- if block.settings.column == 'trade' -%}
+              <a href="{{ block.settings.url | default: '#' }}" class="{% if block.settings.mobile_only %}m-only{% elsif block.settings.desktop_only %}d-only{% endif %}" {{ block.shopify_attributes }}>{{ block.settings.label | escape }}</a>
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endif -%}
       </nav>
     </div>
 
@@ -95,6 +128,21 @@
       "type": "image_picker",
       "id": "logo",
       "label": "Logo"
+    },
+    {
+      "type": "link_list",
+      "id": "shop_menu",
+      "label": "Shop menu (source)"
+    },
+    {
+      "type": "link_list",
+      "id": "help_menu",
+      "label": "Help menu (source)"
+    },
+    {
+      "type": "link_list",
+      "id": "trade_menu",
+      "label": "Trade menu (source)"
     },
     {
       "type": "text",

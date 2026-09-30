@@ -10,21 +10,57 @@
     <div class="tm-grid tm-grid--cats">
       {%- for block in section.blocks -%}
         {%- liquid
+          assign card_collection = block.settings.collection
+          assign has_collection = false
+          if card_collection != blank
+            assign has_collection = true
+          endif
+          assign card_name = block.settings.name
+          if has_collection
+            assign card_name = card_collection.title
+          endif
+          assign card_href = block.settings.url | default: '#'
+          if has_collection
+            assign card_href = card_collection.url
+          endif
+          assign has_lowest = false
+          assign lowest_price = ''
+          if has_collection
+            for price_product in card_collection.products limit: 100
+              if has_lowest == false
+                assign lowest_price = price_product.price
+                assign has_lowest = true
+              elsif price_product.price < lowest_price
+                assign lowest_price = price_product.price
+              endif
+            endfor
+          endif
           assign fallback = fallbacks[forloop.index0] | default: 'product-cooldeluxe-35'
-          if block.settings.image != blank
-            assign card_src = block.settings.image | image_url: width: 640
-            assign card_alt = block.settings.image.alt | default: block.settings.name
-            assign card_width = block.settings.image.width
-            assign card_height = block.settings.image.height
+          assign card_image = ''
+          if has_collection
+            if card_collection.image != blank
+              assign card_image = card_collection.image
+            elsif card_collection.products.first.featured_image != blank
+              assign card_image = card_collection.products.first.featured_image
+            endif
+          endif
+          if card_image == blank and block.settings.image != blank
+            assign card_image = block.settings.image
+          endif
+          if card_image != blank
+            assign card_src = card_image | image_url: width: 640
+            assign card_alt = card_image.alt | default: card_name
+            assign card_width = card_image.width
+            assign card_height = card_image.height
           else
             assign card_src = fallback | append: '.jpg' | asset_url
-            assign card_alt = block.settings.name
+            assign card_alt = card_name
             assign card_width = 306
             assign card_height = 180
           endif
         -%}
         <a
-          href="{{ block.settings.url | default: '#' }}"
+          href="{{ card_href }}"
           class="cat-card{% if block.settings.mobile_only %} m-only{% endif %}"
           {{ block.shopify_attributes }}
         >
@@ -37,12 +73,18 @@
           >
           <div class="cat-card__body">
             <span class="cat-card__name">
-              {{- block.settings.name | escape -}}
+              {{- card_name | escape -}}
               <svg viewBox="0 0 24 24" fill="none" stroke="#175c3f" stroke-width="2.8"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
             </span>
             <span class="cat-card__price">
               {{- block.settings.price_prefix | escape -}}
-              <b>{{ block.settings.price_value | escape }}</b>{{ block.settings.price_unit | escape -}}
+              <b>
+                {%- if has_lowest -%}
+                  {{- lowest_price | money -}}
+                {%- else -%}
+                  {{- block.settings.price_value | escape -}}
+                {%- endif -%}
+              </b>{{ block.settings.price_unit | escape -}}
             </span>
           </div>
         </a>
@@ -68,6 +110,11 @@
       "name": "Turf type card",
       "limit": 6,
       "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Shopify collection (overrides the fields below)"
+        },
         {
           "type": "image_picker",
           "id": "image",
