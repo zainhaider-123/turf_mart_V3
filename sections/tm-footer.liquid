@@ -1,0 +1,193 @@
+{{ 'homepage.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign footer_logo = section.settings.logo
+  assign heading = section.settings.newsletter_heading
+  assign heading_parts = heading | split: '|'
+  assign heading_mobile = heading | replace: '|', ' '
+-%}
+
+<footer class="tm-footer tm-scope">
+  <div class="tm-container">
+    <div class="tm-footer__top">
+      <a href="{{ routes.root_url }}" class="tm-footer__logo d-only" aria-label="{{ shop.name | escape }} home">
+        {%- if footer_logo != blank -%}
+          <img src="{{ footer_logo | image_url: width: 200 }}" alt="{{ footer_logo.alt | default: shop.name | escape }}" width="{{ footer_logo.width }}" height="{{ footer_logo.height }}">
+        {%- else -%}
+          <img src="{{ 'logo.png' | asset_url }}" alt="Turf Mart" width="700" height="237">
+        {%- endif -%}
+      </a>
+      <span class="tm-footer__tagline d-only">{{ section.settings.tagline | escape }}</span>
+
+      {%- form 'customer', class: 'tm-newsletter' -%}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        <label for="footer-email" class="tm-newsletter__label">
+          <span class="d-only">
+            {{- heading_parts[0] | strip | escape -}}
+            {%- if heading_parts[1] != blank -%}<br>{{ heading_parts[1] | strip | escape }}{%- endif -%}
+          </span>
+          <span class="m-only">{{ heading_mobile | strip | escape }}</span>
+        </label>
+        <div class="tm-newsletter__row">
+          <input
+            id="footer-email"
+            type="email"
+            name="contact[email]"
+            placeholder="{{ section.settings.newsletter_placeholder | escape }}"
+            autocomplete="email"
+            required
+          >
+          <button type="submit" class="tm-newsletter__submit">
+            <span class="tm-newsletter__btn">{{ section.settings.newsletter_button_label | escape }}</span>
+            <span class="tm-newsletter__arrow d-only" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </span>
+          </button>
+        </div>
+        {%- if form.posted_successfully? -%}
+          <p class="tm-newsletter__msg" role="status">Thanks for signing up.</p>
+        {%- endif -%}
+        {%- if form.errors -%}
+          <p class="tm-newsletter__msg tm-newsletter__msg--error" role="alert">{{ form.errors | default_errors }}</p>
+        {%- endif -%}
+      {%- endform -%}
+    </div>
+
+    <div class="tm-footer__links">
+      <nav aria-label="Shop" class="tm-footer__col">
+        <span class="tm-footer__heading">Shop</span>
+        {%- for block in section.blocks -%}
+          {%- if block.settings.column == 'shop' -%}
+            <a href="{{ block.settings.url | default: '#' }}" class="{% if block.settings.mobile_only %}m-only{% elsif block.settings.desktop_only %}d-only{% endif %}" {{ block.shopify_attributes }}>{{ block.settings.label | escape }}</a>
+          {%- endif -%}
+        {%- endfor -%}
+      </nav>
+      <nav aria-label="Help" class="tm-footer__col">
+        <span class="tm-footer__heading">Help</span>
+        {%- for block in section.blocks -%}
+          {%- if block.settings.column == 'help' -%}
+            <a href="{{ block.settings.url | default: '#' }}" class="{% if block.settings.mobile_only %}m-only{% elsif block.settings.desktop_only %}d-only{% endif %}" {{ block.shopify_attributes }}>{{ block.settings.label | escape }}</a>
+          {%- endif -%}
+        {%- endfor -%}
+      </nav>
+      <span class="d-only"></span>
+      <nav aria-label="Trade" class="tm-footer__col tm-footer__col--trade d-only">
+        <span class="tm-footer__heading">Trade</span>
+        {%- for block in section.blocks -%}
+          {%- if block.settings.column == 'trade' -%}
+            <a href="{{ block.settings.url | default: '#' }}" class="{% if block.settings.mobile_only %}m-only{% elsif block.settings.desktop_only %}d-only{% endif %}" {{ block.shopify_attributes }}>{{ block.settings.label | escape }}</a>
+          {%- endif -%}
+        {%- endfor -%}
+      </nav>
+    </div>
+
+    <div class="tm-footer__wordmark d-only" aria-hidden="true">{{ section.settings.wordmark | escape }}</div>
+
+    <div class="tm-footer__bottom">{{ section.settings.copyright | escape }}</div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Turf Mart footer",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo"
+    },
+    {
+      "type": "text",
+      "id": "tagline",
+      "label": "Tagline",
+      "default": "Australia's turf superstore"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_heading",
+      "label": "Newsletter heading (use | for line break)",
+      "default": "Join our|mailing list"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_placeholder",
+      "label": "Newsletter placeholder",
+      "default": "Email address"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_button_label",
+      "label": "Newsletter button label",
+      "default": "Sign up"
+    },
+    {
+      "type": "text",
+      "id": "wordmark",
+      "label": "Wordmark",
+      "default": "Turf Mart"
+    },
+    {
+      "type": "text",
+      "id": "copyright",
+      "label": "Copyright text",
+      "default": "© Turf Mart"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "link",
+      "name": "Footer link",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Delivery"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Link"
+        },
+        {
+          "type": "select",
+          "id": "column",
+          "label": "Column",
+          "options": [
+            {
+              "value": "shop",
+              "label": "Shop"
+            },
+            {
+              "value": "help",
+              "label": "Help"
+            },
+            {
+              "value": "trade",
+              "label": "Trade"
+            }
+          ],
+          "default": "help"
+        },
+        {
+          "type": "checkbox",
+          "id": "desktop_only",
+          "label": "Show on desktop only",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "mobile_only",
+          "label": "Show on mobile only",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Turf Mart footer"
+    }
+  ]
+}
+{% endschema %}

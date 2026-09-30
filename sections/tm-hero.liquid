@@ -1,0 +1,134 @@
+{{ 'homepage.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign hero_image = section.settings.image
+  if hero_image != blank
+    assign hero_src = hero_image | image_url: width: 1600
+    assign hero_alt = hero_image.alt | default: section.settings.heading
+    assign hero_width = hero_image.width
+    assign hero_height = hero_image.height
+  else
+    assign hero_src = 'hero-backyard-pool.jpg' | asset_url
+    assign hero_alt = 'Backyard with artificial lawn beside a pool'
+    assign hero_width = 900
+    assign hero_height = 448
+  endif
+-%}
+
+<section class="hero tm-scope" aria-label="Banner">
+  <div class="hero__media">
+    <img
+      src="{{ hero_src }}"
+      alt="{{ hero_alt | escape }}"
+      width="{{ hero_width }}"
+      height="{{ hero_height }}"
+    >
+  </div>
+  <div class="tm-container hero__content">
+    <div class="hero__text">
+      <span class="hero__eyebrow">{{ section.settings.eyebrow | escape }}</span>
+      <h1 class="hero__title">{{ section.settings.heading | escape }}</h1>
+      <p class="hero__lead">{{ section.settings.lead | escape }}</p>
+      <a href="{{ section.settings.cta_link | default: '#types' }}" class="hero__cta">
+        {{- section.settings.cta_label | escape -}}
+        <span class="hero__cta-icon d-only" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </span>
+      </a>
+      <a href="{{ section.settings.mobile_cta_link | default: '#' }}" class="tm-btn tm-btn--outline-light m-only">
+        {{- section.settings.mobile_cta_label | escape -}}
+      </a>
+    </div>
+    <div class="hero__aside d-only">
+      <div class="glass-card">
+        <span class="glass-card__title"><span class="dot"></span>{{ section.settings.card_title | escape }}</span>
+        <span class="glass-card__text">{{ section.settings.card_text | escape }}</span>
+        <a href="{{ section.settings.card_link | default: '#' }}" class="glass-card__link">
+          {{- section.settings.card_link_label | escape -}}
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Turf Mart hero",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Background image"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow text",
+      "default": "Australia's turf superstore"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Every turf. One store. Priced by the m²."
+    },
+    {
+      "type": "textarea",
+      "id": "lead",
+      "label": "Lead text",
+      "default": "Pet, pool, landscape, commercial and sports turf, plus everything to install it."
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Button label",
+      "default": "Shop all turf"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "Button link"
+    },
+    {
+      "type": "text",
+      "id": "mobile_cta_label",
+      "label": "Mobile button label",
+      "default": "Order free samples"
+    },
+    {
+      "type": "url",
+      "id": "mobile_cta_link",
+      "label": "Mobile button link"
+    },
+    {
+      "type": "text",
+      "id": "card_title",
+      "label": "Card title",
+      "default": "Free samples"
+    },
+    {
+      "type": "textarea",
+      "id": "card_text",
+      "label": "Card text",
+      "default": "Pick up to 5 turf samples and we'll post them to you, free."
+    },
+    {
+      "type": "text",
+      "id": "card_link_label",
+      "label": "Card link label",
+      "default": "Order free samples"
+    },
+    {
+      "type": "url",
+      "id": "card_link",
+      "label": "Card link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Turf Mart hero"
+    }
+  ]
+}
+{% endschema %}

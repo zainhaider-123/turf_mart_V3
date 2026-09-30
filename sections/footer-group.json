@@ -11,25 +11,179 @@
   "name": "t:sections.footer.name",
   "type": "footer",
   "sections": {
-    "footer": {
-      "type": "footer",
-      "settings": {
-        "color_scheme": "scheme-1",
-        "newsletter_enable": true,
-        "newsletter_heading": "Subscribe to our emails",
-        "enable_follow_on_shop": true,
-        "show_social": true,
-        "enable_country_selector": true,
-        "enable_language_selector": true,
-        "payment_enable": true,
-        "show_policy": true,
-        "margin_top": 0,
-        "padding_top": 36,
-        "padding_bottom": 36
-      }
+    "tm-footer": {
+      "type": "tm-footer",
+      "blocks": {
+        "shop_pet": {
+          "type": "link",
+          "settings": {
+            "label": "Pet Turf",
+            "url": "#",
+            "column": "shop"
+          }
+        },
+        "shop_pool": {
+          "type": "link",
+          "settings": {
+            "label": "Pool Turf",
+            "url": "#",
+            "column": "shop"
+          }
+        },
+        "shop_landscape": {
+          "type": "link",
+          "settings": {
+            "label": "Landscape Turf",
+            "url": "#",
+            "column": "shop"
+          }
+        },
+        "shop_commercial": {
+          "type": "link",
+          "settings": {
+            "label": "Commercial Turf",
+            "url": "#",
+            "column": "shop"
+          }
+        },
+        "shop_sports": {
+          "type": "link",
+          "settings": {
+            "label": "Sports Turf",
+            "url": "#",
+            "column": "shop"
+          }
+        },
+        "help_delivery": {
+          "type": "link",
+          "settings": {
+            "label": "Delivery",
+            "url": "#",
+            "column": "help"
+          }
+        },
+        "help_returns": {
+          "type": "link",
+          "settings": {
+            "label": "Returns",
+            "url": "#",
+            "column": "help"
+          }
+        },
+        "help_install": {
+          "type": "link",
+          "settings": {
+            "label": "Install guides",
+            "url": "#",
+            "column": "help"
+          }
+        },
+        "help_trade": {
+          "type": "link",
+          "settings": {
+            "label": "Trade accounts",
+            "url": "#",
+            "column": "help",
+            "mobile_only": true
+          }
+        },
+        "help_contact": {
+          "type": "link",
+          "settings": {
+            "label": "Contact",
+            "url": "#",
+            "column": "help"
+          }
+        },
+        "trade_accounts": {
+          "type": "link",
+          "settings": {
+            "label": "Trade accounts",
+            "url": "#",
+            "column": "trade"
+          }
+        },
+        "trade_bulk": {
+          "type": "link",
+          "settings": {
+            "label": "Bulk orders",
+            "url": "#",
+            "column": "trade"
+          }
+        }
+      },
+      "block_order": [
+        "shop_pet",
+        "shop_pool",
+        "shop_landscape",
+        "shop_commercial",
+        "shop_sports",
+        "help_delivery",
+        "help_returns",
+        "help_install",
+        "help_trade",
+        "help_contact",
+        "trade_accounts",
+        "trade_bulk"
+      ],
+      "settings": {}
+    },
+    "tm-quickbar": {
+      "type": "tm-quickbar",
+      "blocks": {
+        "home": {
+          "type": "item",
+          "settings": {
+            "label": "Home",
+            "url": "#",
+            "icon": "home",
+            "current": true
+          }
+        },
+        "categories": {
+          "type": "item",
+          "settings": {
+            "label": "Categories",
+            "url": "#types",
+            "icon": "categories"
+          }
+        },
+        "search": {
+          "type": "item",
+          "settings": {
+            "label": "Search",
+            "icon": "search"
+          }
+        },
+        "cart": {
+          "type": "item",
+          "settings": {
+            "label": "Cart",
+            "url": "#",
+            "icon": "cart"
+          }
+        },
+        "account": {
+          "type": "item",
+          "settings": {
+            "label": "Account",
+            "url": "#",
+            "icon": "account"
+          }
+        }
+      },
+      "block_order": [
+        "home",
+        "categories",
+        "search",
+        "cart",
+        "account"
+      ],
+      "settings": {}
     }
   },
   "order": [
-    "footer"
+    "tm-footer",
+    "tm-quickbar"
   ]
 }

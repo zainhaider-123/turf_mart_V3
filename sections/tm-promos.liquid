@@ -1,0 +1,240 @@
+{{ 'homepage.css' | asset_url | stylesheet_tag }}
+
+<section class="tm-section tm-section--promos tm-scope" aria-label="Why buy from Turf Mart">
+  <div class="tm-container promos">
+    {%- for block in section.blocks -%}
+      {%- case block.type -%}
+        {%- when 'samples' -%}
+          {%- liquid
+            if block.settings.image != blank
+              assign promo_src = block.settings.image | image_url: width: 640
+              assign promo_alt = block.settings.image.alt | default: block.settings.title
+              assign promo_width = block.settings.image.width
+              assign promo_height = block.settings.image.height
+            else
+              assign promo_src = 'turf-closeup-blades.jpg' | asset_url
+              assign promo_alt = 'Close-up of turf blades'
+              assign promo_width = 278
+              assign promo_height = 138
+            endif
+          -%}
+          <a href="{{ block.settings.url | default: '#' }}" class="promo promo--samples" {{ block.shopify_attributes }}>
+            <img class="promo__img" src="{{ promo_src }}" alt="{{ promo_alt | escape }}" width="{{ promo_width }}" height="{{ promo_height }}" loading="lazy">
+            <div class="promo__body">
+              <span class="tm-pill">{{ block.settings.pill | escape }}</span>
+              <span class="promo__title">{{ block.settings.title | escape }}</span>
+              <span class="promo__text d-only">{{ block.settings.text | escape }}</span>
+              <span class="tm-btn tm-btn--yellow">{{ block.settings.button_label | escape }}</span>
+            </div>
+          </a>
+
+        {%- when 'trade' -%}
+          {%- liquid
+            if block.settings.image != blank
+              assign promo_src = block.settings.image | image_url: width: 640
+              assign promo_alt = block.settings.image.alt | default: block.settings.title
+              assign promo_width = block.settings.image.width
+              assign promo_height = block.settings.image.height
+            else
+              assign promo_src = 'commercial-turf.jpg' | asset_url
+              assign promo_alt = 'Turf outside a commercial building'
+              assign promo_width = 306
+              assign promo_height = 180
+            endif
+          -%}
+          <a href="{{ block.settings.url | default: '#' }}" class="promo promo--trade" {{ block.shopify_attributes }}>
+            <div class="promo__body">
+              <span class="tm-pill tm-pill--dark">{{ block.settings.pill | escape }}</span>
+              <span class="promo__title">{{ block.settings.title | escape }}</span>
+              <span class="promo__text d-only">{{ block.settings.text | escape }}</span>
+              <span class="tm-btn tm-btn--yellow d-only">{{ block.settings.button_label | escape }}</span>
+              <span class="tm-text-link m-only">{{ block.settings.button_label | escape }}
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+              </span>
+            </div>
+            <img class="promo__img d-only" src="{{ promo_src }}" alt="{{ promo_alt | escape }}" width="{{ promo_width }}" height="{{ promo_height }}" loading="lazy">
+          </a>
+
+        {%- when 'tile' -%}
+          <a
+            href="{{ block.settings.url | default: '#' }}"
+            class="promo promo--tile{% if block.settings.style == 'yellow' %} promo--measure{% else %} promo--diy{% endif %}"
+            {{ block.shopify_attributes }}
+          >
+            <span class="promo__icon">
+              {%- if block.settings.icon == 'diy' -%}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14.5 6.5a4 4 0 0 0-5.3 5.3L3 18l3 3 6.2-6.2a4 4 0 0 0 5.3-5.3l-2.6 2.6-2.4-.6-.6-2.4z"/></svg>
+              {%- else -%}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 17L17 3l4 4L7 21H3z"/><path d="M13 7l2 2M10 10l2 2M7 13l2 2"/></svg>
+              {%- endif -%}
+            </span>
+            <span class="promo__tile-text">
+              <span class="promo__tile-title">{{ block.settings.title | escape }}</span>
+              <span class="promo__tile-sub">
+                <span class="d-only">{{ block.settings.sub_desktop | escape }}</span>
+                <span class="m-only">{{ block.settings.sub_mobile | escape }}</span>
+              </span>
+            </span>
+          </a>
+      {%- endcase -%}
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Promo tiles",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "samples",
+      "name": "Samples promo",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "pill",
+          "label": "Pill label",
+          "default": "Free samples"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Feel it before you buy."
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text",
+          "default": "Pick up to 5 turf samples and we'll post them to you, free."
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label",
+          "default": "Order free samples"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Link"
+        }
+      ]
+    },
+    {
+      "type": "trade",
+      "name": "Trade promo",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "pill",
+          "label": "Pill label",
+          "default": "Turf Mart Trade"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Better rates for bigger jobs."
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text",
+          "default": "For installers, landscapers and builders."
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label",
+          "default": "Open a trade account"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Link"
+        }
+      ]
+    },
+    {
+      "type": "tile",
+      "name": "Promo tile",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            {
+              "value": "measure",
+              "label": "Measure"
+            },
+            {
+              "value": "diy",
+              "label": "DIY tools"
+            }
+          ],
+          "default": "measure"
+        },
+        {
+          "type": "select",
+          "id": "style",
+          "label": "Style",
+          "options": [
+            {
+              "value": "yellow",
+              "label": "Yellow"
+            },
+            {
+              "value": "white",
+              "label": "White"
+            }
+          ],
+          "default": "yellow"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "How much turf do I need?"
+        },
+        {
+          "type": "text",
+          "id": "sub_desktop",
+          "label": "Subtitle (desktop)",
+          "default": "Measure up and order by the m²."
+        },
+        {
+          "type": "text",
+          "id": "sub_mobile",
+          "label": "Subtitle (mobile)",
+          "default": "Order by the m²."
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Promo tiles"
+    }
+  ]
+}
+{% endschema %}

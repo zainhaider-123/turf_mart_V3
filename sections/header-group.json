@@ -11,51 +11,88 @@
   "name": "t:sections.header.name",
   "type": "header",
   "sections": {
-    "announcement-bar": {
-      "type": "announcement-bar",
+    "tm-header": {
+      "type": "tm-header",
       "blocks": {
-        "announcement-bar-0": {
-          "type": "announcement",
+        "pet": {
+          "type": "nav_link",
           "settings": {
-            "text": "Welcome to our store",
-            "link": ""
+            "label": "Pet Turf",
+            "url": "#"
+          }
+        },
+        "pool": {
+          "type": "nav_link",
+          "settings": {
+            "label": "Pool Turf",
+            "url": "#"
+          }
+        },
+        "landscape": {
+          "type": "nav_link",
+          "settings": {
+            "label": "Landscape Turf",
+            "url": "#"
+          }
+        },
+        "commercial": {
+          "type": "nav_link",
+          "settings": {
+            "label": "Commercial Turf",
+            "url": "#"
+          }
+        },
+        "sports": {
+          "type": "nav_link",
+          "settings": {
+            "label": "Sports Turf",
+            "url": "#"
+          }
+        },
+        "brands": {
+          "type": "nav_link",
+          "settings": {
+            "label": "Brands",
+            "url": "#"
+          }
+        },
+        "accessories": {
+          "type": "nav_link",
+          "settings": {
+            "label": "Accessories",
+            "url": "#"
+          }
+        },
+        "diy": {
+          "type": "nav_link",
+          "settings": {
+            "label": "DIY install",
+            "url": "#"
+          }
+        },
+        "sale": {
+          "type": "nav_link",
+          "settings": {
+            "label": "Sale",
+            "url": "#"
           }
         }
       },
       "block_order": [
-        "announcement-bar-0"
+        "pet",
+        "pool",
+        "landscape",
+        "commercial",
+        "sports",
+        "brands",
+        "accessories",
+        "diy",
+        "sale"
       ],
-      "settings": {
-        "auto_rotate": false,
-        "change_slides_speed": 5,
-        "color_scheme": "scheme-1",
-        "show_line_separator": true,
-        "show_social": false,
-        "enable_country_selector": false,
-        "enable_language_selector": false
-      }
-    },
-    "header": {
-      "type": "header",
-      "settings": {
-        "logo_position": "middle-left",
-        "mobile_logo_position": "center",
-        "menu": "main-menu",
-        "menu_type_desktop": "dropdown",
-        "sticky_header_type": "on-scroll-up",
-        "show_line_separator": true,
-        "color_scheme": "scheme-1",
-        "menu_color_scheme": "scheme-1",
-        "enable_country_selector": true,
-        "enable_language_selector": true,
-        "margin_bottom": 0,
-        "padding_top": 20,
-        "padding_bottom": 20
-      }
+      "settings": {}
     }
   },
   "order": [
-    "announcement-bar",
-    "header"
+    "tm-header"
   ]
 }

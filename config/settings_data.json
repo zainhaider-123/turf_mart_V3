@@ -12,9 +12,9 @@
     "logo": "shopify://shop_images/TurfMart_Logo.jpg",
     "logo_width": 110,
     "favicon": "shopify://shop_images/TurfMart_Logo.jpg",
-    "type_header_font": "sans_serif_n4",
+    "type_header_font": "archivo_black_n4",
     "heading_scale": 100,
-    "type_body_font": "sans_serif_n4",
+    "type_body_font": "libre_franklin_n4",
     "body_scale": 100,
     "page_width": 1200,
     "spacing_sections": 0,
@@ -147,9 +147,9 @@
     "color_schemes": {
       "scheme-1": {
         "settings": {
-          "background": "#ffffff",
+          "background": "#f6f4ee",
           "background_gradient": "",
-          "text": "#121212",
+          "text": "#12201a",
           "button": "#121212",
           "button_label": "#ffffff",
           "secondary_button_label": "#121212",

@@ -1,0 +1,81 @@
+{{ 'homepage.css' | asset_url | stylesheet_tag }}
+
+<section class="tm-scope" aria-label="Why Turf Mart">
+  <div class="tm-container">
+    <div class="usps">
+      {%- for block in section.blocks -%}
+        <div class="usp" {{ block.shopify_attributes }}>
+          {%- case block.settings.icon -%}
+            {%- when 'samples' -%}
+              <svg viewBox="0 0 24 24" fill="none" stroke="#175c3f" stroke-width="1.8"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 14h16"/></svg>
+            {%- when 'shield' -%}
+              <svg viewBox="0 0 24 24" fill="none" stroke="#175c3f" stroke-width="1.8"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/></svg>
+            {%- when 'chat' -%}
+              <svg viewBox="0 0 24 24" fill="none" stroke="#175c3f" stroke-width="1.8"><path d="M4 5h16v11H8l-4 4z"/></svg>
+            {%- else -%}
+              <svg viewBox="0 0 24 24" fill="none" stroke="#175c3f" stroke-width="1.8"><path d="M3 7h11v9H3z"/><path d="M14 10h4l3 3v3h-7z"/><circle cx="7" cy="18" r="1.6"/><circle cx="17.5" cy="18" r="1.6"/></svg>
+          {%- endcase -%}
+          <span class="usp__title">{{ block.settings.title | escape }}</span>
+          <span class="usp__text">{{ block.settings.text | escape }}</span>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Benefits",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "usp",
+      "name": "Benefit",
+      "limit": 8,
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            {
+              "value": "delivery",
+              "label": "Delivery truck"
+            },
+            {
+              "value": "samples",
+              "label": "Sample box"
+            },
+            {
+              "value": "shield",
+              "label": "Shield"
+            },
+            {
+              "value": "chat",
+              "label": "Chat bubble"
+            }
+          ],
+          "default": "delivery"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Australia-wide delivery"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Cut to size, to your door"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Benefits"
+    }
+  ]
+}
+{% endschema %}

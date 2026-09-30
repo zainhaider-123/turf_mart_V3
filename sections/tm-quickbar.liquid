@@ -1,0 +1,108 @@
+{{ 'homepage.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'tm-homepage.js' | asset_url }}" defer></script>
+
+<nav class="quickbar m-only tm-scope" aria-label="Quick actions">
+  {%- for block in section.blocks -%}
+    {%- if block.settings.icon == 'search' -%}
+      <button
+        type="button"
+        class="quickbar__item quickbar__search{% if block.settings.current %} is-current{% endif %}"
+        aria-controls="tm-mobile-search"
+        aria-expanded="false"
+        data-tm-search-toggle
+        {{ block.shopify_attributes }}
+      >
+        <span class="quickbar__fab">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        </span>{{ block.settings.label | escape }}
+      </button>
+    {%- else -%}
+      <a
+        href="{{ block.settings.url | default: '#' }}"
+        class="quickbar__item{% if block.settings.icon == 'cart' %} quickbar__cart{% endif %}{% if block.settings.current %} is-current{% endif %}"
+        {% if block.settings.current %}aria-current="page"{% endif %}
+        {% if block.settings.icon == 'cart' %}aria-label="Cart, {{ cart.item_count }} items"{% endif %}
+        {{ block.shopify_attributes }}
+      >
+        {%- case block.settings.icon -%}
+          {%- when 'categories' -%}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+          {%- when 'cart' -%}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="21" r="1.4"/><circle cx="18" cy="21" r="1.4"/><path d="M2 3h3l2.4 12.2a2 2 0 0 0 2 1.6h8.2a2 2 0 0 0 2-1.6L21 7H6"/></svg>
+            <span class="tm-cart-count">{{ cart.item_count }}</span>
+          {%- when 'account' -%}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 20c1.5-4 5-6 8-6s6.5 2 8 6"/></svg>
+          {%- else -%}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg>
+        {%- endcase -%}
+        {{ block.settings.label | escape }}
+      </a>
+    {%- endif -%}
+  {%- endfor -%}
+</nav>
+
+{% schema %}
+{
+  "name": "Mobile quick bar",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Quick bar item",
+      "limit": 5,
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Home"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Link"
+        },
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            {
+              "value": "home",
+              "label": "Home"
+            },
+            {
+              "value": "categories",
+              "label": "Categories"
+            },
+            {
+              "value": "search",
+              "label": "Search"
+            },
+            {
+              "value": "cart",
+              "label": "Cart"
+            },
+            {
+              "value": "account",
+              "label": "Account"
+            }
+          ],
+          "default": "home"
+        },
+        {
+          "type": "checkbox",
+          "id": "current",
+          "label": "Highlight as current page",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Mobile quick bar"
+    }
+  ]
+}
+{% endschema %}

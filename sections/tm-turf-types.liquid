@@ -1,0 +1,120 @@
+{{ 'homepage.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign fallbacks = 'pet-turf-dog,pool-turf,landscape-turf,commercial-turf,sports-turf-putting-green,product-cooldeluxe-35' | split: ','
+-%}
+
+<section id="types" class="tm-section tm-section--types tm-scope" aria-labelledby="types-h">
+  <div class="tm-container">
+    <h2 id="types-h" class="tm-section-title">{{ section.settings.heading | escape }}</h2>
+    <div class="tm-grid tm-grid--cats">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign fallback = fallbacks[forloop.index0] | default: 'product-cooldeluxe-35'
+          if block.settings.image != blank
+            assign card_src = block.settings.image | image_url: width: 640
+            assign card_alt = block.settings.image.alt | default: block.settings.name
+            assign card_width = block.settings.image.width
+            assign card_height = block.settings.image.height
+          else
+            assign card_src = fallback | append: '.jpg' | asset_url
+            assign card_alt = block.settings.name
+            assign card_width = 306
+            assign card_height = 180
+          endif
+        -%}
+        <a
+          href="{{ block.settings.url | default: '#' }}"
+          class="cat-card{% if block.settings.mobile_only %} m-only{% endif %}"
+          {{ block.shopify_attributes }}
+        >
+          <img
+            src="{{ card_src }}"
+            alt="{{ card_alt | escape }}"
+            width="{{ card_width }}"
+            height="{{ card_height }}"
+            loading="lazy"
+          >
+          <div class="cat-card__body">
+            <span class="cat-card__name">
+              {{- block.settings.name | escape -}}
+              <svg viewBox="0 0 24 24" fill="none" stroke="#175c3f" stroke-width="2.8"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </span>
+            <span class="cat-card__price">
+              {{- block.settings.price_prefix | escape -}}
+              <b>{{ block.settings.price_value | escape }}</b>{{ block.settings.price_unit | escape -}}
+            </span>
+          </div>
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Turf types",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Shop by turf type"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "card",
+      "name": "Turf type card",
+      "limit": 6,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Name",
+          "default": "Pet Turf"
+        },
+        {
+          "type": "text",
+          "id": "price_prefix",
+          "label": "Price prefix",
+          "default": "From "
+        },
+        {
+          "type": "text",
+          "id": "price_value",
+          "label": "Price value",
+          "default": "$54.00"
+        },
+        {
+          "type": "text",
+          "id": "price_unit",
+          "label": "Price unit",
+          "default": "/m²"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Link"
+        },
+        {
+          "type": "checkbox",
+          "id": "mobile_only",
+          "label": "Show on mobile only",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Turf types"
+    }
+  ]
+}
+{% endschema %}
