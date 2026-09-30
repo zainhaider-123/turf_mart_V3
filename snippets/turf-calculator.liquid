@@ -1,0 +1,167 @@
+{%- comment -%}
+  Turf Mart materials calculator.
+  Rendered from a "Turf calculator" block inside sections/main-product.liquid:
+    {% render 'turf-calculator', product: product, block: block %}
+
+  Data sources (all editable in Shopify admin, nothing hardcoded):
+  - Turf price ........ the product's variant price, set PER LINEAL METRE of roll
+                        (price per m² × roll width, e.g. $69/m² × 3.71 = $255.99)
+  - Sand rate ......... product metafield  custom.sand_rate   (kg/m², decimal)
+  - Roll width ........ product metafield  custom.roll_width  (m, decimal, optional)
+  - Warranty .......... product metafield  custom.warranty    (single line text, optional)
+  - Sand/pins/tape/glue products, pack sizes and cut rules ... block settings in the theme editor
+{%- endcomment -%}
+
+{%- liquid
+  assign variant = product.selected_or_first_available_variant
+
+  assign roll_width = block.settings.roll_width | default: 3.71
+  if product.metafields.custom.roll_width.value
+    assign roll_width = product.metafields.custom.roll_width.value
+  endif
+
+  assign sand_rate = block.settings.default_sand_rate | default: 18
+  if product.metafields.custom.sand_rate.value
+    assign sand_rate = product.metafields.custom.sand_rate.value
+  endif
+
+  assign warranty = product.metafields.custom.warranty.value
+
+  assign sand_v = block.settings.sand_product.selected_or_first_available_variant
+  assign pins_v = block.settings.pins_product.selected_or_first_available_variant
+  assign tape_v = block.settings.tape_product.selected_or_first_available_variant
+  assign glue_v = block.settings.glue_product.selected_or_first_available_variant
+  assign sample_v = block.settings.sample_product.selected_or_first_available_variant
+
+  assign price_per_sqm = variant.price | divided_by: roll_width | round
+  assign lineal_min = block.settings.lineal_min | default: 4
+  assign lineal_max = block.settings.lineal_max | default: 20
+  assign lineal_step = block.settings.lineal_step | default: 2
+  assign roll_lengths = block.settings.roll_pick_lengths | default: '4,6,8,10,12,14,16,20' | split: ','
+-%}
+
+{{ 'turf-calculator.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'turf-calculator.js' | asset_url }}" defer="defer"></script>
+
+<turf-calculator class="turf-calc" data-block-id="{{ block.id }}" {{ block.shopify_attributes }}>
+  <script type="application/json" data-turf-config>
+    {
+      "rollWidth": {{ roll_width }},
+      "sandRate": {{ sand_rate }},
+      "lineal": { "min": {{ lineal_min }}, "max": {{ lineal_max }}, "step": {{ lineal_step }} },
+      "turf": {
+        "variantId": {{ variant.id }},
+        "pricePerMetre": {{ variant.price }},
+        "available": {{ variant.available | json }},
+        "title": {{ product.vendor | append: ' ' | append: product.title | json }}
+      },
+      "sand": { "variantId": {{ sand_v.id | default: 'null' }}, "price": {{ sand_v.price | default: 0 }}, "bagKg": {{ block.settings.sand_bag_kg | default: 20 }} },
+      "pins": { "variantId": {{ pins_v.id | default: 'null' }}, "price": {{ pins_v.price | default: 0 }}, "perSqm": {{ block.settings.pins_per_sqm | default: 5 }}, "perBox": {{ block.settings.pins_per_box | default: 100 }} },
+      "tape": { "variantId": {{ tape_v.id | default: 'null' }}, "price": {{ tape_v.price | default: 0 }}, "rollM": {{ block.settings.tape_roll_m | default: 100 }} },
+      "glue": { "variantId": {{ glue_v.id | default: 'null' }}, "price": {{ glue_v.price | default: 0 }}, "mPerL": {{ block.settings.glue_m_per_l | default: 5 }}, "drumL": {{ block.settings.glue_drum_l | default: 20 }} },
+      "sampleVariantId": {{ sample_v.id | default: 'null' }},
+      "payLaterInstalments": {{ block.settings.pay_later_instalments | default: 0 }},
+      "moneyFormat": {{ shop.money_format | json }},
+      "routes": { "cartAdd": {{ routes.cart_add_url | append: '.js' | json }}, "cart": {{ routes.cart_url | json }} },
+      "text": {
+        "prompt": "Enter your area above and we'll work out your rolls and materials.",
+        "empty": "No materials yet — enter an area to see your turf, sand, pins, tape and glue.",
+        "buybarPrompt": "Enter your area to price your order",
+        "addToCart": {{ 'products.product.add_to_cart' | t | json }},
+        "adding": "Adding…",
+        "error": "Sorry, we couldn't add that to your cart. Please try again."
+      }
+    }
+  </script>
+
+  <div class="turf-calc__headline">
+    <span class="turf-calc__from">From</span>
+    <span class="turf-calc__per-sqm">{{ price_per_sqm | money }}<sup>/m²</sup></span>
+  </div>
+  <p class="turf-calc__gst">Price per m²{% if cart.taxes_included %}, includes GST{% endif %}</p>
+  {%- if warranty != blank -%}
+    <p class="turf-calc__warranty">{{ warranty }} manufacturer warranty · Sand infill {{ sand_rate }} kg/m²</p>
+  {%- endif -%}
+
+  <div class="turf-calc__card">
+    <h3 class="turf-calc__title">How much do you need?</h3>
+
+    <div class="turf-calc__tabs" role="tablist">
+      <button type="button" role="tab" class="turf-calc__tab" data-calc-tab="area" aria-selected="true">Area (m²)</button>
+      <button type="button" role="tab" class="turf-calc__tab" data-calc-tab="dims" aria-selected="false">Length × width</button>
+      <button type="button" role="tab" class="turf-calc__tab" data-calc-tab="roll" aria-selected="false">Select a roll</button>
+    </div>
+
+    <div class="turf-calc__panel" data-calc-panel="area">
+      <label class="turf-calc__field">
+        <span>Area required (m²)</span>
+        <input type="number" inputmode="decimal" min="0" step="0.1" placeholder="e.g. 40" data-input="area">
+      </label>
+    </div>
+    <div class="turf-calc__panel" data-calc-panel="dims" hidden>
+      <div class="turf-calc__field-row">
+        <label class="turf-calc__field">
+          <span>Length (m)</span>
+          <input type="number" inputmode="decimal" min="0" step="0.1" placeholder="e.g. 8" data-input="length">
+        </label>
+        <label class="turf-calc__field">
+          <span>Width (m)</span>
+          <input type="number" inputmode="decimal" min="0" step="0.1" placeholder="e.g. 5" data-input="width">
+        </label>
+      </div>
+    </div>
+    <div class="turf-calc__panel" data-calc-panel="roll" hidden>
+      <label class="turf-calc__field">
+        <span>Select SQM required</span>
+        <select data-input="roll">
+          {%- for len in roll_lengths -%}
+            {%- assign l = len | strip | plus: 0 -%}
+            {%- if l > 0 -%}
+              {%- liquid
+                assign sqm_cents = l | times: roll_width | times: 100 | round
+                assign sqm_whole = sqm_cents | divided_by: 100
+                assign sqm_frac = sqm_cents | modulo: 100
+                if sqm_frac < 10
+                  assign sqm_frac = sqm_frac | prepend: '0'
+                endif
+              -%}
+              <option value="{{ l }}">{{ l }} Metre Roll ({{ sqm_whole }}.{{ sqm_frac }} SQM)</option>
+            {%- endif -%}
+          {%- endfor -%}
+        </select>
+      </label>
+    </div>
+
+    <div class="turf-calc__message" data-message aria-live="polite">
+      Enter your area above and we'll work out your rolls and materials.
+    </div>
+
+    <div class="turf-calc__divider"></div>
+    <div class="turf-calc__materials" data-materials></div>
+
+    <div class="turf-calc__total-row">
+      <div>
+        <div class="turf-calc__total-label">Order total</div>
+        <div class="turf-calc__paylater" data-paylater></div>
+      </div>
+      <div class="turf-calc__total" data-total>{{ 0 | money }}</div>
+    </div>
+    <div class="turf-calc__note" data-note></div>
+    <div class="turf-calc__error" data-error role="alert" hidden></div>
+
+    <button type="button" class="turf-calc__buy turf-calc__buy--inline" data-add-to-cart disabled>
+      {%- if variant.available -%}{{ 'products.product.add_to_cart' | t }}{%- else -%}{{ 'products.product.sold_out' | t }}{%- endif -%}
+    </button>
+    {%- if sample_v -%}
+      <button type="button" class="turf-calc__sample" data-add-sample>Order a free sample first</button>
+    {%- endif -%}
+  </div>
+</turf-calculator>
+
+<div class="turf-buybar" id="TurfBuyBar-{{ block.id }}" hidden>
+  <div>
+    <div class="turf-buybar__total" data-buybar-total>{{ 0 | money }}</div>
+    <div class="turf-buybar__sub" data-buybar-sub>Enter your area to price your order</div>
+  </div>
+  <button type="button" class="turf-calc__buy" data-add-to-cart disabled>{{ 'products.product.add_to_cart' | t }}</button>
+</div>

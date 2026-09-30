@@ -1,0 +1,495 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Turf Mart | Australia's turf superstore</title>
+  <meta name="description" content="Pet, pool, landscape, commercial and sports turf, plus everything to install it. Priced by the m², delivered Australia-wide.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Public+Sans:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<!-- ============ Announcement bar + header (sticky on mobile) ============ -->
+<div class="site-top">
+  <div class="announcement">
+    Australia-wide delivery · Free samples<span class="d-only"> · Trade accounts available</span>
+  </div>
+
+  <header class="header">
+    <div class="container header__inner">
+      <button type="button" class="icon-btn header__menu m-only" aria-label="Menu" aria-controls="menu-drawer" aria-expanded="false" data-menu-open>
+        <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+
+      <a href="#" class="header__logo" aria-label="Turf Mart home">
+        <img src="assets/images/logo.png" alt="Turf Mart" width="700" height="237">
+      </a>
+
+      <form role="search" class="search search--desktop d-only" action="#" onsubmit="return false">
+        <label for="search-desktop" class="visually-hidden">Search Turf Mart</label>
+        <span class="search__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        </span>
+        <input id="search-desktop" type="search" name="q" placeholder="Search turf, brands, installation products…">
+        <button type="submit" class="search__submit">Search</button>
+      </form>
+
+      <div class="header__actions d-only">
+        <a href="#" class="icon-btn" aria-label="Account">
+          <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 20c1.5-4 5-6 8-6s6.5 2 8 6"/></svg>
+        </a>
+        <a href="#" class="icon-btn header__cart" aria-label="Cart, 0 items">
+          <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="21" r="1.4"/><circle cx="18" cy="21" r="1.4"/><path d="M2 3h3l2.4 12.2a2 2 0 0 0 2 1.6h8.2a2 2 0 0 0 2-1.6L21 7H6"/></svg>
+          <span class="cart-count">0</span>
+        </a>
+      </div>
+
+      <button type="button" class="icon-btn header__search-toggle m-only" aria-label="Open search" aria-controls="mobile-search" aria-expanded="false" data-search-toggle>
+        <svg class="i-search" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        <svg class="i-close" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+
+    <form role="search" id="mobile-search" class="search search--mobile m-only" action="#" onsubmit="return false" hidden>
+      <label for="search-mobile" class="visually-hidden">Search Turf Mart</label>
+      <input id="search-mobile" type="search" name="q" placeholder="Search turf, brands, accessories">
+      <button type="submit" class="search__submit" aria-label="Search">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      </button>
+    </form>
+  </header>
+
+  <nav class="main-nav d-only" aria-label="Main">
+    <div class="container main-nav__inner">
+      <a href="#">Pet Turf</a>
+      <a href="#">Pool Turf</a>
+      <a href="#">Landscape Turf</a>
+      <a href="#">Commercial Turf</a>
+      <a href="#">Sports Turf</a>
+      <a href="#">Brands</a>
+      <a href="#">Accessories</a>
+      <a href="#">DIY install</a>
+      <a href="#">Sale</a>
+    </div>
+  </nav>
+</div>
+
+<!-- Mobile menu drawer (not drawn in the design; uses the design's styles) -->
+<div class="drawer" id="menu-drawer" hidden>
+  <div class="drawer__backdrop" data-menu-close></div>
+  <nav class="drawer__panel" aria-label="Menu">
+    <div class="drawer__head">
+      <img src="assets/images/logo.png" alt="Turf Mart" width="700" height="237">
+      <button type="button" class="icon-btn" aria-label="Close menu" data-menu-close>
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <a href="#">Pet Turf</a>
+    <a href="#">Pool Turf</a>
+    <a href="#">Landscape Turf</a>
+    <a href="#">Commercial Turf</a>
+    <a href="#">Sports Turf</a>
+    <a href="#">Brands</a>
+    <a href="#">Accessories</a>
+    <a href="#">DIY install</a>
+    <a href="#">Sale</a>
+  </nav>
+</div>
+
+<main>
+
+  <!-- ============ Hero banner ============ -->
+  <section class="hero" aria-label="Banner">
+    <div class="hero__media">
+      <img src="assets/images/hero-backyard-pool.jpg" alt="Backyard with artificial lawn beside a pool" width="900" height="448">
+    </div>
+    <div class="container hero__content">
+      <div class="hero__text">
+        <span class="hero__eyebrow">Australia's turf superstore</span>
+        <h1 class="hero__title">Every turf. One store. Priced by the m².</h1>
+        <p class="hero__lead">Pet, pool, landscape, commercial and sports turf, plus everything to install it.</p>
+        <a href="#types" class="hero__cta">Shop all turf
+          <span class="hero__cta-icon d-only" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </span>
+        </a>
+        <a href="#" class="btn btn--outline-light btn--block m-only">Order free samples</a>
+      </div>
+      <div class="hero__aside d-only">
+        <div class="glass-card">
+          <span class="glass-card__title"><span class="dot"></span>Free samples</span>
+          <span class="glass-card__text">Pick up to 5 turf samples and we'll post them to you, free.</span>
+          <a href="#" class="glass-card__link">Order free samples
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Shop by turf type ============ -->
+  <section id="types" class="section section--types" aria-labelledby="types-h">
+    <div class="container">
+      <h2 id="types-h" class="section-title">Shop by turf type</h2>
+      <div class="grid grid--cats">
+        <a href="#" class="cat-card">
+          <img src="assets/images/pet-turf-dog.jpg" alt="Dog lying on artificial turf" width="306" height="180" loading="lazy">
+          <div class="cat-card__body">
+            <span class="cat-card__name">Pet Turf <svg viewBox="0 0 24 24" fill="none" stroke="#175c3f" stroke-width="2.8"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+            <span class="cat-card__price">From <b>$54.00</b>/m²</span>
+          </div>
+        </a>
+        <a href="#" class="cat-card">
+          <img src="assets/images/pool-turf.jpg" alt="Turf around a swimming pool" width="306" height="180" loading="lazy">
+          <div class="cat-card__body">
+            <span class="cat-card__name">Pool Turf <svg viewBox="0 0 24 24" fill="none" stroke="#175c3f" stroke-width="2.8"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+            <span class="cat-card__price">From <b>$57.00</b>/m²</span>
+          </div>
+        </a>
+        <a href="#" class="cat-card">
+          <img src="assets/images/landscape-turf.jpg" alt="Backyard lawn outside a house" width="306" height="180" loading="lazy">
+          <div class="cat-card__body">
+            <span class="cat-card__name">Landscape Turf <svg viewBox="0 0 24 24" fill="none" stroke="#175c3f" stroke-width="2.8"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+            <span class="cat-card__price">From <b>$59.00</b>/m²</span>
+          </div>
+        </a>
+        <a href="#" class="cat-card">
+          <img src="assets/images/commercial-turf.jpg" alt="Turf outside a modern building" width="306" height="180" loading="lazy">
+          <div class="cat-card__body">
+            <span class="cat-card__name">Commercial Turf <svg viewBox="0 0 24 24" fill="none" stroke="#175c3f" stroke-width="2.8"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+            <span class="cat-card__price">From <b>$56.00</b>/m²</span>
+          </div>
+        </a>
+        <a href="#" class="cat-card">
+          <img src="assets/images/sports-turf-putting-green.jpg" alt="Backyard putting green" width="306" height="180" loading="lazy">
+          <div class="cat-card__body">
+            <span class="cat-card__name">Sports Turf <svg viewBox="0 0 24 24" fill="none" stroke="#175c3f" stroke-width="2.8"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+            <span class="cat-card__price">From <b>$58.00</b>/m²</span>
+          </div>
+        </a>
+        <a href="#" class="cat-card m-only">
+          <img src="assets/images/product-cooldeluxe-35.jpg" alt="Turf close-up" width="278" height="138" loading="lazy">
+          <div class="cat-card__body">
+            <span class="cat-card__name">All turf <svg viewBox="0 0 24 24" fill="none" stroke="#175c3f" stroke-width="2.8"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+            <span class="cat-card__price">From <b>$54.00</b>/m²</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Why buy from Turf Mart (promo tiles) ============ -->
+  <section class="section section--promos" aria-label="Why buy from Turf Mart">
+    <div class="container promos">
+
+      <a href="#" class="promo promo--samples">
+        <img class="promo__img" src="assets/images/turf-closeup-blades.jpg" alt="Close-up of turf blades" width="278" height="138" loading="lazy">
+        <div class="promo__body">
+          <span class="pill">Free samples</span>
+          <span class="promo__title">Feel it before you buy.</span>
+          <span class="promo__text d-only">Pick up to 5 turf samples and we'll post them to you, free.</span>
+          <span class="btn btn--yellow">Order free samples</span>
+        </div>
+      </a>
+
+      <a href="#" class="promo promo--trade">
+        <div class="promo__body">
+          <span class="pill pill--dark">Turf Mart Trade</span>
+          <span class="promo__title">Better rates for bigger jobs.</span>
+          <span class="promo__text d-only">For installers, landscapers and builders.</span>
+          <span class="btn btn--yellow d-only">Open a trade account</span>
+          <span class="text-link m-only">Open a trade account
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </span>
+        </div>
+        <img class="promo__img d-only" src="assets/images/commercial-turf.jpg" alt="Turf outside a commercial building" width="306" height="180" loading="lazy">
+      </a>
+
+      <a href="#" class="promo promo--tile promo--measure">
+        <span class="promo__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 17L17 3l4 4L7 21H3z"/><path d="M13 7l2 2M10 10l2 2M7 13l2 2"/></svg>
+        </span>
+        <span class="promo__tile-text">
+          <span class="promo__tile-title">How much turf do I need?</span>
+          <span class="promo__tile-sub"><span class="d-only">Measure up and order by the m².</span><span class="m-only">Order by the m².</span></span>
+        </span>
+      </a>
+
+      <a href="#" class="promo promo--tile promo--diy">
+        <span class="promo__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14.5 6.5a4 4 0 0 0-5.3 5.3L3 18l3 3 6.2-6.2a4 4 0 0 0 5.3-5.3l-2.6 2.6-2.4-.6-.6-2.4z"/></svg>
+        </span>
+        <span class="promo__tile-text">
+          <span class="promo__tile-title">DIY installation</span>
+          <span class="promo__tile-sub"><span class="d-only">Kits, pins, tape and step-by-step guides.</span><span class="m-only">Kits, tools and guides.</span></span>
+        </span>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ============ Best sellers ============ -->
+  <section class="section section--best" aria-labelledby="best-h">
+    <div class="container stack">
+      <h2 id="best-h" class="section-title">Best sellers</h2>
+      <div class="grid grid--products">
+        <article class="product-card">
+          <img src="assets/images/product-supreme-35.jpg" alt="Supreme 35 turf close-up" width="278" height="138" loading="lazy">
+          <div class="product-card__body">
+            <span class="product-card__brand">SYNLawn</span>
+            <span class="product-card__name">Supreme 35</span>
+            <div class="price"><span class="price__from">From</span><span class="price__value">$84.00</span><span class="price__unit">/m²</span></div>
+            <button type="button" class="btn btn--green">Add to cart</button>
+          </div>
+        </article>
+        <article class="product-card">
+          <img src="assets/images/turf-closeup-blades.jpg" alt="Urban Arena turf close-up" width="278" height="138" loading="lazy">
+          <div class="product-card__body">
+            <span class="product-card__brand">Urban Turf Solutions</span>
+            <span class="product-card__name">Urban Arena</span>
+            <div class="price"><span class="price__from">From</span><span class="price__value">$81.00</span><span class="price__unit">/m²</span></div>
+            <button type="button" class="btn btn--green">Add to cart</button>
+          </div>
+        </article>
+        <article class="product-card">
+          <img src="assets/images/product-pooldeluxe-30.jpg" alt="PoolDeluxe 30 turf close-up" width="278" height="138" loading="lazy">
+          <div class="product-card__body">
+            <span class="product-card__brand">Great Lawn Co</span>
+            <span class="product-card__name">PoolDeluxe 30</span>
+            <div class="price"><span class="price__from">From</span><span class="price__value">$79.00</span><span class="price__unit">/m²</span></div>
+            <button type="button" class="btn btn--green">Add to cart</button>
+          </div>
+        </article>
+        <article class="product-card">
+          <img src="assets/images/product-classic-35.jpg" alt="Classic 35 turf close-up" width="278" height="138" loading="lazy">
+          <div class="product-card__body">
+            <span class="product-card__brand">SYNLawn</span>
+            <span class="product-card__name">Classic 35</span>
+            <div class="price"><span class="price__from">From</span><span class="price__value">$69.00</span><span class="price__unit">/m²</span></div>
+            <button type="button" class="btn btn--green">Add to cart</button>
+          </div>
+        </article>
+        <article class="product-card d-only">
+          <img src="assets/images/product-cooldeluxe-35.jpg" alt="CoolDeluxe 35 turf close-up" width="278" height="138" loading="lazy">
+          <div class="product-card__body">
+            <span class="product-card__brand">Great Lawn Co</span>
+            <span class="product-card__name">CoolDeluxe 35</span>
+            <div class="price"><span class="price__from">From</span><span class="price__value">$74.00</span><span class="price__unit">/m²</span></div>
+            <button type="button" class="btn btn--green">Add to cart</button>
+          </div>
+        </article>
+      </div>
+      <a href="#" class="btn btn--outline-green view-all">View all turf</a>
+    </div>
+  </section>
+
+  <!-- ============ Pet turf feature ============ -->
+  <section class="section section--pet" aria-labelledby="pet-h">
+    <div class="container">
+      <div class="feature">
+        <img class="feature__img" src="assets/images/pet-turf-dog.jpg" alt="Golden retriever lying on artificial turf" width="306" height="180" loading="lazy">
+        <div class="feature__shade"></div>
+        <div class="feature__content">
+          <span class="eyebrow">Pet Turf</span>
+          <h2 id="pet-h" class="feature__title">Built for dogs. Easy to hose.</h2>
+          <p class="feature__text">Tough, quick-draining turf made for busy backyards. No mud, no bare patches<span class="d-only">, no muddy paws through the house</span>.</p>
+          <div class="feature__actions">
+            <a href="#" class="btn btn--yellow">Shop pet turf</a>
+            <a href="#" class="btn btn--outline-light">Get a free sample</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Customer reviews ============ -->
+  <section class="section section--reviews" aria-labelledby="rev-h">
+    <div class="container stack">
+      <div class="reviews__head">
+        <h2 id="rev-h" class="section-title">What our customers say</h2>
+        <div class="reviews__tools">
+          <div class="reviews__summary">
+            <span class="stars stars--lg" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+            <span><b>4.9</b><span class="d-only"> out of 5</span> · <a href="#" class="reviews__count">1,200+ reviews</a></span>
+          </div>
+          <div class="carousel-arrows d-only">
+            <button type="button" class="carousel-arrow" aria-label="Previous reviews" aria-controls="reviews-track" data-carousel-prev>
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+            </button>
+            <button type="button" class="carousel-arrow" aria-label="Next reviews" aria-controls="reviews-track" data-carousel-next>
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="reviews__track" id="reviews-track" role="region" aria-roledescription="carousel" aria-label="Customer reviews" tabindex="0" data-carousel-track>
+        <figure class="review-card">
+          <img src="assets/images/pet-turf-dog.jpg" alt="Customer photo: dog on new turf" width="306" height="180" loading="lazy">
+          <div class="review-card__body">
+            <span class="stars" role="img" aria-label="5 out of 5 stars"><i></i><i></i><i></i><i></i><i></i></span>
+            <blockquote>“The dogs are on it all day and it still looks brand new. Hosing it down takes two minutes.”</blockquote>
+            <figcaption>
+              <span class="review-card__who"><b>Sarah T.</b><span>Brisbane, QLD</span></span>
+              <span class="tag">Pet Turf</span>
+            </figcaption>
+          </div>
+        </figure>
+        <figure class="review-card">
+          <img src="assets/images/pool-turf.jpg" alt="Customer photo: turf around a pool" width="306" height="180" loading="lazy">
+          <div class="review-card__body">
+            <span class="stars" role="img" aria-label="5 out of 5 stars"><i></i><i></i><i></i><i></i><i></i></span>
+            <blockquote>“Looks amazing around the pool and it's not slippery when wet. Delivery was quick and the cut was spot on.”</blockquote>
+            <figcaption>
+              <span class="review-card__who"><b>Mark D.</b><span>Gold Coast, QLD</span></span>
+              <span class="tag">Pool Turf</span>
+            </figcaption>
+          </div>
+        </figure>
+        <figure class="review-card">
+          <img src="assets/images/landscape-turf.jpg" alt="Customer photo: new backyard lawn" width="306" height="180" loading="lazy">
+          <div class="review-card__body">
+            <span class="stars" role="img" aria-label="5 out of 5 stars"><i></i><i></i><i></i><i></i><i></i></span>
+            <blockquote>“Ordered samples first, then the full roll. Easy to lay ourselves with the install kit.”</blockquote>
+            <figcaption>
+              <span class="review-card__who"><b>Emma L.</b><span>Sydney, NSW</span></span>
+              <span class="tag">Landscape Turf</span>
+            </figcaption>
+          </div>
+        </figure>
+        <figure class="review-card">
+          <img src="assets/images/commercial-turf.jpg" alt="Customer photo: turf outside an office" width="306" height="180" loading="lazy">
+          <div class="review-card__body">
+            <span class="stars" role="img" aria-label="5 out of 5 stars"><i></i><i></i><i></i><i></i><i></i></span>
+            <blockquote>“We laid it outside our office entrance. It still looks sharp after a full summer of foot traffic.”</blockquote>
+            <figcaption>
+              <span class="review-card__who"><b>James P.</b><span>Melbourne, VIC</span></span>
+              <span class="tag">Commercial Turf</span>
+            </figcaption>
+          </div>
+        </figure>
+        <figure class="review-card">
+          <img src="assets/images/sports-turf-putting-green.jpg" alt="Customer photo: backyard putting green" width="306" height="180" loading="lazy">
+          <div class="review-card__body">
+            <span class="stars" role="img" aria-label="5 out of 5 stars"><i></i><i></i><i></i><i></i><i></i></span>
+            <blockquote>“Our backyard putting green rolls true. The kids and I are out there every weekend.”</blockquote>
+            <figcaption>
+              <span class="review-card__who"><b>Daniel R.</b><span>Perth, WA</span></span>
+              <span class="tag">Sports Turf</span>
+            </figcaption>
+          </div>
+        </figure>
+        <figure class="review-card">
+          <img src="assets/images/product-classic-35.jpg" alt="Customer photo: close-up of new lawn" width="306" height="180" loading="lazy">
+          <div class="review-card__body">
+            <span class="stars" role="img" aria-label="5 out of 5 stars"><i></i><i></i><i></i><i></i><i></i></span>
+            <blockquote>“The calculator made ordering easy. The right rolls, sand and pins all arrived together.”</blockquote>
+            <figcaption>
+              <span class="review-card__who"><b>Priya K.</b><span>Adelaide, SA</span></span>
+              <span class="tag">Landscape Turf</span>
+            </figcaption>
+          </div>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Why Turf Mart (benefits) ============ -->
+  <section class="section--usps" aria-label="Why Turf Mart">
+    <div class="container">
+      <div class="usps">
+        <div class="usp">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#175c3f" stroke-width="1.8"><path d="M3 7h11v9H3z"/><path d="M14 10h4l3 3v3h-7z"/><circle cx="7" cy="18" r="1.6"/><circle cx="17.5" cy="18" r="1.6"/></svg>
+          <span class="usp__title">Australia-wide delivery</span><span class="usp__text">Cut to size, to your door</span>
+        </div>
+        <div class="usp">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#175c3f" stroke-width="1.8"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 14h16"/></svg>
+          <span class="usp__title">Free samples</span><span class="usp__text">Feel it before you buy</span>
+        </div>
+        <div class="usp">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#175c3f" stroke-width="1.8"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/></svg>
+          <span class="usp__title">Price promise</span><span class="usp__text">Found it cheaper? We'll match it</span>
+        </div>
+        <div class="usp">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#175c3f" stroke-width="1.8"><path d="M4 5h16v11H8l-4 4z"/></svg>
+          <span class="usp__title">Real turf experts</span><span class="usp__text">Call 1300 000 000</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============ Footer ============ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer__top">
+      <a href="#" class="footer__logo d-only" aria-label="Turf Mart home"><img src="assets/images/logo.png" alt="Turf Mart" width="700" height="237"></a>
+      <span class="footer__tagline d-only">Australia's turf superstore</span>
+      <form class="newsletter" action="#" onsubmit="return false">
+        <label for="footer-email" class="newsletter__label"><span class="d-only">Join our<br>mailing list</span><span class="m-only">Join our mailing list</span></label>
+        <div class="newsletter__row">
+          <input id="footer-email" type="email" name="email" placeholder="Email address" autocomplete="email">
+          <button type="submit" class="newsletter__submit">
+            <span class="newsletter__btn">Sign up</span>
+            <span class="newsletter__arrow d-only" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </span>
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <div class="footer__links">
+      <nav aria-label="Shop" class="footer__col">
+        <span class="footer__heading">Shop</span>
+        <a href="#">Pet Turf</a>
+        <a href="#">Pool Turf</a>
+        <a href="#">Landscape Turf</a>
+        <a href="#">Commercial Turf</a>
+        <a href="#">Sports Turf</a>
+      </nav>
+      <nav aria-label="Help" class="footer__col">
+        <span class="footer__heading">Help</span>
+        <a href="#">Delivery</a>
+        <a href="#">Returns</a>
+        <a href="#">Install guides</a>
+        <a href="#" class="m-only">Trade accounts</a>
+        <a href="#">Contact</a>
+      </nav>
+      <span class="d-only"></span>
+      <nav aria-label="Trade" class="footer__col footer__col--trade d-only">
+        <span class="footer__heading">Trade</span>
+        <a href="#">Trade accounts</a>
+        <a href="#">Bulk orders</a>
+      </nav>
+    </div>
+
+    <div class="footer__wordmark d-only" aria-hidden="true">Turf Mart</div>
+
+    <div class="footer__bottom">© Turf Mart</div>
+  </div>
+</footer>
+
+<!-- ============ Mobile quick-actions bar ============ -->
+<nav class="quickbar m-only" aria-label="Quick actions">
+  <a href="#" class="quickbar__item is-current" aria-current="page">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg>Home</a>
+  <a href="#types" class="quickbar__item">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Categories</a>
+  <button type="button" class="quickbar__item quickbar__search" aria-controls="mobile-search" aria-expanded="false" data-search-toggle>
+    <span class="quickbar__fab">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+    </span>Search</button>
+  <a href="#" class="quickbar__item quickbar__cart" aria-label="Cart, 0 items">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="21" r="1.4"/><circle cx="18" cy="21" r="1.4"/><path d="M2 3h3l2.4 12.2a2 2 0 0 0 2 1.6h8.2a2 2 0 0 0 2-1.6L21 7H6"/></svg>
+    <span class="cart-count">0</span>Cart</a>
+  <a href="#" class="quickbar__item">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 20c1.5-4 5-6 8-6s6.5 2 8 6"/></svg>Account</a>
+</nav>
+
+<script src="assets/js/main.js" defer></script>
+</body>
+</html>
