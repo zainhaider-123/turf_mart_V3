@@ -1,0 +1,284 @@
+/* Turf Mart — Footer v2 (Figma node 1:305, frame 1440 x 582).
+   All values taken from get_design_context. Scoped entirely to .tm-footer-v2. */
+
+.tm-footer-v2 {
+  --tm-fv2-bg: var(--green-dark, #0f2f22);
+  --tm-fv2-white: #ffffff;
+  --tm-fv2-link: var(--footer-text, #bcd0c3);
+  --tm-fv2-wordmark: #9fbcab;
+  --tm-fv2-muted: var(--footer-muted, #8fa398);
+  --tm-fv2-outline: var(--outline-dark, #4f7a63);
+  --tm-fv2-placeholder: var(--muted-2, #6b776f);
+  --tm-fv2-yellow: var(--yellow, #f3c11d);
+
+  background: var(--tm-fv2-bg);
+  color: var(--tm-fv2-link);
+  font-family: var(--font-body-family, 'Public Sans', sans-serif);
+  font-size: 14px;
+  line-height: 1.4;
+  padding: 74px 0 36px;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
+}
+
+.tm-footer-v2 *,
+.tm-footer-v2 *::before,
+.tm-footer-v2 *::after {
+  box-sizing: border-box;
+}
+
+/* ---------- Top row: link columns left, newsletter right ---------- */
+
+.tm-footer-v2__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 40px 0;
+  padding: 0 77px 0 120px;
+}
+
+.tm-footer-v2__cols {
+  display: grid;
+  grid-template-columns: 189px 168px max-content;
+  align-content: start;
+}
+
+.tm-footer-v2__col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}
+
+.tm-footer-v2__col-heading {
+  color: var(--tm-fv2-white);
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 17px;
+  margin: 0 0 12px;
+}
+
+.tm-footer-v2__col a {
+  color: var(--tm-fv2-link);
+  text-decoration: none;
+  font-size: 14px;
+  line-height: 16px;
+  margin-bottom: 8px;
+}
+
+.tm-footer-v2__col a:last-child {
+  margin-bottom: 0;
+}
+
+.tm-footer-v2__col a:hover {
+  color: var(--tm-fv2-white);
+}
+
+/* ---------- Newsletter ---------- */
+
+.tm-footer-v2__newsletter {
+  width: 518px;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.tm-footer-v2__form {
+  margin: 0;
+}
+
+.tm-footer-v2__heading {
+  display: block;
+  margin: 0;
+  color: var(--tm-fv2-white);
+  font-weight: 700;
+  font-size: 54px;
+  line-height: 58.32px;
+  letter-spacing: -1.08px;
+}
+
+.tm-footer-v2__form-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 38.34px;
+}
+
+.tm-footer-v2__input {
+  width: 320px;
+  max-width: 100%;
+  flex: 0 1 320px;
+  min-width: 0;
+  height: 52px;
+  margin: 0;
+  padding: 0 22px;
+  border: 1px solid var(--tm-fv2-outline);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--tm-fv2-white);
+  font-family: inherit;
+  font-size: 15px;
+  line-height: normal;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.tm-footer-v2__input::placeholder {
+  color: var(--tm-fv2-placeholder);
+  opacity: 1;
+}
+
+.tm-footer-v2__input:focus {
+  border-color: var(--tm-fv2-yellow);
+}
+
+.tm-footer-v2__actions {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+}
+
+.tm-footer-v2__signup {
+  height: 52px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 24px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--tm-fv2-yellow);
+  color: var(--tm-fv2-bg);
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.tm-footer-v2__arrow {
+  width: 52px;
+  height: 52px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid var(--tm-fv2-yellow);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--tm-fv2-yellow);
+  cursor: pointer;
+}
+
+.tm-footer-v2__arrow svg {
+  display: block;
+  width: 22px;
+  height: 22px;
+}
+
+.tm-footer-v2__signup:hover,
+.tm-footer-v2__arrow:hover {
+  filter: brightness(1.05);
+}
+
+.tm-footer-v2__msg {
+  margin: 12px 0 0;
+  font-size: 14px;
+  color: var(--tm-fv2-yellow);
+}
+
+.tm-footer-v2__msg--error {
+  color: #ffb4a8;
+}
+
+/* ---------- Giant wordmark + copyright ---------- */
+
+.tm-footer-v2__wordmark {
+  margin: 74px 7.68% 0 8.3%;
+  font-family: var(--font-heading-family, 'Archivo Black', sans-serif);
+  font-size: min(250px, 17.4vw);
+  line-height: 0.84;
+  letter-spacing: -0.035em;
+  color: var(--tm-fv2-wordmark);
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.tm-footer-v2__copyright {
+  margin-top: 22.5px;
+  font-size: 13px;
+  line-height: 16px;
+  color: var(--tm-fv2-muted);
+  text-align: center;
+}
+
+/* ---------- Tablet: 750–1199px ---------- */
+
+@media (max-width: 1199px) {
+  .tm-footer-v2 {
+    padding: 56px 0 40px;
+  }
+  .tm-footer-v2__row {
+    padding: 0 40px;
+    gap: 40px 24px;
+  }
+  .tm-footer-v2__cols {
+    grid-template-columns: repeat(3, max-content);
+    column-gap: 48px;
+  }
+  .tm-footer-v2__newsletter {
+    width: min(518px, 100%);
+  }
+  .tm-footer-v2__heading {
+    font-size: clamp(34px, 5vw, 54px);
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+  }
+  .tm-footer-v2__wordmark {
+    margin-top: 56px;
+  }
+}
+
+/* ---------- Mobile: ≤749px ---------- */
+
+@media (max-width: 749px) {
+  .tm-footer-v2 {
+    padding: 40px 0 calc(106px + env(safe-area-inset-bottom, 0px));
+  }
+  .tm-footer-v2__row {
+    flex-direction: column;
+    gap: 32px;
+    padding: 0 20px;
+  }
+  .tm-footer-v2__cols {
+    grid-template-columns: 1fr;
+    row-gap: 28px;
+    column-gap: 0;
+    width: 100%;
+  }
+  .tm-footer-v2__newsletter {
+    width: 100%;
+  }
+  .tm-footer-v2__form-row {
+    margin-top: 24px;
+    gap: 8px;
+  }
+  .tm-footer-v2__input {
+    flex: 1 1 0;
+    width: auto;
+    padding: 0 18px;
+  }
+  .tm-footer-v2__signup {
+    padding: 0 18px;
+  }
+  .tm-footer-v2__wordmark {
+    margin-top: 40px;
+  }
+  .tm-footer-v2__copyright {
+    margin-top: 20px;
+  }
+}

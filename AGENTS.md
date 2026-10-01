@@ -1,5 +1,9 @@
 # AGENTS.md
 
+## Prompt/instruction requests — write the file, don't implement
+- When the user asks to "write an instruction", "write a prompt", or similar: create a Markdown file **inside `references/prompts/`** and **stop — do not start implementing it**. Implementation begins only when the user later asks to execute that prompt.
+- `references/prompts/_archive/` holds finished/archived specs (e.g. `convert-homepage.md`, `dynamic-cms-content.md`); new prompts go directly in `references/prompts/`, not in `_archive/`.
+
 ## What this is
 - Shopify Online Store 2.0 theme ("Turf Mart") based on **Dawn 16.0.0** — see `theme_info` in `config/settings_schema.json`. Standard Dawn layout: `assets/ config/ layout/ locales/ sections/ snippets/ templates/`.
 - No package.json, no tests, no CI, no lint config. Nothing builds locally; Liquid renders server-side — `shopify theme check` is the only verifier.
@@ -20,8 +24,11 @@
 
 ## references/ — source design, never modify, never uploads
 - `references/index.html` + `references/assets/{css,js,images}` is the static mockup. `.shopifyignore` excludes `references/` and `AGENTS.md` from theme uploads. Copy assets **out** of it; never write into it.
-- `references/prompts/convert-homepage.md` is the detailed conversion spec (architecture decisions, per-section settings, parity checklist at 1440/1200/990/750/390px). Read it before touching homepage sections; it supersedes guesswork about why files look the way they do.
+- Specs live in `references/prompts/_archive/`: `convert-homepage.md` is the detailed conversion spec (architecture decisions, per-section settings, parity checklist at 1440/1200/990/750/390px) — read it before touching homepage sections; it supersedes guesswork about why files look the way they do. `dynamic-cms-content.md` documents the CMS-source feature.
 - Mockup JS (`references/assets/js/main.js`): do **not** port wholesale — reuse Dawn components (`snippets/header-drawer.liquid`, carousel/slideshow logic in `assets/global.js`) or `assets/tm-homepage.js`.
+
+## Dynamic CMS sources (optional, with hardcoded fallbacks)
+- `tm-best-sellers` (collection setting), `tm-turf-types` (collection per block), `tm-header` (`link_list`), and `tm-footer` (three `link_list` settings: Shop/Help/Trade) accept an optional CMS source; when set and non-empty it **overrides** the theme-editor blocks / hardcoded card lists, otherwise the fallback content renders unchanged. Never remove the fallback path — it's what keeps the mockup parity working before merchants configure menus/collections.
 
 ## Turf calculator — the existing custom feature and the model for non-homepage work
 - Block `turf_calculator` (limit 1) is declared inline in the schema of `sections/main-product.liquid` and rendered from there via `snippets/turf-calculator.liquid`; assets are `assets/turf-calculator.css` / `.js`.
