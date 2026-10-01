@@ -13,7 +13,7 @@
 
   background: var(--tm-fv2-bg);
   color: var(--tm-fv2-link);
-  font-family: var(--font-body-family, 'Public Sans', sans-serif);
+  font-family: var(--font-body-family, Helvetica, Arial, sans-serif);
   font-size: 14px;
   line-height: 1.4;
   padding: 74px 0 36px;
@@ -198,7 +198,8 @@
 
 .tm-footer-v2__wordmark {
   margin: 74px 7.68% 0 8.3%;
-  font-family: var(--font-heading-family, 'Archivo Black', sans-serif);
+  font-family: var(--font-heading-family, Helvetica, Arial, sans-serif);
+  font-weight: 800;
   font-size: min(250px, 17.4vw);
   line-height: 0.84;
   letter-spacing: -0.035em;
