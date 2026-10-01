@@ -3,6 +3,11 @@
 
 {%- liquid
   assign logo = section.settings.logo
+  assign nav_menu = section.settings.menu
+  assign use_menu = false
+  if nav_menu != blank and nav_menu.links.size > 0
+    assign use_menu = true
+  endif
 -%}
 <div class="tm-site-top tm-scope">
   <div class="tm-announcement">
@@ -23,14 +28,45 @@
         {%- endif -%}
       </a>
 
-      <form role="search" class="tm-search tm-search--desktop d-only" action="{{ routes.search_url }}" method="get">
+      {%- if settings.predictive_search_enabled -%}
+        <predictive-search class="tm-ps tm-ps--desktop d-only" data-loading-text="{{ 'accessibility.loading' | t }}">
+      {%- else -%}
+        <search-form class="tm-ps tm-ps--desktop d-only">
+      {%- endif -%}
+      <form role="search" class="tm-search tm-search--desktop" action="{{ routes.search_url }}" method="get">
         <label for="tm-search-desktop" class="visually-hidden">Search Turf Mart</label>
         <span class="tm-search__icon" aria-hidden="true">
           <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
         </span>
-        <input id="tm-search-desktop" type="search" name="q" placeholder="{{ section.settings.search_placeholder | escape }}">
+        <input
+          id="tm-search-desktop"
+          type="search"
+          name="q"
+          placeholder="{{ section.settings.search_placeholder | escape }}"
+          {%- if settings.predictive_search_enabled -%}
+            role="combobox"
+            aria-expanded="false"
+            aria-owns="predictive-search-results"
+            aria-controls="predictive-search-results"
+            aria-haspopup="listbox"
+            aria-autocomplete="list"
+            autocorrect="off"
+            autocomplete="off"
+            autocapitalize="off"
+            spellcheck="false"
+          {%- endif -%}
+        >
         <button type="submit" class="tm-search__submit">{{ section.settings.search_submit_label | escape }}</button>
       </form>
+      {%- if settings.predictive_search_enabled -%}
+        <div class="predictive-search predictive-search--header" tabindex="-1" data-predictive-search>
+          {%- render 'loading-spinner', class: 'predictive-search__loading-state' -%}
+        </div>
+        <span class="predictive-search-status visually-hidden" role="status" aria-hidden="true"></span>
+        </predictive-search>
+      {%- else -%}
+        </search-form>
+      {%- endif -%}
 
       <div class="tm-header__actions d-only">
         {%- if section.settings.show_account -%}
@@ -52,20 +88,57 @@
       </button>
     </div>
 
-    <form role="search" id="tm-mobile-search" class="tm-search tm-search--mobile m-only" action="{{ routes.search_url }}" method="get" hidden>
+    {%- if settings.predictive_search_enabled -%}
+      <predictive-search id="tm-mobile-search" class="tm-ps tm-ps--mobile m-only" data-loading-text="{{ 'accessibility.loading' | t }}" hidden>
+    {%- else -%}
+      <search-form id="tm-mobile-search" class="tm-ps tm-ps--mobile m-only" hidden>
+    {%- endif -%}
+    <form role="search" class="tm-search tm-search--mobile" action="{{ routes.search_url }}" method="get">
       <label for="tm-search-mobile" class="visually-hidden">Search Turf Mart</label>
-      <input id="tm-search-mobile" type="search" name="q" placeholder="{{ section.settings.search_placeholder_mobile | escape }}">
+      <input
+        id="tm-search-mobile"
+        type="search"
+        name="q"
+        placeholder="{{ section.settings.search_placeholder_mobile | escape }}"
+        {%- if settings.predictive_search_enabled -%}
+          role="combobox"
+          aria-expanded="false"
+          aria-owns="predictive-search-results"
+          aria-controls="predictive-search-results"
+          aria-haspopup="listbox"
+          aria-autocomplete="list"
+          autocorrect="off"
+          autocomplete="off"
+          autocapitalize="off"
+          spellcheck="false"
+        {%- endif -%}
+      >
       <button type="submit" class="tm-search__submit" aria-label="Search">
         <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
       </button>
     </form>
+    {%- if settings.predictive_search_enabled -%}
+      <div class="predictive-search predictive-search--header" tabindex="-1" data-predictive-search>
+        {%- render 'loading-spinner', class: 'predictive-search__loading-state' -%}
+      </div>
+      <span class="predictive-search-status visually-hidden" role="status" aria-hidden="true"></span>
+      </predictive-search>
+    {%- else -%}
+      </search-form>
+    {%- endif -%}
   </header>
 
   <nav class="tm-main-nav d-only" aria-label="Main">
     <div class="tm-container tm-main-nav__inner">
-      {%- for block in section.blocks -%}
-        <a href="{{ block.settings.url | default: '#' }}" {{ block.shopify_attributes }}>{{ block.settings.label | escape }}</a>
-      {%- endfor -%}
+      {%- if use_menu -%}
+        {%- for link in nav_menu.links -%}
+          <a href="{{ link.url }}">{{ link.title | escape }}</a>
+        {%- endfor -%}
+      {%- else -%}
+        {%- for block in section.blocks -%}
+          <a href="{{ block.settings.url | default: '#' }}" {{ block.shopify_attributes }}>{{ block.settings.label | escape }}</a>
+        {%- endfor -%}
+      {%- endif -%}
     </div>
   </nav>
 </div>
@@ -83,9 +156,15 @@
         <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
       </button>
     </div>
-    {%- for block in section.blocks -%}
-      <a href="{{ block.settings.url | default: '#' }}">{{ block.settings.label | escape }}</a>
-    {%- endfor -%}
+    {%- if use_menu -%}
+      {%- for link in nav_menu.links -%}
+        <a href="{{ link.url }}">{{ link.title | escape }}</a>
+      {%- endfor -%}
+    {%- else -%}
+      {%- for block in section.blocks -%}
+        <a href="{{ block.settings.url | default: '#' }}">{{ block.settings.label | escape }}</a>
+      {%- endfor -%}
+    {%- endif -%}
   </nav>
 </div>
 
@@ -109,6 +188,11 @@
       "type": "image_picker",
       "id": "logo",
       "label": "Logo"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu (source — overrides navigation links)"
     },
     {
       "type": "text",
