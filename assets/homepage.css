@@ -170,6 +170,29 @@
 .tm-search--desktop .tm-search__icon { display: flex; align-items: center; padding-left: 16px; color: var(--muted); }
 .tm-search--desktop .tm-search__submit { padding: 0 30px; }
 
+/* Predictive search wrapper (Dawn behaviour, Turf Mart look) */
+.tm-ps { display: block; position: relative; }
+.tm-ps--desktop { flex-grow: 1; }
+.tm-ps .predictive-search {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow: 0 18px 40px -18px rgba(15, 47, 34, 0.35);
+  max-height: min(70vh, 560px);
+  overflow-y: auto;
+}
+.tm-ps .predictive-search__heading { margin: 0 20px; }
+.tm-ps .predictive-search__item { font-size: 15px; }
+.tm-ps .predictive-search__item-heading,
+.tm-ps .predictive-search__item--term {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: normal;
+  line-height: 1.35;
+}
+.tm-ps .predictive-search__item--term { color: var(--green); }
+
 .tm-main-nav { background: var(--white); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 .tm-main-nav__inner {
   height: 52px; display: flex; align-items: center; justify-content: center; gap: 32px;
@@ -499,8 +522,10 @@
   .tm-header__search-toggle .tm-i-close { display: none; }
   .tm-header__search-toggle[aria-expanded="true"] .tm-i-search { display: none; }
   .tm-header__search-toggle[aria-expanded="true"] .tm-i-close { display: block; }
-  .tm-search--mobile { display: flex !important; margin: 0 12px 12px; height: 48px; }
-  .tm-search--mobile[hidden] { display: none !important; }
+  .tm-ps.m-only { display: block !important; }
+  .tm-ps--mobile { margin: 0 12px 12px; }
+  .tm-ps--mobile[hidden] { display: none !important; }
+  .tm-search--mobile { display: flex !important; height: 48px; }
   .tm-search--mobile .tm-search__submit { width: 52px; display: flex; align-items: center; justify-content: center; padding: 0; }
 
   /* Menu drawer */
