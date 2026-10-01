@@ -1,0 +1,248 @@
+{{ 'tm-footer-v2.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign shop_menu = section.settings.shop_menu
+  assign help_menu = section.settings.help_menu
+  assign trade_menu = section.settings.trade_menu
+  assign use_shop_menu = false
+  if shop_menu != blank and shop_menu.links.size > 0
+    assign use_shop_menu = true
+  endif
+  assign use_help_menu = false
+  if help_menu != blank and help_menu.links.size > 0
+    assign use_help_menu = true
+  endif
+  assign use_trade_menu = false
+  if trade_menu != blank and trade_menu.links.size > 0
+    assign use_trade_menu = true
+  endif
+  assign email_id = 'tm-footer-v2-email-' | append: section.id
+-%}
+
+<footer class="tm-footer-v2">
+  <div class="tm-footer-v2__row tm-container">
+    <div class="tm-footer-v2__cols">
+      <nav class="tm-footer-v2__col" aria-label="Shop">
+        <span class="tm-footer-v2__col-heading">Shop</span>
+        {%- if use_shop_menu -%}
+          {%- for link in shop_menu.links -%}
+            <a href="{{ link.url }}">{{ link.title | escape }}</a>
+          {%- endfor -%}
+        {%- else -%}
+          {%- for block in section.blocks -%}
+            {%- if block.settings.column == 'shop' -%}
+              <a href="{{ block.settings.url | default: '#' }}" {{ block.shopify_attributes }}>{{ block.settings.label | escape }}</a>
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endif -%}
+      </nav>
+      <nav class="tm-footer-v2__col" aria-label="Help">
+        <span class="tm-footer-v2__col-heading">Help</span>
+        {%- if use_help_menu -%}
+          {%- for link in help_menu.links -%}
+            <a href="{{ link.url }}">{{ link.title | escape }}</a>
+          {%- endfor -%}
+        {%- else -%}
+          {%- for block in section.blocks -%}
+            {%- if block.settings.column == 'help' -%}
+              <a href="{{ block.settings.url | default: '#' }}" {{ block.shopify_attributes }}>{{ block.settings.label | escape }}</a>
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endif -%}
+      </nav>
+      <nav class="tm-footer-v2__col" aria-label="Trade">
+        <span class="tm-footer-v2__col-heading">Trade</span>
+        {%- if use_trade_menu -%}
+          {%- for link in trade_menu.links -%}
+            <a href="{{ link.url }}">{{ link.title | escape }}</a>
+          {%- endfor -%}
+        {%- else -%}
+          {%- for block in section.blocks -%}
+            {%- if block.settings.column == 'trade' -%}
+              <a href="{{ block.settings.url | default: '#' }}" {{ block.shopify_attributes }}>{{ block.settings.label | escape }}</a>
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endif -%}
+      </nav>
+    </div>
+
+    <div class="tm-footer-v2__newsletter">
+      {%- form 'customer', class: 'tm-footer-v2__form' -%}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        <label class="tm-footer-v2__heading" for="{{ email_id }}">{{ section.settings.newsletter_heading | escape }}</label>
+        <div class="tm-footer-v2__form-row">
+          <input
+            id="{{ email_id }}"
+            class="tm-footer-v2__input"
+            type="email"
+            name="contact[email]"
+            placeholder="{{ section.settings.newsletter_placeholder | escape }}"
+            autocomplete="email"
+            required
+          >
+          <div class="tm-footer-v2__actions">
+            <button type="submit" class="tm-footer-v2__signup">{{ section.settings.newsletter_button_label | escape }}</button>
+            <button type="submit" class="tm-footer-v2__arrow" aria-label="{{ section.settings.newsletter_button_label | escape }}">
+              <svg viewBox="0 0 22 22" width="22" height="22" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                <path d="M4.58333 11H17.4167M11.9167 16.5L17.4167 11L11.9167 5.5" stroke="currentColor" stroke-width="1.83333"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+        {%- if form.posted_successfully? -%}
+          <p class="tm-footer-v2__msg" role="status">Thanks for signing up.</p>
+        {%- endif -%}
+        {%- if form.errors -%}
+          <p class="tm-footer-v2__msg tm-footer-v2__msg--error" role="alert">{{ form.errors | default_errors }}</p>
+        {%- endif -%}
+      {%- endform -%}
+    </div>
+  </div>
+
+  <div class="tm-footer-v2__wordmark" aria-hidden="true">{{ section.settings.wordmark | escape }}</div>
+
+  <div class="tm-footer-v2__copyright">{{ section.settings.copyright | escape }}</div>
+</footer>
+
+{% schema %}
+{
+  "name": "Turf Mart — Footer v2",
+  "settings": [
+    {
+      "type": "text",
+      "id": "newsletter_heading",
+      "label": "Newsletter heading",
+      "default": "Join our mailing list"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_placeholder",
+      "label": "Newsletter placeholder",
+      "default": "Email address"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_button_label",
+      "label": "Newsletter button label",
+      "default": "Sign up"
+    },
+    {
+      "type": "text",
+      "id": "wordmark",
+      "label": "Wordmark",
+      "default": "Turf Mart"
+    },
+    {
+      "type": "text",
+      "id": "copyright",
+      "label": "Copyright text",
+      "default": "© 2026 Turf Mart, All rights Reserved"
+    },
+    {
+      "type": "link_list",
+      "id": "shop_menu",
+      "label": "Shop menu (source)"
+    },
+    {
+      "type": "link_list",
+      "id": "help_menu",
+      "label": "Help menu (source)"
+    },
+    {
+      "type": "link_list",
+      "id": "trade_menu",
+      "label": "Trade menu (source)"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "link",
+      "name": "Footer link",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Delivery"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Link"
+        },
+        {
+          "type": "select",
+          "id": "column",
+          "label": "Column",
+          "options": [
+            {
+              "value": "shop",
+              "label": "Shop"
+            },
+            {
+              "value": "help",
+              "label": "Help"
+            },
+            {
+              "value": "trade",
+              "label": "Trade"
+            }
+          ],
+          "default": "shop"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Turf Mart — Footer v2",
+      "blocks": [
+        {
+          "type": "link",
+          "settings": { "label": "Pet Turf", "column": "shop" }
+        },
+        {
+          "type": "link",
+          "settings": { "label": "Pool Turf", "column": "shop" }
+        },
+        {
+          "type": "link",
+          "settings": { "label": "Landscape Turf", "column": "shop" }
+        },
+        {
+          "type": "link",
+          "settings": { "label": "Commercial Turf", "column": "shop" }
+        },
+        {
+          "type": "link",
+          "settings": { "label": "Sports Turf", "column": "shop" }
+        },
+        {
+          "type": "link",
+          "settings": { "label": "Delivery", "column": "help" }
+        },
+        {
+          "type": "link",
+          "settings": { "label": "Returns", "column": "help" }
+        },
+        {
+          "type": "link",
+          "settings": { "label": "Install guides", "column": "help" }
+        },
+        {
+          "type": "link",
+          "settings": { "label": "Contact", "column": "help" }
+        },
+        {
+          "type": "link",
+          "settings": { "label": "Trade accounts", "column": "trade" }
+        },
+        {
+          "type": "link",
+          "settings": { "label": "Bulk orders", "column": "trade" }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -11,8 +11,8 @@
   "name": "t:sections.footer.name",
   "type": "footer",
   "sections": {
-    "tm-footer": {
-      "type": "tm-footer",
+    "tm-footer-v2": {
+      "type": "tm-footer-v2",
       "blocks": {
         "shop_pet": {
           "type": "link",
@@ -78,15 +78,6 @@
             "column": "help"
           }
         },
-        "help_trade": {
-          "type": "link",
-          "settings": {
-            "label": "Trade accounts",
-            "url": "#",
-            "column": "help",
-            "mobile_only": true
-          }
-        },
         "help_contact": {
           "type": "link",
           "settings": {
@@ -121,7 +112,6 @@
         "help_delivery",
         "help_returns",
         "help_install",
-        "help_trade",
         "help_contact",
         "trade_accounts",
         "trade_bulk"
@@ -183,7 +173,7 @@
     }
   },
   "order": [
-    "tm-footer",
+    "tm-footer-v2",
     "tm-quickbar"
   ]
 }
