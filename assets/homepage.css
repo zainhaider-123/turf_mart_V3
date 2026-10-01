@@ -26,8 +26,8 @@
   --footer-muted: #8fa398;
   --outline-dark: #4f7a63;
 
-  --font-body: var(--font-body-family), 'Public Sans', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
-  --font-display: var(--font-heading-family), 'Archivo Black', 'Arial Black', 'Helvetica Neue', Arial, sans-serif;
+  --font-body: var(--font-body-family), Helvetica, Arial, sans-serif;
+  --font-display: var(--font-heading-family), Helvetica, Arial, sans-serif;
 
   --gutter: 80px;
   --page-max: 1440px;
@@ -121,7 +121,7 @@
   text-transform: uppercase; color: var(--yellow);
 }
 .tm-section-title {
-  margin: 0; font-family: var(--font-display); font-weight: 400;
+  margin: 0; font-family: var(--font-display); font-weight: 800;
   font-size: 32px; line-height: 1.1;
 }
 .tm-tag {
@@ -266,7 +266,7 @@
 .cat-card:hover { color: var(--ink); box-shadow: 0 10px 24px -14px rgba(15,47,34,.45); transform: translateY(-2px); }
 .cat-card img { width: 100%; height: 180px; object-fit: cover; }
 .cat-card__body { padding: 16px 18px 18px; display: flex; flex-direction: column; gap: 6px; }
-.cat-card__name { display: flex; align-items: center; gap: 8px; font-family: var(--font-display); font-size: 19px; line-height: 1.15; }
+.cat-card__name { display: flex; align-items: center; gap: 8px; font-family: var(--font-display); font-weight: 800; font-size: 19px; line-height: 1.15; }
 .cat-card__name svg { width: 16px; height: 16px; }
 .cat-card__price { font-size: 13px; color: var(--muted); }
 .cat-card__price b { font-size: 17px; color: var(--green); }
@@ -281,7 +281,7 @@
   grid-template-rows: 312px 356px;
 }
 .promo { border-radius: 16px; text-decoration: none; }
-.promo__title { font-family: var(--font-display); line-height: 1.08; letter-spacing: -0.01em; }
+.promo__title { font-family: var(--font-display); font-weight: 800; line-height: 1.08; letter-spacing: -0.01em; }
 .promo__body { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; }
 .promo__body .tm-btn { margin-top: 10px; }
 
@@ -311,7 +311,7 @@
 }
 .promo__icon svg { width: 44px; height: 44px; }
 .promo__tile-text { display: flex; flex-direction: column; gap: 14px; }
-.promo__tile-title { font-family: var(--font-display); font-size: 26px; line-height: 1.12; }
+.promo__tile-title { font-family: var(--font-display); font-weight: 800; font-size: 26px; line-height: 1.12; }
 .promo__tile-sub { font-size: 16px; line-height: 1.45; }
 .promo--measure { background: var(--yellow); color: var(--green-dark); }
 .promo--measure:hover { color: var(--green-dark); }
@@ -355,7 +355,7 @@
   background: linear-gradient(90deg, rgba(10,31,23,.94) 0%, rgba(10,31,23,.82) 32%, rgba(10,31,23,.35) 58%, rgba(10,31,23,0) 78%);
 }
 .feature__content { position: relative; width: 560px; max-width: 100%; padding: 0 64px; display: flex; flex-direction: column; gap: 18px; color: var(--white); }
-.feature__title { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: 48px; line-height: 1.04; letter-spacing: -0.01em; color: var(--white); }
+.feature__title { margin: 0; font-family: var(--font-display); font-weight: 800; font-size: 48px; line-height: 1.04; letter-spacing: -0.01em; color: var(--white); }
 .feature__text { margin: 0; font-size: 17px; line-height: 1.55; color: #e1ede5; }
 .feature__actions { display: flex; gap: 12px; margin-top: 8px; }
 .feature__actions .tm-btn--yellow { padding: 15px 26px; }
@@ -454,7 +454,7 @@
 .tm-footer__heading { color: var(--white); font-weight: 700; font-size: 15px; margin-bottom: 4px; }
 
 .tm-footer__wordmark {
-  margin-top: 72px; font-family: var(--font-display); line-height: 0.84; letter-spacing: -0.035em;
+  margin-top: 72px; font-family: var(--font-display); font-weight: 800; line-height: 0.84; letter-spacing: -0.035em;
   white-space: nowrap; color: #9fbcab; text-align: center; overflow: hidden;
   font-size: min(250px, 17.4vw);
 }
@@ -555,7 +555,7 @@
     padding: 0; border: 0; background: none; -webkit-backdrop-filter: none; backdrop-filter: none; border-radius: 0;
     font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--yellow);
   }
-  .hero__title { font-family: var(--font-display); font-weight: 400; font-size: 30px; line-height: 1.06; letter-spacing: -0.01em; }
+  .hero__title { font-family: var(--font-display); font-weight: 800; font-size: 30px; line-height: 1.06; letter-spacing: -0.01em; }
   .hero__lead { font-size: 14px; line-height: 1.5; color: #d3e4d9; }
   .hero__cta {
     margin-top: 6px; justify-content: center; padding: 14px 0; border-radius: 9px;
