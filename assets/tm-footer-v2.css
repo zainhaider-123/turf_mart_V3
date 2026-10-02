@@ -209,6 +209,19 @@
   overflow: hidden;
 }
 
+.tm-footer-v2__wordmark--image {
+  line-height: 0;
+  font-size: 0;
+}
+
+.tm-footer-v2__wordmark--image img {
+  display: block;
+  width: 100%;
+  max-width: var(--wordmark-max, 1280px);
+  height: auto;
+  margin: 0 auto;
+}
+
 .tm-footer-v2__copyright {
   margin-top: 22.5px;
   font-size: 13px;
