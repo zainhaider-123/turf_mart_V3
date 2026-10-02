@@ -1,7 +1,8 @@
 {%- comment -%}
   Turf Mart default product page (template: product). Same layout as
   sections/main-turf-product.liquid — breadcrumb, gallery, product info,
-  trust row, detail tabs, "Complete your project" and "You may also like" —
+  trust row, detail tabs, "Complete your project" and "You may also like"
+  (other products from the same collection) —
   with the turf calculator replaced by a standard buy box (variant pills,
   quantity, add to cart) from snippets/tm-buy-box.liquid.
 
@@ -214,13 +215,31 @@
       </div>
     {%- endif -%}
 
-    <product-recommendations class="related__group"
-      data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit=10&intent=related"
-      data-product-id="{{ product.id }}" data-section-id="{{ section.id }}">
-      {%- if recommendations.performed and recommendations.products_count > 0 -%}
+    {%- liquid
+      comment
+        Similar products from the same collection: the breadcrumb collection
+        (current collection or custom.primary_collection), else the first of
+        the product's collections that holds other products.
+      endcomment
+      assign rec_source = crumb
+      if rec_source == blank or rec_source.products_count < 2
+        for c in product.collections
+          if c.products_count > 1
+            assign rec_source = c
+            break
+          endif
+        endfor
+      endif
+      assign rec_count = 0
+    -%}
+    {%- if rec_source != blank and rec_source.products_count > 1 -%}
+      <div class="related__group">
         <h2 class="related__title">{{ section.settings.recommendations_heading }}</h2>
         <div class="related__row">
-          {%- for rec in recommendations.products limit: 4 -%}
+          {%- for rec in rec_source.products -%}
+            {%- if rec.id == product.id -%}{%- continue -%}{%- endif -%}
+            {%- assign rec_count = rec_count | plus: 1 -%}
+            {%- if rec_count > 4 -%}{%- break -%}{%- endif -%}
             <article class="mini-card">
               {%- if rec.featured_image -%}
                 {{ rec.featured_image | image_url: width: 400 | image_tag: class: 'mini-card__media', loading: 'lazy' }}
@@ -228,14 +247,19 @@
               <div class="mini-card__body">
                 <span class="mini-card__brand">{{ rec.vendor }}</span>
                 <span class="mini-card__name">{{ rec.title }}</span>
-                <span class="mini-card__price">{% if rec.price_varies %}From {% endif %}{{ rec.price | money }}</span>
+                {%- capture rec_width -%}{% render 'tm-sqm-width', product: rec %}{%- endcapture -%}
+                {%- if rec_width != blank -%}
+                  <span class="mini-card__price">{{ rec.price | divided_by: rec_width | round | money }}<small>/m²</small></span>
+                {%- else -%}
+                  <span class="mini-card__price">{% if rec.price_varies %}From {% endif %}{{ rec.price | money }}</span>
+                {%- endif -%}
                 <a href="{{ rec.url }}" class="tm-btn tm-btn--outline-green mini-card__btn">View product</a>
               </div>
             </article>
           {%- endfor -%}
         </div>
-      {%- endif -%}
-    </product-recommendations>
+      </div>
+    {%- endif -%}
   </section>
 
   {%- comment -%} Image zoom lightbox {%- endcomment -%}

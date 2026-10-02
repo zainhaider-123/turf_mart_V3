@@ -475,7 +475,10 @@
                     if collection != blank
                       assign card_url = product.url | within: collection
                     endif
-                    assign roll_width = product.metafields.custom.roll_width.value
+                    capture roll_width
+                      render 'tm-sqm-width', product: product
+                    endcapture
+                    assign roll_width = roll_width | plus: 0
                     assign fallback = fallbacks[forloop.index0] | default: 'product-cooldeluxe-35'
                   -%}
                   <li
@@ -576,15 +579,15 @@
                             {%- endif -%}
                             <span class="cat-card__price">
                               {%- if product.price > 0 -%}
-                                {%- if roll_width or product.price_varies -%}From {% endif -%}
+                                {%- if roll_width > 0 or product.price_varies -%}From {% endif -%}
                                 <b>
-                                  {%- if roll_width -%}
+                                  {%- if roll_width > 0 -%}
                                     {{ product.price | divided_by: roll_width | round | money }}
                                   {%- else -%}
                                     {{ product.price | money }}
                                   {%- endif -%}
                                 </b>
-                                {%- if roll_width -%}/m²{% endif -%}
+                                {%- if roll_width > 0 -%}/m²{% endif -%}
                               {%- else -%}
                                 <b>View product</b>
                               {%- endif -%}

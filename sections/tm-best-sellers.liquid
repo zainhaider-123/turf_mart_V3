@@ -19,6 +19,10 @@
         {%- for product in source_collection.products limit: products_limit -%}
           {%- liquid
             assign fallback = fallbacks[forloop.index0] | default: 'product-cooldeluxe-35'
+            capture sqm_width
+              render 'tm-sqm-width', product: product
+            endcapture
+            assign sqm_width = sqm_width | plus: 0
             if product.featured_image != blank
               assign card_src = product.featured_image | image_url: width: 640
               assign card_alt = product.featured_image.alt | default: product.title
@@ -46,9 +50,11 @@
                 {%- if section.settings.price_prefix != blank -%}
                   <span class="price__from">{{ section.settings.price_prefix | escape }}</span>
                 {%- endif -%}
-                <span class="price__value">{{ product.price | money }}</span>
-                {%- if section.settings.price_unit != blank -%}
-                  <span class="price__unit">{{ section.settings.price_unit | escape }}</span>
+                {%- if sqm_width > 0 -%}
+                  <span class="price__value">{{ product.price | divided_by: sqm_width | round | money }}</span>
+                  <span class="price__unit">{{ section.settings.price_unit | default: '/m²' | escape }}</span>
+                {%- else -%}
+                  <span class="price__value">{{ product.price | money }}</span>
                 {%- endif -%}
               </div>
               <a href="{{ product.url }}" class="tm-btn tm-btn--green">
@@ -137,6 +143,7 @@
       "type": "text",
       "id": "price_unit",
       "label": "Price unit",
+      "info": "Shown after the per-m² price of Synthetic turf products from the collection.",
       "default": "/m²"
     },
     {

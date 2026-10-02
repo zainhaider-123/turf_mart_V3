@@ -1,0 +1,18 @@
+{%- comment -%}
+  Outputs the roll width (m) for products of type "Synthetic turf", or nothing
+  for any other product. Card prices divide the per-lineal-metre variant price
+  by this width to show a per-m² price, matching snippets/turf-calculator.liquid.
+
+  Roll width: product metafield custom.roll_width, else 3.71 (calculator default).
+
+  Usage:
+    {%- capture sqm_width -%}{% render 'tm-sqm-width', product: product %}{%- endcapture -%}
+    {%- assign sqm_width = sqm_width | plus: 0 -%}
+    {%- if sqm_width > 0 -%}{{ product.price | divided_by: sqm_width | round | money }}/m²{%- endif -%}
+{%- endcomment -%}
+{%- liquid
+  assign tm_type = product.type | downcase | strip
+  if tm_type == 'synthetic turf'
+    echo product.metafields.custom.roll_width.value | default: 3.71
+  endif
+-%}

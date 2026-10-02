@@ -2,7 +2,8 @@
   Turf Mart product page (template: product.turf).
   Ports the mockup's <main class="pdp"> (references/productpage/index.html):
   breadcrumb, gallery, product info + calculator, trust row, detail tabs,
-  "Complete your project" and "You may also like". The page's global header
+  "Complete your project" and "You may also like" (other turf from the same
+  collection). The page's global header
   and footer come from the theme's header-group/footer-group as on every
   other template — this section renders page content only.
 
@@ -226,17 +227,30 @@
       </div>
     {%- endif -%}
 
-    <product-recommendations class="related__group"
-      data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit=10&intent=related"
-      data-product-id="{{ product.id }}" data-section-id="{{ section.id }}">
-      {%- if recommendations.performed and recommendations.products_count > 0 -%}
-        <h2 class="related__title">{{ section.settings.recommendations_heading }}</h2>
-        <div class="related__row">
+    {%- liquid
+      comment
+        Similar turf from the same collection: the breadcrumb collection
+        (current collection or custom.primary_collection), else the first of
+        the product's collections that holds other products.
+      endcomment
+      assign rec_source = crumb
+      if rec_source == blank or rec_source.products_count < 2
+        for c in product.collections
+          if c.products_count > 1
+            assign rec_source = c
+            break
+          endif
+        endfor
+      endif
+    -%}
+    {%- capture rec_cards -%}
+      {%- if rec_source != blank and rec_source.products_count > 1 -%}
           {%- assign shown = 0 -%}
-          {%- for rec in recommendations.products -%}
-            {%- if rec.type == 'Synthetic turf' and shown < 4 -%}
+          {%- for rec in rec_source.products -%}
+            {%- if shown >= 4 -%}{%- break -%}{%- endif -%}
+            {%- if rec.id != product.id and rec.type == 'Synthetic turf' -%}
               {%- assign shown = shown | plus: 1 -%}
-              {%- assign rec_width = rec.metafields.custom.roll_width.value -%}
+              {%- capture rec_width -%}{% render 'tm-sqm-width', product: rec %}{%- endcapture -%}
               <article class="mini-card">
                 {%- if rec.featured_image -%}
                   {{ rec.featured_image | image_url: width: 400 | image_tag: class: 'mini-card__media', loading: 'lazy' }}
@@ -254,9 +268,16 @@
               </article>
             {%- endif -%}
           {%- endfor -%}
-        </div>
       {%- endif -%}
-    </product-recommendations>
+    {%- endcapture -%}
+    {%- if rec_cards != blank -%}
+      <div class="related__group">
+        <h2 class="related__title">{{ section.settings.recommendations_heading }}</h2>
+        <div class="related__row">
+          {{ rec_cards }}
+        </div>
+      </div>
+    {%- endif -%}
   </section>
 
   {%- comment -%} Image zoom lightbox {%- endcomment -%}

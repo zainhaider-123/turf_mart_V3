@@ -24,14 +24,27 @@
             assign card_href = card_collection.url
           endif
           assign has_lowest = false
-          assign lowest_price = ''
+          assign lowest_price = 0
+          assign lowest_is_sqm = false
           if has_collection
             for price_product in card_collection.products limit: 100
-              if has_lowest == false
-                assign lowest_price = price_product.price
+              comment
+                Synthetic turf is priced per lineal metre; compare it per m².
+              endcomment
+              capture sqm_width
+                render 'tm-sqm-width', product: price_product
+              endcapture
+              assign sqm_width = sqm_width | plus: 0
+              assign card_price = price_product.price
+              assign card_is_sqm = false
+              if sqm_width > 0
+                assign card_price = price_product.price | divided_by: sqm_width | round
+                assign card_is_sqm = true
+              endif
+              if has_lowest == false or card_price < lowest_price
+                assign lowest_price = card_price
+                assign lowest_is_sqm = card_is_sqm
                 assign has_lowest = true
-              elsif price_product.price < lowest_price
-                assign lowest_price = price_product.price
               endif
             endfor
           endif
@@ -84,7 +97,12 @@
                 {%- else -%}
                   {{- block.settings.price_value | escape -}}
                 {%- endif -%}
-              </b>{{ block.settings.price_unit | escape -}}
+              </b>
+              {%- if has_lowest == false -%}
+                {{- block.settings.price_unit | escape -}}
+              {%- elsif lowest_is_sqm -%}
+                {{- block.settings.price_unit | default: '/m²' | escape -}}
+              {%- endif -%}
             </span>
           </div>
         </a>
@@ -142,6 +160,7 @@
           "type": "text",
           "id": "price_unit",
           "label": "Price unit",
+          "info": "Shown when the card's lowest collection price is a Synthetic turf per-m² price, or with the manual price value.",
           "default": "/m²"
         },
         {

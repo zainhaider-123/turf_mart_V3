@@ -569,7 +569,10 @@
                       {%- when 'product' -%}
                         {%- capture product_settings -%}{%- if section.settings.product_show_vendor -%}vendor,{%- endif -%}title,price{%- endcapture -%}
                         {%- liquid
-                          assign roll_width = item.metafields.custom.roll_width.value
+                          capture roll_width
+                            render 'tm-sqm-width', product: item
+                          endcapture
+                          assign roll_width = roll_width | plus: 0
                           assign fallback = fallbacks[forloop.index0] | default: 'product-cooldeluxe-35'
                         -%}
                         <product-component view-event-payload="{{ item | standard_event_data: 'view', context: 'search' | escape }}">
@@ -664,13 +667,13 @@
                                 <span class="cat-card__price">
                                   From
                                   <b>
-                                    {%- if roll_width -%}
+                                    {%- if roll_width > 0 -%}
                                       {{ item.price | divided_by: roll_width | round | money }}
                                     {%- else -%}
                                       {{ item.price | money }}
                                     {%- endif -%}
                                   </b>
-                                  {%- if roll_width -%}/m²{% endif -%}
+                                  {%- if roll_width > 0 -%}/m²{% endif -%}
                                 </span>
                               </div>
                             </a>
