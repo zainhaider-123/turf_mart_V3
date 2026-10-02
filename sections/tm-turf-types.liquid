@@ -90,7 +90,9 @@
               <svg viewBox="0 0 24 24" fill="none" stroke="#175c3f" stroke-width="2.8"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
             </span>
             <span class="cat-card__price">
-              {{- block.settings.price_prefix | escape -}}
+              {%- if block.settings.price_prefix != blank -%}
+                {{- block.settings.price_prefix | strip | escape -}}&nbsp;
+              {%- endif -%}
               <b>
                 {%- if has_lowest -%}
                   {{- lowest_price | money -}}
@@ -99,9 +101,9 @@
                 {%- endif -%}
               </b>
               {%- if has_lowest == false -%}
-                {{- block.settings.price_unit | escape -}}
+                &nbsp;{{- block.settings.price_unit | strip | escape -}}
               {%- elsif lowest_is_sqm -%}
-                {{- block.settings.price_unit | default: '/m²' | escape -}}
+                &nbsp;{{- block.settings.price_unit | default: '/m²' | strip | escape -}}
               {%- endif -%}
             </span>
           </div>
