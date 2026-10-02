@@ -39,6 +39,10 @@
     if ratio == 0 or ratio == null
       assign ratio = 1
     endif
+    assign card_url = card_product.url
+    if collection != blank
+      assign card_url = card_product.url | within: collection
+    endif
   -%}
 
   <product-component view-event-payload="{{ card_product | standard_event_data: 'view', context: product_view_context | escape }}">
@@ -117,7 +121,7 @@
                 {% endif %}
               >
                 <a
-                  href="{{ card_product.url }}"
+                  href="{{ card_url }}"
                   id="StandardCardNoMediaLink-{{ section_id }}-{{ card_product.id }}"
                   class="full-unstyled-link"
                   aria-labelledby="StandardCardNoMediaLink-{{ section_id }}-{{ card_product.id }}{% if card_product.available == false or card_product.compare_at_price > card_product.price %} NoMediaStandardBadge-{{ section_id }}-{{ card_product.id }}{% endif %}"
@@ -154,7 +158,7 @@
               {% endif %}
             >
               <a
-                href="{{ card_product.url }}"
+                href="{{ card_url }}"
                 id="CardLink-{{ section_id }}-{{ card_product.id }}"
                 class="full-unstyled-link"
                 aria-labelledby="CardLink-{{ section_id }}-{{ card_product.id }}{% if card_product.available == false or card_product.compare_at_price > card_product.price %} Badge-{{ section_id }}-{{ card_product.id }}{% endif %}"

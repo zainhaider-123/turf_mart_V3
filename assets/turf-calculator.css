@@ -1,130 +1,147 @@
-/* Turf Mart calculator — ported from the mockup's calc-card styles.
-   Colours follow the section's Dawn colour scheme; the green accent can be
-   changed in one place (--turf-accent). Dawn uses a 10px root, so 1rem = 10px. */
+/* ==========================================================================
+   Turf Mart — materials calculator styles
+   Ported from references/productpage/assets/css/pdp.css sections
+   "Calculator: price + stock", "Calculator card" and "Mobile sticky buy bar"
+   (plus their @media max-749 rules). All px — Dawn's 62.5% root size does
+   not affect them. Depends on assets/turf-mart-base.css tokens (--green,
+   --ink, --line, --mint, --yellow, --muted, --paper, --white, --line-soft,
+   --font-display). Loaded by snippets/turf-calculator.liquid.
+   ========================================================================== */
 
-.turf-calc,
-.turf-buybar {
-  --turf-accent: #175c3f;
-  --turf-accent-hover: #1d7a52;
-  --turf-ink: rgb(var(--color-foreground));
-  --turf-muted: rgba(var(--color-foreground), 0.68);
-  --turf-line: rgba(var(--color-foreground), 0.14);
-  --turf-card: rgb(var(--color-background));
-  --turf-paper: rgba(var(--color-foreground), 0.04);
+/* ---------- Calculator: price + stock ---------- */
+.turf-calc { display: block; margin-top: 24px; }
+.turf-calc__headline { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 12px; }
+.turf-calc__per-sqm { font-size: 44px; font-weight: 800; line-height: 1; letter-spacing: -0.02em; color: var(--ink); }
+.turf-calc__unit { font-size: 24px; color: var(--green); letter-spacing: 0; }
+.turf-calc__was { font-size: 16px; color: var(--muted); }
+.turf-calc__save {
+  align-self: center; padding: 4px 10px; border-radius: 999px; background: var(--yellow);
+  color: var(--green-dark); font-size: 12px; font-weight: 800;
 }
+.turf-calc__gst { margin: 8px 0 0; font-size: 14px; color: var(--muted); }
 
-.turf-calc { display: block; margin: 0.4rem 0 1.6rem; }
+.pdp__status {
+  margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+  padding: 16px 18px; border-radius: 12px; background: var(--mint);
+}
+.pdp__status-item { display: flex; align-items: center; gap: 12px; }
+.pdp__status-item svg { width: 30px; height: 30px; flex: none; }
+.pdp__status-item b { display: block; font-size: 14px; font-weight: 800; color: var(--green); }
+.pdp__status-item small { display: block; font-size: 12px; color: var(--muted); margin-top: 2px; }
 
-.turf-calc__headline { display: flex; align-items: baseline; gap: 0.8rem; }
-.turf-calc__from { font-size: 1.25rem; font-weight: 700; color: var(--turf-muted); }
-.turf-calc__per-sqm { font-size: 3rem; font-weight: 800; line-height: 1; color: var(--turf-ink); }
-.turf-calc__per-sqm sup { font-size: 1.3rem; font-weight: 700; color: var(--turf-muted); }
-.turf-calc__gst { font-size: 1.15rem; color: var(--turf-muted); margin: 0.4rem 0 0.6rem; }
-.turf-calc__warranty { font-size: 1.25rem; color: var(--turf-muted); margin: 0 0 1.4rem; }
-
+/* ---------- Calculator card ---------- */
 .turf-calc__card {
-  background: var(--turf-card);
-  border: 1px solid var(--turf-line);
-  border-radius: 6px;
-  padding: 1.8rem 1.6rem;
+  margin-top: 20px; padding: 24px; border-radius: 16px;
+  background: var(--white); border: 1px solid var(--line);
 }
-.turf-calc__title { font-size: 1.7rem; margin: 0 0 1.2rem; }
+.turf-calc__title { margin: 0 0 16px; font-family: var(--font-display); font-weight: 800; font-size: 20px; line-height: 1.15; }
 
 .turf-calc__tabs {
-  display: flex; gap: 3px; padding: 3px; margin-bottom: 1.4rem;
-  background: var(--turf-paper); border: 1px solid var(--turf-line); border-radius: 4px;
+  display: flex; gap: 4px; padding: 4px; margin-bottom: 18px;
+  background: var(--paper); border: 1px solid var(--line); border-radius: 10px;
 }
 .turf-calc__tab {
-  flex: 1; border: 0; background: transparent; cursor: pointer;
-  padding: 0.9rem 0.6rem; border-radius: 3px;
-  font: inherit; font-size: 1.25rem; font-weight: 800; color: var(--turf-muted);
+  flex: 1; border: 0; background: transparent; cursor: pointer; padding: 10px 6px; border-radius: 7px;
+  font-family: inherit; font-size: 13px; font-weight: 800; color: var(--muted);
 }
-.turf-calc__tab[aria-selected='true'] {
-  background: var(--turf-card); color: var(--turf-ink); box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
-}
-.turf-calc__tab:focus-visible { outline: 2px solid var(--turf-accent); outline-offset: 1px; }
+.turf-calc__tab[aria-selected='true'] { background: var(--white); color: var(--green); box-shadow: 0 1px 4px rgba(15,47,34,.14); }
 
-.turf-calc__field { display: flex; flex-direction: column; gap: 0.5rem; flex: 1; min-width: 0; }
-.turf-calc__field > span { font-size: 1.25rem; font-weight: 700; color: var(--turf-muted); }
+.turf-calc__field { display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 0; }
+.turf-calc__field > span { font-size: 13px; font-weight: 700; color: var(--muted); }
 .turf-calc__field input,
 .turf-calc__field select {
-  width: 100%; box-sizing: border-box; font: inherit; font-size: 1.6rem; /* ≥16px stops iOS zoom */
-  padding: 1rem 1.2rem; border: 1px solid var(--turf-line); border-radius: 4px;
-  background: var(--turf-card); color: var(--turf-ink);
+  width: 100%; height: 50px; padding: 0 14px; border: 2px solid var(--line); border-radius: 10px;
+  background: var(--white); color: var(--ink); font-family: inherit; font-size: 16px; /* 16px stops iOS zoom */
+}
+.turf-calc__field select {
+  -webkit-appearance: none; appearance: none; padding-right: 40px; cursor: pointer;
+  background: var(--white) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23175c3f' stroke-width='2.4'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") right 14px center / 18px no-repeat;
 }
 .turf-calc__field input:focus,
-.turf-calc__field select:focus { outline: 2px solid var(--turf-accent); outline-offset: 0; border-color: transparent; }
-.turf-calc__field-row { display: flex; gap: 1rem; }
+.turf-calc__field select:focus { outline: none; border-color: var(--green); }
+.turf-calc__field-row { display: flex; gap: 12px; }
 
 .turf-calc__message {
-  margin-top: 1.2rem; padding: 1rem 1.2rem; border-radius: 4px;
-  font-size: 1.25rem; font-weight: 700; line-height: 1.5;
-  color: var(--turf-accent); background: rgba(44, 148, 99, 0.08);
+  margin-top: 14px; padding: 12px 14px; border-radius: 10px;
+  background: var(--mint); color: var(--green); font-size: 13px; font-weight: 700; line-height: 1.5;
 }
-.turf-calc__divider { height: 1px; background: var(--turf-line); margin: 1.6rem 0; }
+.turf-calc__divider { height: 1px; background: var(--line); margin: 20px 0 6px; }
 
 .turf-calc__materials { display: flex; flex-direction: column; }
 .turf-calc__row {
-  display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem;
-  padding: 1.2rem 0; border-top: 1px solid var(--turf-line); cursor: pointer;
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
+  padding: 14px 0; border-top: 1px solid var(--line-soft); cursor: pointer;
 }
+.turf-calc__materials .turf-calc__row:first-child { border-top: 0; }
 .turf-calc__row.is-required { cursor: default; }
-.turf-calc__materials .turf-calc__row:first-child { border-top: 0; padding-top: 0; }
-.turf-calc__row-main { display: flex; align-items: flex-start; gap: 1rem; min-width: 0; }
-.turf-calc__row input[type='checkbox'] { width: 18px; height: 18px; margin: 2px 0 0; flex: none; accent-color: var(--turf-accent); }
+.turf-calc__row-main { display: flex; align-items: flex-start; gap: 12px; min-width: 0; }
+.turf-calc__row input[type='checkbox'] { width: 20px; height: 20px; margin: 1px 0 0; flex: none; accent-color: var(--green); cursor: pointer; }
 .turf-calc__row-text { display: flex; flex-direction: column; min-width: 0; }
-.turf-calc__row-title { font-size: 1.35rem; font-weight: 700; color: var(--turf-ink); line-height: 1.4; }
-.turf-calc__row-sub { font-size: 1.2rem; color: var(--turf-muted); margin-top: 0.2rem; line-height: 1.4; }
-.turf-calc__row-price { font-size: 1.35rem; font-weight: 800; white-space: nowrap; color: var(--turf-ink); }
+.turf-calc__row-title { font-size: 14px; font-weight: 700; line-height: 1.4; color: var(--ink); }
+.turf-calc__row-sub { font-size: 12px; line-height: 1.4; color: var(--muted); margin-top: 2px; }
+.turf-calc__row-price { font-size: 14px; font-weight: 800; white-space: nowrap; color: var(--ink); }
 .turf-calc__badge {
-  display: inline-block; margin-left: 0.6rem; padding: 0.2rem 0.6rem; border-radius: 3px;
-  font-size: 1rem; font-weight: 800; letter-spacing: 0.03em; text-transform: uppercase; vertical-align: middle;
-  color: var(--turf-accent); background: rgba(30, 110, 60, 0.1);
+  display: inline-block; margin-left: 6px; padding: 2px 7px; border-radius: 999px; vertical-align: middle;
+  font-size: 10px; font-weight: 800; letter-spacing: .04em; text-transform: uppercase;
+  color: var(--green); background: var(--mint);
 }
-.turf-calc__empty { font-size: 1.25rem; color: var(--turf-muted); padding: 0.6rem 0; }
+.turf-calc__empty { font-size: 13px; color: var(--muted); padding: 10px 0 6px; }
 
 .turf-calc__total-row {
-  display: flex; align-items: baseline; justify-content: space-between;
-  margin-top: 1.6rem; padding-top: 1.4rem; border-top: 1px solid var(--turf-line);
+  display: flex; align-items: flex-end; justify-content: space-between; gap: 12px;
+  margin-top: 8px; padding-top: 16px; border-top: 1px solid var(--line);
 }
-.turf-calc__total-label { font-size: 1.25rem; font-weight: 700; color: var(--turf-muted); }
-.turf-calc__paylater { font-size: 1.15rem; color: var(--turf-muted); margin-top: 0.2rem; }
-.turf-calc__total { font-size: 2.4rem; font-weight: 800; color: var(--turf-ink); }
-.turf-calc__note { font-size: 1.2rem; color: var(--turf-muted); margin-top: 0.8rem; line-height: 1.5; }
+.turf-calc__total-label { font-size: 14px; font-weight: 700; color: var(--muted); }
+.turf-calc__paylater { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.turf-calc__total { font-size: 30px; font-weight: 800; line-height: 1; letter-spacing: -0.01em; color: var(--ink); }
+.turf-calc__note { font-size: 12px; line-height: 1.5; color: var(--muted); margin-top: 8px; }
 .turf-calc__error {
-  margin-top: 1rem; padding: 1rem 1.2rem; border-radius: 4px; font-size: 1.3rem;
-  color: #c1442a; background: rgba(193, 68, 42, 0.08);
+  margin-top: 12px; padding: 12px 14px; border-radius: 10px; font-size: 13px;
+  color: #b2391f; background: rgba(193,68,42,.08);
 }
 
-.turf-calc__buy {
-  background: var(--turf-accent); color: #fff; border: 0; border-radius: 4px; cursor: pointer;
-  padding: 1.5rem; font: inherit; font-size: 1.5rem; font-weight: 800;
-}
-.turf-calc__buy:hover:not(:disabled) { background: var(--turf-accent-hover); }
-.turf-calc__buy:disabled { background: var(--turf-line); color: var(--turf-muted); cursor: not-allowed; }
-.turf-calc__buy--inline { display: none; width: 100%; margin-top: 1.4rem; }
+.turf-calc__actions { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 18px; }
+.turf-calc__buy,
 .turf-calc__sample {
-  width: 100%; margin-top: 1rem; padding: 1.3rem; border-radius: 4px; cursor: pointer;
-  font: inherit; font-size: 1.35rem; font-weight: 800;
-  background: transparent; color: var(--turf-ink); border: 1.5px solid var(--turf-ink);
+  height: 56px; display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  border-radius: 10px; cursor: pointer; font-family: inherit; font-size: 16px; font-weight: 800;
 }
+.turf-calc__buy { background: var(--green); color: var(--white); border: 0; padding: 0 20px; }
+.turf-calc__buy:hover:not(:disabled) { background: #1d7a52; }
+.turf-calc__buy:disabled { background: var(--line); color: var(--muted); cursor: not-allowed; }
+.turf-calc__sample { background: var(--white); color: var(--green); border: 2px solid var(--green); padding: 0 12px; font-size: 15px; white-space: nowrap; }
+.turf-calc__sample:hover:not(:disabled) { background: var(--mint); }
 
-/* Mobile: sticky buy bar. Desktop: inline button, no bar. */
-.turf-buybar {
-  position: fixed; left: 0; right: 0; bottom: 0; z-index: 90;
-  display: flex; align-items: center; justify-content: space-between; gap: 1.2rem;
-  padding: 1.2rem 1.6rem calc(1.2rem + env(safe-area-inset-bottom, 0px));
-  background: rgb(var(--color-background, 255, 255, 255)); border-top: 1px solid var(--turf-line);
-  box-shadow: 0 -6px 18px -10px rgba(0, 0, 0, 0.25);
-}
-.turf-buybar[hidden] { display: none; }
-.turf-buybar__total { font-size: 1.9rem; font-weight: 800; line-height: 1; color: var(--turf-ink); }
-.turf-buybar__sub { font-size: 1.1rem; color: var(--turf-muted); margin-top: 0.3rem; }
-.turf-buybar .turf-calc__buy { padding: 1.3rem 2.2rem; font-size: 1.4rem; white-space: nowrap; }
-body.has-turf-buybar { padding-bottom: calc(8.4rem + env(safe-area-inset-bottom, 0px)); }
+/* ---------- Mobile sticky buy bar (shown ≤ 749px) ---------- */
+.turf-buybar { display: none; }
 
-@media screen and (min-width: 750px) {
-  .turf-calc__buy--inline { display: block; }
-  .turf-buybar { display: none !important; }
-  body.has-turf-buybar { padding-bottom: 0; }
+/* ==========================================================================
+   Mobile ≤ 749px
+   ========================================================================== */
+@media (max-width: 749px) {
+  .turf-calc { margin-top: 20px; }
+  .turf-calc__per-sqm { font-size: 36px; }
+  .turf-calc__unit { font-size: 20px; }
+  .turf-calc__gst { font-size: 13px; }
+  .pdp__status { grid-template-columns: 1fr; gap: 12px; padding: 14px 16px; }
+
+  .turf-calc__card { padding: 18px 16px; border-radius: 14px; }
+  .turf-calc__tab { font-size: 12px; padding: 10px 4px; }
+  .turf-calc__total { font-size: 26px; }
+  .turf-calc__actions { grid-template-columns: 1fr; gap: 10px; }
+  .turf-calc__buy, .turf-calc__sample { height: 52px; font-size: 15px; }
+
+  /* Sticky buy bar replaces the homepage quick-actions bar on the product page */
+  .turf-buybar {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 50;
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px));
+    background: var(--white); border-top: 1px solid var(--line);
+    box-shadow: 0 -6px 18px -8px rgba(15,47,34,.25);
+  }
+  .turf-buybar[hidden] { display: none; }
+  .turf-buybar__total { font-size: 20px; font-weight: 800; line-height: 1; }
+  .turf-buybar__sub { font-size: 11px; color: var(--muted); margin-top: 4px; }
+  .turf-buybar .turf-calc__buy { height: 48px; padding: 0 22px; font-size: 15px; white-space: nowrap; }
+  body.has-turf-buybar { padding-bottom: calc(76px + env(safe-area-inset-bottom, 0px)); }
 }
