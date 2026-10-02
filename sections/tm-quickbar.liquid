@@ -1,6 +1,7 @@
 {{ 'homepage.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'tm-homepage.js' | asset_url }}" defer></script>
 
+{%- unless template.name == 'product' and template.suffix == 'turf' -%}
 <nav class="quickbar m-only tm-scope" aria-label="Quick actions">
   {%- for block in section.blocks -%}
     {%- if block.settings.icon == 'search' -%}
@@ -40,6 +41,7 @@
     {%- endif -%}
   {%- endfor -%}
 </nav>
+{%- endunless -%}
 
 {% schema %}
 {

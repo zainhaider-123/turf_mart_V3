@@ -1,0 +1,18 @@
+{%- comment -%}
+  Mini accessory card for the PDP "Complete your project" row.
+  Renders one product as a mini-card with an add-to-cart button.
+  Param: item — a product object.
+{%- endcomment -%}
+<article class="mini-card">
+  {%- if item.featured_image -%}
+    {{ item.featured_image | image_url: width: 400 | image_tag: class: 'mini-card__media', loading: 'lazy' }}
+  {%- endif -%}
+  <div class="mini-card__body">
+    <span class="mini-card__name">{{ item.title }}</span>
+    <span class="mini-card__price">{{ item.price | money }}</span>
+    <form method="post" action="{{ routes.cart_add_url }}">
+      <input type="hidden" name="id" value="{{ item.selected_or_first_available_variant.id }}">
+      <button type="submit" class="tm-btn tm-btn--green mini-card__btn"{% unless item.available %} disabled{% endunless %}>Add to cart</button>
+    </form>
+  </div>
+</article>

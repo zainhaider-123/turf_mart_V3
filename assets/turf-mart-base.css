@@ -1,0 +1,32 @@
+/* ==========================================================================
+   Turf Mart — brand design tokens
+   Copy of the :root block from assets/homepage.css (lines 10–34), loaded
+   once from layout/theme.liquid <head> so every section (homepage, product
+   page, calculator) resolves the same brand variables regardless of load
+   order. Do not add component rules here — only tokens.
+   ========================================================================== */
+:root {
+  --ink: #12201a;
+  --green: #175c3f;
+  --green-dark: #0f2f22;
+  --yellow: #f3c11d;
+  --paper: #f6f4ee;
+  --white: #ffffff;
+  --line: #e2e0d6;
+  --line-soft: #eeece4;
+  --muted: #5c6b62;
+  --muted-2: #6b776f;
+  --body-2: #3d4a43;
+  --mint: #e8f1ec;
+  --star: #d9a400;
+  --footer-text: #bcd0c3;
+  --footer-line: #2a4a3b;
+  --footer-muted: #8fa398;
+  --outline-dark: #4f7a63;
+
+  --font-body: var(--font-body-family), Helvetica, Arial, sans-serif;
+  --font-display: var(--font-heading-family), Helvetica, Arial, sans-serif;
+
+  --gutter: 80px;
+  --page-max: 1440px;
+}

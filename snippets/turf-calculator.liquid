@@ -1,7 +1,8 @@
 {%- comment -%}
   Turf Mart materials calculator.
-  Rendered from a "Turf calculator" block inside sections/main-product.liquid:
-    {% render 'turf-calculator', product: product, block: block %}
+  Rendered from sections/main-turf-product.liquid (settings live on the
+  section; `block: section` means block.settings resolves section.settings):
+    {% render 'turf-calculator', product: product, block: section %}
 
   Data sources (all editable in Shopify admin, nothing hardcoded):
   - Turf price ........ the product's variant price, set PER LINEAL METRE of roll
@@ -25,19 +26,45 @@
     assign sand_rate = product.metafields.custom.sand_rate.value
   endif
 
-  assign warranty = product.metafields.custom.warranty.value
+  comment
+    Add-on products: editor setting first, then the store's default handle
+    (schema can't set a default on a product setting).
+  endcomment
+  assign sand_p = block.settings.sand_product
+  assign pins_p = block.settings.pins_product
+  assign tape_p = block.settings.tape_product
+  assign glue_p = block.settings.glue_product
+  assign sample_p = block.settings.sample_product
+  if sand_p == blank
+    assign sand_p = all_products['sand-infill-20kg-bag']
+  endif
+  if pins_p == blank
+    assign pins_p = all_products['turf-pins-box-of-100']
+  endif
+  if tape_p == blank
+    assign tape_p = all_products['jointing-tape-100m-roll']
+  endif
+  if glue_p == blank
+    assign glue_p = all_products['turf-glue-20l-drum']
+  endif
+  if sample_p == blank
+    assign sample_p = all_products['free-turf-sample']
+  endif
 
-  assign sand_v = block.settings.sand_product.selected_or_first_available_variant
-  assign pins_v = block.settings.pins_product.selected_or_first_available_variant
-  assign tape_v = block.settings.tape_product.selected_or_first_available_variant
-  assign glue_v = block.settings.glue_product.selected_or_first_available_variant
-  assign sample_v = block.settings.sample_product.selected_or_first_available_variant
+  assign sand_v = sand_p.selected_or_first_available_variant
+  assign pins_v = pins_p.selected_or_first_available_variant
+  assign tape_v = tape_p.selected_or_first_available_variant
+  assign glue_v = glue_p.selected_or_first_available_variant
+  assign sample_v = sample_p.selected_or_first_available_variant
 
   assign price_per_sqm = variant.price | divided_by: roll_width | round
   assign lineal_min = block.settings.lineal_min | default: 4
   assign lineal_max = block.settings.lineal_max | default: 20
   assign lineal_step = block.settings.lineal_step | default: 2
   assign roll_lengths = block.settings.roll_pick_lengths | default: '4,6,8,10,12,14,16,20' | split: ','
+
+  assign compare_per_sqm = variant.compare_at_price | divided_by: roll_width | round
+  assign save_per_sqm = compare_per_sqm | minus: price_per_sqm
 -%}
 
 {{ 'turf-calculator.css' | asset_url | stylesheet_tag }}
@@ -74,17 +101,35 @@
     }
   </script>
 
-  <div class="turf-calc__headline">
-    <span class="turf-calc__from">From</span>
-    <span class="turf-calc__per-sqm">{{ price_per_sqm | money }}<sup>/m²</sup></span>
+  <div class="turf-calc__price">
+    <div class="turf-calc__headline">
+      <span class="turf-calc__per-sqm">{{ price_per_sqm | money }}<span class="turf-calc__unit">/m²</span></span>
+      {%- if variant.compare_at_price > variant.price -%}
+        <s class="turf-calc__was">{{ compare_per_sqm | money }}/m²</s>
+        <span class="turf-calc__save">Save {{ save_per_sqm | money_without_trailing_zeros }}</span>
+      {%- endif -%}
+    </div>
+    <p class="turf-calc__gst">{{ roll_width }} m wide · sold by the lineal metre{% if cart.taxes_included %} · incl. GST{% endif %}</p>
   </div>
-  <p class="turf-calc__gst">Price per m²{% if cart.taxes_included %}, includes GST{% endif %}</p>
-  {%- if warranty != blank -%}
-    <p class="turf-calc__warranty">{{ warranty }} manufacturer warranty · Sand infill {{ sand_rate }} kg/m²</p>
-  {%- endif -%}
+
+  <div class="pdp__status">
+    <div class="pdp__status-item">
+      {%- if variant.available -%}
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#175c3f"/><path d="M7 12.5l3 3 7-7" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span><b>In stock</b>{% if product.metafields.custom.stock_message != blank %}<small>{{ product.metafields.custom.stock_message }}</small>{% endif %}</span>
+      {%- else -%}
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#c1442a"/><path d="M8 8l8 8M16 8l-8 8" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg>
+        <span><b>Sold out</b><small>Contact us for availability</small></span>
+      {%- endif -%}
+    </div>
+    <div class="pdp__status-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#175c3f" stroke-width="1.8" aria-hidden="true"><path d="M3 7h11v9H3z"/><path d="M14 10h4l3 3v3h-7z"/><circle cx="7" cy="18" r="1.6"/><circle cx="17.5" cy="18" r="1.6"/></svg>
+      <span><b>{{ block.settings.delivery_title | default: 'Australia-wide delivery' }}</b><small>{{ block.settings.delivery_text | default: '$180 per order, cut to size' }}</small></span>
+    </div>
+  </div>
 
   <div class="turf-calc__card">
-    <h3 class="turf-calc__title">How much do you need?</h3>
+    <h2 class="turf-calc__title">How much do you need?</h2>
 
     <div class="turf-calc__tabs" role="tablist">
       <button type="button" role="tab" class="turf-calc__tab" data-calc-tab="area" aria-selected="true">Area (m²)</button>
@@ -149,12 +194,18 @@
     <div class="turf-calc__note" data-note></div>
     <div class="turf-calc__error" data-error role="alert" hidden></div>
 
-    <button type="button" class="turf-calc__buy turf-calc__buy--inline" data-add-to-cart disabled>
-      {%- if variant.available -%}{{ 'products.product.add_to_cart' | t }}{%- else -%}{{ 'products.product.sold_out' | t }}{%- endif -%}
-    </button>
-    {%- if sample_v -%}
-      <button type="button" class="turf-calc__sample" data-add-sample>Order a free sample first</button>
-    {%- endif -%}
+    <div class="turf-calc__actions">
+      <button type="button" class="turf-calc__buy turf-calc__buy--inline" data-add-to-cart disabled>
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="9" cy="21" r="1.4"/><circle cx="18" cy="21" r="1.4"/><path d="M2 3h3l2.4 12.2a2 2 0 0 0 2 1.6h8.2a2 2 0 0 0 2-1.6L21 7H6"/></svg>
+        <span data-label>{%- if variant.available -%}{{ 'products.product.add_to_cart' | t }}{%- else -%}{{ 'products.product.sold_out' | t }}{%- endif -%}</span>
+      </button>
+      {%- if sample_v -%}
+        <button type="button" class="turf-calc__sample" data-add-sample>
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M4 7.5l8 4.5 8-4.5M12 12v9"/></svg>
+          <span>Order free sample</span>
+        </button>
+      {%- endif -%}
+    </div>
   </div>
 </turf-calculator>
 

@@ -378,7 +378,8 @@
       this.state.busy = busy;
       this.addButtons.forEach((b) => {
         b.setAttribute('aria-busy', busy ? 'true' : 'false');
-        b.textContent = busy ? this.cfg.text.adding : this.cfg.text.addToCart;
+        var label = b.querySelector('[data-label]') || b;
+        label.textContent = busy ? this.cfg.text.adding : this.cfg.text.addToCart;
       });
       this.setButtonsDisabled(!this.state.plan || !this.cfg.turf.available);
     }
