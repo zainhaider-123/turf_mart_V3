@@ -114,7 +114,13 @@
       </nav>
     </div>
 
-    <div class="tm-footer__wordmark d-only" aria-hidden="true">{{ section.settings.wordmark | escape }}</div>
+    {%- if section.settings.wordmark_type == 'image' and section.settings.wordmark_image != blank -%}
+      <div class="tm-footer__wordmark tm-footer__wordmark--image d-only" style="--wordmark-max: {{ section.settings.wordmark_image_width }}px;" aria-hidden="true">
+        {{ section.settings.wordmark_image | image_url: width: 2560 | image_tag: alt: '', loading: 'lazy', widths: '640, 960, 1280, 1920, 2560', sizes: '(min-width: 1441px) 1280px, 90vw' }}
+      </div>
+    {%- else -%}
+      <div class="tm-footer__wordmark d-only" aria-hidden="true">{{ section.settings.wordmark | escape }}</div>
+    {%- endif -%}
 
     <div class="tm-footer__bottom">{{ section.settings.copyright | escape }}</div>
   </div>
@@ -169,10 +175,46 @@
       "default": "Sign up"
     },
     {
+      "type": "header",
+      "content": "Wordmark"
+    },
+    {
+      "type": "select",
+      "id": "wordmark_type",
+      "label": "Wordmark style",
+      "options": [
+        { "value": "text", "label": "Text" },
+        { "value": "image", "label": "Image" }
+      ],
+      "default": "text",
+      "info": "The large brand name above the copyright line (desktop only)."
+    },
+    {
       "type": "text",
       "id": "wordmark",
-      "label": "Wordmark",
-      "default": "Turf Mart"
+      "label": "Wordmark text",
+      "default": "Turf Mart",
+      "info": "Used when the style is Text, or when Image is chosen but no image is set."
+    },
+    {
+      "type": "image_picker",
+      "id": "wordmark_image",
+      "label": "Wordmark image",
+      "info": "Used when the style is Image. A wide transparent PNG or SVG works best."
+    },
+    {
+      "type": "range",
+      "id": "wordmark_image_width",
+      "label": "Wordmark image max width",
+      "min": 200,
+      "max": 1280,
+      "step": 20,
+      "unit": "px",
+      "default": 1280
+    },
+    {
+      "type": "header",
+      "content": "Bottom bar"
     },
     {
       "type": "text",
