@@ -1,0 +1,299 @@
+{%- comment -%}
+  Turf Mart default product page (template: product). Same layout as
+  sections/main-turf-product.liquid — breadcrumb, gallery, product info,
+  trust row, detail tabs, "Complete your project" and "You may also like" —
+  with the turf calculator replaced by a standard buy box (variant pills,
+  quantity, add to cart) from snippets/tm-buy-box.liquid.
+
+  Files: assets/turf-product.css, assets/turf-product.js (gallery, zoom, tabs),
+  assets/tm-buy-box.css / .js, snippets/turf-icon.liquid.
+{%- endcomment -%}
+
+{%- liquid
+  assign variant = product.selected_or_first_available_variant
+  assign m = product.metafields.custom
+
+  assign crumb = collection
+  if crumb == blank
+    assign crumb = m.primary_collection.value
+  endif
+
+  assign has_downloads = false
+  if m.install_guide != blank or m.data_sheet != blank or m.warranty_certificate != blank
+    assign has_downloads = true
+  endif
+-%}
+
+{%- capture spec_head -%}
+  <tr><th scope="row">Brand</th><td>{{ product.vendor }}</td></tr>
+  <tr><th scope="row">Product name</th><td>{{ product.title }}</td></tr>
+{%- endcapture -%}
+
+{%- capture spec_tail -%}
+  {%- if m.colour != blank -%}<tr><th scope="row">Colour</th><td>{{ m.colour }}</td></tr>{%- endif -%}
+  {%- if m.material != blank -%}<tr><th scope="row">Material</th><td>{{ m.material }}</td></tr>{%- endif -%}
+  {%- if m.backing != blank -%}<tr><th scope="row">Backing</th><td>{{ m.backing }}</td></tr>{%- endif -%}
+  {%- if m.warranty != blank -%}<tr><th scope="row">Warranty</th><td>{{ m.warranty }}</td></tr>{%- endif -%}
+  {%- if m.made_in != blank -%}<tr><th scope="row">Made in</th><td>{{ m.made_in }}</td></tr>{%- endif -%}
+{%- endcapture -%}
+
+{%- capture spec_extra -%}
+  {%- if variant.sku != blank -%}<tr><th scope="row">SKU</th><td>{{ variant.sku }}</td></tr>{%- endif -%}
+  {%- if crumb != blank -%}<tr><th scope="row">Category</th><td>{{ crumb.title }}</td></tr>{%- endif -%}
+  {%- if product.type != blank -%}<tr><th scope="row">Product type</th><td>{{ product.type }}</td></tr>{%- endif -%}
+{%- endcapture -%}
+
+<div class="pdp tm-scope">
+
+  {%- comment -%} Breadcrumb {%- endcomment -%}
+  <nav class="tm-container breadcrumb" aria-label="Breadcrumb">
+    <ol>
+      <li><a href="{{ routes.root_url }}">Home</a></li>
+      {%- if crumb -%}<li><a href="{{ crumb.url }}">{{ crumb.title }}</a></li>{%- endif -%}
+      <li aria-current="page">{{ product.title }}</li>
+    </ol>
+  </nav>
+
+  <div class="tm-container pdp__main">
+
+    {%- comment -%} Gallery {%- endcomment -%}
+    <section class="gallery" aria-label="Product images" data-gallery>
+      <div class="gallery__thumbs" role="list">
+        {%- for media in product.media -%}
+          {%- if media.media_type == 'image' -%}
+            <button type="button" class="gallery__thumb{% if forloop.first %} is-active{% endif %}" role="listitem"
+              data-media-id="{{ media.id }}" aria-label="Image {{ forloop.index }}"{% if forloop.first %} aria-current="true"{% endif %}
+              data-src="{{ media | image_url: width: 1400 }}" data-alt="{{ media.alt | escape }}">
+              {{ media | image_url: width: 200 | image_tag: alt: '', loading: 'lazy' }}
+            </button>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+      <div class="gallery__stage">
+        {%- assign first = product.selected_or_first_available_variant.featured_media | default: product.featured_media -%}
+        {%- if first -%}
+          <img class="gallery__main" data-gallery-main
+            src="{{ first | image_url: width: 1400 }}"
+            srcset="{{ first | image_url: width: 600 }} 600w, {{ first | image_url: width: 900 }} 900w, {{ first | image_url: width: 1400 }} 1400w"
+            sizes="(min-width: 990px) 50vw, 100vw" alt="{{ first.alt | escape }}"
+            width="{{ first.width }}" height="{{ first.height }}">
+        {%- endif -%}
+        {%- if product.metafields.custom.badge != blank -%}
+          <span class="gallery__badge">{{ product.metafields.custom.badge }}</span>
+        {%- endif -%}
+        <button type="button" class="gallery__zoom" data-gallery-zoom>
+          {% render 'turf-icon', name: 'zoom' %}
+          <span>Click to zoom</span>
+        </button>
+      </div>
+    </section>
+
+    {%- comment -%} Product info + buy box + trust {%- endcomment -%}
+    <div class="pdp__info">
+      <a href="{{ product.vendor | url_for_vendor }}" class="pdp__brand">{{ product.vendor }}</a>
+      <h1 class="pdp__title">{{ product.title }}</h1>
+      <span class="pdp__sku" data-tm-sku{% if variant.sku == blank %} hidden{% endif %}>{% if variant.sku != blank %}SKU: {{ variant.sku }}{% endif %}</span>
+      {%- if product.metafields.custom.short_description != blank -%}
+        <p class="pdp__intro">{{ product.metafields.custom.short_description }}</p>
+      {%- endif -%}
+
+      {%- if m.warranty != blank -%}
+        <ul class="pdp__features">
+          <li>{% render 'turf-icon', name: 'shield-check' %}<span>{{ m.warranty }}<br>warranty</span></li>
+        </ul>
+      {%- endif -%}
+
+      {% render 'tm-buy-box', product: product, section: section %}
+
+      {%- if section.blocks.size > 0 -%}
+        <ul class="pdp__trust">
+          {%- for block in section.blocks -%}
+            <li {{ block.shopify_attributes }}>{% render 'turf-icon', name: block.settings.icon %}<span>{{ block.settings.line_1 }}<br>{{ block.settings.line_2 }}</span></li>
+          {%- endfor -%}
+        </ul>
+      {%- else -%}
+        {%- comment -%} Fallback: the mockup's four trust items until the merchant adds blocks {%- endcomment -%}
+        <ul class="pdp__trust">
+          <li>{% render 'turf-icon', name: 'delivery' %}<span>Australia-wide<br>delivery</span></li>
+          <li>{% render 'turf-icon', name: 'price' %}<span>Price<br>promise</span></li>
+          <li>{% render 'turf-icon', name: 'shield' %}<span>12-year<br>warranty</span></li>
+          <li>{% render 'turf-icon', name: 'lock' %}<span>Secure<br>checkout</span></li>
+        </ul>
+      {%- endif -%}
+    </div>
+  </div>
+
+  {%- comment -%} Details tabs {%- endcomment -%}
+  <section class="tm-container details" aria-label="Product details" data-tabs>
+    <div class="details__tabs" role="tablist">
+      <button type="button" role="tab" id="tab-{{ section.id }}-overview" aria-controls="panel-{{ section.id }}-overview" aria-selected="true" class="details__tab">Overview</button>
+      <button type="button" role="tab" id="tab-{{ section.id }}-specs" aria-controls="panel-{{ section.id }}-specs" aria-selected="false" tabindex="-1" class="details__tab">Specifications</button>
+      <button type="button" role="tab" id="tab-{{ section.id }}-delivery" aria-controls="panel-{{ section.id }}-delivery" aria-selected="false" tabindex="-1" class="details__tab">Delivery &amp; returns</button>
+      {%- if has_downloads -%}
+        <button type="button" role="tab" id="tab-{{ section.id }}-downloads" aria-controls="panel-{{ section.id }}-downloads" aria-selected="false" tabindex="-1" class="details__tab">Downloads</button>
+      {%- endif -%}
+    </div>
+
+    <div class="details__panel details__panel--split" role="tabpanel" id="panel-{{ section.id }}-overview" aria-labelledby="tab-{{ section.id }}-overview">
+      <div class="details__copy">
+        <h2 class="details__heading">Product overview</h2>
+        {{ product.description }}
+      </div>
+      <table class="spec-table">
+        <tbody>
+          {{ spec_head }}
+          {{ spec_tail }}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="details__panel" role="tabpanel" id="panel-{{ section.id }}-specs" aria-labelledby="tab-{{ section.id }}-specs" hidden>
+      <table class="spec-table spec-table--wide">
+        <tbody>
+          {{ spec_head }}
+          {{ spec_extra }}
+          {{ spec_tail }}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="details__panel" role="tabpanel" id="panel-{{ section.id }}-delivery" aria-labelledby="tab-{{ section.id }}-delivery" hidden>
+      <div class="details__copy details__copy--wide">
+        {{ section.settings.delivery_returns }}
+      </div>
+    </div>
+
+    {%- if has_downloads -%}
+      <div class="details__panel" role="tabpanel" id="panel-{{ section.id }}-downloads" aria-labelledby="tab-{{ section.id }}-downloads" hidden>
+        <ul class="downloads">
+          {%- if m.install_guide != blank -%}
+            <li><a href="{{ m.install_guide.value.url }}" target="_blank" rel="noopener">{% render 'turf-icon', name: 'doc' %}<span><b>Installation guide</b><small>PDF</small></span></a></li>
+          {%- endif -%}
+          {%- if m.data_sheet != blank -%}
+            <li><a href="{{ m.data_sheet.value.url }}" target="_blank" rel="noopener">{% render 'turf-icon', name: 'doc' %}<span><b>Product data sheet</b><small>PDF</small></span></a></li>
+          {%- endif -%}
+          {%- if m.warranty_certificate != blank -%}
+            <li><a href="{{ m.warranty_certificate.value.url }}" target="_blank" rel="noopener">{% render 'turf-icon', name: 'doc' %}<span><b>Warranty certificate</b><small>PDF</small></span></a></li>
+          {%- endif -%}
+        </ul>
+      </div>
+    {%- endif -%}
+  </section>
+
+  {%- comment -%} Complete your project / You may also like {%- endcomment -%}
+  {%- liquid
+    assign accessories = section.settings.complementary_products
+    assign acc_handles = blank
+    if accessories.size == 0
+      assign acc_handles = 'jointing-tape-100m-roll,turf-glue-20l-drum,turf-pins-box-of-100,sand-infill-20kg-bag' | split: ','
+    endif
+    capture accessory_cards
+      if accessories.size > 0
+        for item in accessories
+          if item.id != product.id
+            render 'turf-accessory-card', item: item
+          endif
+        endfor
+      else
+        for handle in acc_handles
+          assign item = all_products[handle]
+          if item != blank and item.id != product.id
+            render 'turf-accessory-card', item: item
+          endif
+        endfor
+      endif
+    endcapture
+  -%}
+  <section class="tm-container related">
+    {%- if accessory_cards != blank -%}
+      <div class="related__group">
+        <h2 class="related__title">{{ section.settings.accessories_heading }}</h2>
+        <div class="related__row">
+          {{ accessory_cards }}
+        </div>
+      </div>
+    {%- endif -%}
+
+    <product-recommendations class="related__group"
+      data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit=10&intent=related"
+      data-product-id="{{ product.id }}" data-section-id="{{ section.id }}">
+      {%- if recommendations.performed and recommendations.products_count > 0 -%}
+        <h2 class="related__title">{{ section.settings.recommendations_heading }}</h2>
+        <div class="related__row">
+          {%- for rec in recommendations.products limit: 4 -%}
+            <article class="mini-card">
+              {%- if rec.featured_image -%}
+                {{ rec.featured_image | image_url: width: 400 | image_tag: class: 'mini-card__media', loading: 'lazy' }}
+              {%- endif -%}
+              <div class="mini-card__body">
+                <span class="mini-card__brand">{{ rec.vendor }}</span>
+                <span class="mini-card__name">{{ rec.title }}</span>
+                <span class="mini-card__price">{% if rec.price_varies %}From {% endif %}{{ rec.price | money }}</span>
+                <a href="{{ rec.url }}" class="tm-btn tm-btn--outline-green mini-card__btn">View product</a>
+              </div>
+            </article>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </product-recommendations>
+  </section>
+
+  {%- comment -%} Image zoom lightbox {%- endcomment -%}
+  <div class="lightbox" data-lightbox hidden>
+    <button type="button" class="lightbox__close" aria-label="Close zoom" data-lightbox-close>
+      {% render 'turf-icon', name: 'close' %}
+    </button>
+    <img alt="" width="1600" height="1200" data-lightbox-img>
+  </div>
+</div>
+
+{{ 'turf-product.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'turf-product.js' | asset_url }}" defer="defer"></script>
+
+{% schema %}
+{
+  "name": "Product page",
+  "tag": "div",
+  "settings": [
+    { "type": "header", "content": "Buy box" },
+    { "type": "checkbox", "id": "show_dynamic_checkout", "label": "Show dynamic checkout buttons", "default": true, "info": "Shop Pay, Apple Pay and other express checkouts set up in Payments." },
+    { "type": "header", "content": "Delivery" },
+    { "type": "text", "id": "delivery_title", "label": "Delivery heading", "default": "Australia-wide delivery" },
+    { "type": "text", "id": "delivery_text", "label": "Delivery line", "default": "$180 per order" },
+    {
+      "type": "richtext",
+      "id": "delivery_returns",
+      "label": "Delivery & returns tab",
+      "default": "<h2>Delivery</h2><p>We deliver Australia-wide, and accessories ship together with any turf in the same order.</p><ul><li><b>Turf and accessory orders:</b> $180 per order.</li><li><b>Dispatch:</b> in stock, ships in 1–2 days.</li></ul><h2>Returns</h2><p>Unopened accessories can be returned within 30 days. Contact us before sending anything back.</p>"
+    },
+    { "type": "header", "content": "Complete your project" },
+    { "type": "product_list", "id": "complementary_products", "label": "Accessories", "limit": 4 },
+    { "type": "text", "id": "accessories_heading", "label": "Group heading", "default": "Complete your project" },
+    { "type": "header", "content": "You may also like" },
+    { "type": "text", "id": "recommendations_heading", "label": "Group heading", "default": "You may also like" }
+  ],
+  "blocks": [
+    {
+      "type": "trust_item",
+      "name": "Trust item",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "delivery", "label": "Delivery truck" },
+            { "value": "price", "label": "Price promise" },
+            { "value": "shield", "label": "Shield" },
+            { "value": "lock", "label": "Lock" }
+          ],
+          "default": "delivery"
+        },
+        { "type": "text", "id": "line_1", "label": "First line", "default": "Australia-wide" },
+        { "type": "text", "id": "line_2", "label": "Second line", "default": "delivery" }
+      ]
+    }
+  ]
+}
+{% endschema %}

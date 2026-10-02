@@ -51,7 +51,8 @@
 
 {%- style -%}
   #product-grid.tm-product-grid {
-    row-gap: 28px;
+    column-gap: 28px;
+    row-gap: 36px;
     list-style: none;
     margin: 0;
     padding: 0;
@@ -71,7 +72,20 @@
 
   @media screen and (max-width: 749px) {
     #product-grid.tm-product-grid {
+      column-gap: 16px;
+      row-gap: 20px;
       grid-template-columns: repeat({{ section.settings.columns_mobile }}, minmax(0, 1fr));
+    }
+  }
+
+  /* Breathing room between the filter/sort bar and the first row of cards */
+  #main-collection-filters {
+    margin-bottom: 24px;
+  }
+
+  @media screen and (max-width: 749px) {
+    #main-collection-filters {
+      margin-bottom: 16px;
     }
   }
 
@@ -88,6 +102,28 @@
 
   .tm-card .cat-card {
     flex: 1 1 auto;
+  }
+
+  /* Equal-height cards: price line pinned to the bottom, present or not */
+  .tm-product-grid > li {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .tm-product-grid > li > product-component {
+    flex: 1 1 auto;
+  }
+
+  .tm-product-card .cat-card__body {
+    flex: 1 1 auto;
+  }
+
+  .tm-product-card .cat-card__name {
+    overflow-wrap: anywhere;
+  }
+
+  .tm-product-card .cat-card__price {
+    margin-top: auto;
   }
 
   .tm-card__media {
@@ -539,15 +575,19 @@
                               </div>
                             {%- endif -%}
                             <span class="cat-card__price">
-                              From
-                              <b>
-                                {%- if roll_width -%}
-                                  {{ product.price | divided_by: roll_width | round | money }}
-                                {%- else -%}
-                                  {{ product.price | money }}
-                                {%- endif -%}
-                              </b>
-                              {%- if roll_width -%}/m²{% endif -%}
+                              {%- if product.price > 0 -%}
+                                {%- if roll_width or product.price_varies -%}From {% endif -%}
+                                <b>
+                                  {%- if roll_width -%}
+                                    {{ product.price | divided_by: roll_width | round | money }}
+                                  {%- else -%}
+                                    {{ product.price | money }}
+                                  {%- endif -%}
+                                </b>
+                                {%- if roll_width -%}/m²{% endif -%}
+                              {%- else -%}
+                                <b>View product</b>
+                              {%- endif -%}
                             </span>
                             {%- if product.quantity_price_breaks_configured? -%}
                               {% liquid

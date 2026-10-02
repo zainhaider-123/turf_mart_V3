@@ -7,18 +7,41 @@
     padding: 40px 0 64px;
   }
 
-  .tm-list-collections__title {
-    margin: 0 0 28px;
+  .tm-list-collections .tm-list-collections__title {
+    margin: 0 0 44px;
   }
 
-  .tm-list-collections__grid {
-    row-gap: 24px;
+  .tm-list-collections .tm-list-collections__grid {
+    column-gap: 28px;
+    row-gap: 36px;
     list-style: none;
     padding: 0;
   }
 
+  /* Equal-height cards: the price line sits at the bottom whether or not it has a price */
+  .tm-list-collections__item {
+    display: flex;
+  }
+
+  .tm-list-collections__item .tm-collection-card {
+    flex: 1 1 auto;
+    width: 100%;
+  }
+
+  .tm-collection-card .cat-card__body {
+    flex: 1 1 auto;
+  }
+
+  .tm-collection-card .cat-card__name {
+    overflow-wrap: anywhere;
+  }
+
+  .tm-collection-card .cat-card__price {
+    margin-top: auto;
+  }
+
   @media screen and (min-width: 990px) {
-    .tm-list-collections__grid {
+    .tm-list-collections .tm-list-collections__grid {
       grid-template-columns: repeat({{ section.settings.columns_desktop }}, minmax(0, 1fr));
     }
   }
@@ -28,13 +51,14 @@
       padding: 24px 0 40px;
     }
 
-    .tm-list-collections__title {
-      margin-bottom: 18px;
+    .tm-list-collections .tm-list-collections__title {
+      margin-bottom: 28px;
     }
 
-    .tm-list-collections__grid {
+    .tm-list-collections .tm-list-collections__grid {
       grid-template-columns: repeat({{ section.settings.columns_mobile }}, minmax(0, 1fr));
-      gap: 14px;
+      column-gap: 16px;
+      row-gap: 20px;
     }
   }
 
@@ -104,6 +128,9 @@
             assign has_lowest = false
             assign lowest_price = ''
             for price_product in collection.products limit: 100
+              if price_product.price <= 0
+                continue
+              endif
               if has_lowest == false
                 assign lowest_price = price_product.price
                 assign has_lowest = true
@@ -132,11 +159,13 @@
                   {{- collection.title | escape -}}
                   <svg viewBox="0 0 24 24" fill="none" stroke="#175c3f" stroke-width="2.8"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
                 </span>
-                {%- if has_lowest -%}
-                  <span class="cat-card__price">
+                <span class="cat-card__price">
+                  {%- if has_lowest -%}
                     From <b>{{ lowest_price | money }}</b>
-                  </span>
-                {%- endif -%}
+                  {%- else -%}
+                    <b>View collection</b>
+                  {%- endif -%}
+                </span>
               </div>
             </a>
           </li>
