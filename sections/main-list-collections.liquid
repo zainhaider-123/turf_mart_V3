@@ -1,51 +1,150 @@
 {{ 'component-card.css' | asset_url | stylesheet_tag }}
 {{ 'section-collection-list.css' | asset_url | stylesheet_tag }}
+{{ 'homepage.css' | asset_url | stylesheet_tag }}
 
-<div class="page-width">
-  <h1 class="title title--primary inline-richtext{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
-    {{ section.settings.title }}
-  </h1>
-  {%- liquid
-    case section.settings.sort
-      when 'products_high', 'products_low'
-        assign collections = collections | sort: 'all_products_count'
-      when 'date', 'date_reversed'
-        assign collections = collections | sort: 'published_at'
-    endcase
+{%- style -%}
+  .tm-list-collections {
+    padding: 40px 0 64px;
+  }
 
-    if section.settings.sort == 'products_high' or section.settings.sort == 'date_reversed' or section.settings.sort == 'alphabetical_reversed'
-      assign collections = collections | reverse
-    endif
+  .tm-list-collections__title {
+    margin: 0 0 28px;
+  }
 
-    assign moduloResult = 28 | modulo: section.settings.columns_desktop
-    assign paginate_by = 30
-    if moduloResult == 0
-      assign paginate_by = 28
-    endif
-  -%}
-  {%- paginate collections by paginate_by -%}
-    <ul
-      class="collection-list grid grid--{{ section.settings.columns_desktop }}-col-desktop grid--{{ section.settings.columns_mobile }}-col-tablet-down"
-      role="list"
-    >
-      {%- for collection in collections -%}
-        <li
-          class="collection-list__item grid__item{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
-          {% if settings.animations_reveal_on_scroll %}
-            data-cascade
-            style="--animation-order: {{ forloop.index }};"
-          {% endif %}
-        >
-          {% render 'card-collection',
-            card_collection: collection,
-            media_aspect_ratio: section.settings.image_ratio,
-            columns: 3
-          %}
-        </li>
-      {%- endfor -%}
-    </ul>
-    {% render 'pagination', paginate: paginate %}
-  {%- endpaginate -%}
+  .tm-list-collections__grid {
+    row-gap: 24px;
+    list-style: none;
+    padding: 0;
+  }
+
+  @media screen and (min-width: 990px) {
+    .tm-list-collections__grid {
+      grid-template-columns: repeat({{ section.settings.columns_desktop }}, minmax(0, 1fr));
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .tm-list-collections {
+      padding: 24px 0 40px;
+    }
+
+    .tm-list-collections__title {
+      margin-bottom: 18px;
+    }
+
+    .tm-list-collections__grid {
+      grid-template-columns: repeat({{ section.settings.columns_mobile }}, minmax(0, 1fr));
+      gap: 14px;
+    }
+  }
+
+  {%- if section.settings.image_ratio == 'portrait' -%}
+    .tm-collection-card img {
+      height: auto;
+      aspect-ratio: 3 / 4;
+    }
+  {%- elsif section.settings.image_ratio == 'square' -%}
+    .tm-collection-card img {
+      height: auto;
+      aspect-ratio: 1 / 1;
+    }
+  {%- endif -%}
+{%- endstyle -%}
+
+<div class="tm-scope tm-list-collections">
+  <div class="tm-container">
+    <h1 class="tm-section-title tm-list-collections__title inline-richtext{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
+      {{ section.settings.title }}
+    </h1>
+    {%- liquid
+      case section.settings.sort
+        when 'products_high', 'products_low'
+          assign collections = collections | sort: 'all_products_count'
+        when 'date', 'date_reversed'
+          assign collections = collections | sort: 'published_at'
+      endcase
+
+      if section.settings.sort == 'products_high' or section.settings.sort == 'date_reversed' or section.settings.sort == 'alphabetical_reversed'
+        assign collections = collections | reverse
+      endif
+
+      assign moduloResult = 28 | modulo: section.settings.columns_desktop
+      assign paginate_by = 30
+      if moduloResult == 0
+        assign paginate_by = 28
+      endif
+
+      assign fallbacks = 'pet-turf-dog,pool-turf,landscape-turf,commercial-turf,sports-turf-putting-green,product-cooldeluxe-35' | split: ','
+    -%}
+    {%- paginate collections by paginate_by -%}
+      <ul
+        class="tm-grid tm-grid--cats tm-list-collections__grid collection-list"
+        role="list"
+      >
+        {%- for collection in collections -%}
+          {%- liquid
+            assign fallback_index = forloop.index0 | modulo: fallbacks.size
+            assign fallback = fallbacks[fallback_index] | default: 'product-cooldeluxe-35'
+
+            assign card_image = collection.image
+            if card_image == blank and collection.products.first.featured_image != blank
+              assign card_image = collection.products.first.featured_image
+            endif
+
+            if card_image != blank
+              assign card_src = card_image | image_url: width: 640
+              assign card_width = card_image.width
+              assign card_height = card_image.height
+            else
+              assign card_src = fallback | append: '.jpg' | asset_url
+              assign card_width = 306
+              assign card_height = 180
+            endif
+
+            assign has_lowest = false
+            assign lowest_price = ''
+            for price_product in collection.products limit: 100
+              if has_lowest == false
+                assign lowest_price = price_product.price
+                assign has_lowest = true
+              elsif price_product.price < lowest_price
+                assign lowest_price = price_product.price
+              endif
+            endfor
+          -%}
+          <li
+            class="tm-list-collections__item{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+            {% if settings.animations_reveal_on_scroll %}
+              data-cascade
+              style="--animation-order: {{ forloop.index }};"
+            {% endif %}
+          >
+            <a href="{{ collection.url }}" class="cat-card tm-collection-card">
+              <img
+                src="{{ card_src }}"
+                alt="{{ collection.title | escape }}"
+                width="{{ card_width }}"
+                height="{{ card_height }}"
+                loading="lazy"
+              >
+              <div class="cat-card__body">
+                <span class="cat-card__name">
+                  {{- collection.title | escape -}}
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#175c3f" stroke-width="2.8"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                </span>
+                {%- if has_lowest -%}
+                  <span class="cat-card__price">
+                    From <b>{{ lowest_price | money }}</b>
+                  </span>
+                {%- endif -%}
+              </div>
+            </a>
+          </li>
+        {%- endfor -%}
+      </ul>
+      {% render 'pagination', paginate: paginate %}
+    {%- endpaginate -%}
+  </div>
 </div>
 {% schema %}
 {

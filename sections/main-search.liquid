@@ -2,6 +2,7 @@
 {{ 'component-card.css' | asset_url | stylesheet_tag }}
 {{ 'component-price.css' | asset_url | stylesheet_tag }}
 {{ 'component-search.css' | asset_url | stylesheet_tag }}
+{{ 'homepage.css' | asset_url | stylesheet_tag }}
 
 {%- if section.settings.enable_filtering or section.settings.enable_sorting -%}
   {{ 'component-facets.css' | asset_url | stylesheet_tag }}
@@ -10,7 +11,7 @@
 
 {% if section.settings.image_shape == 'blob' %}
   {{ 'mask-blobs.css' | asset_url | stylesheet_tag }}
-{%- endif -%}
+{%- endif %}
 
 <script src="{{ 'main-search.js' | asset_url }}" defer="defer"></script>
 
@@ -63,70 +64,366 @@
   }
 {%- endstyle -%}
 
+{%- liquid
+  assign mid_cols = section.settings.columns_desktop | plus: 0
+  if mid_cols > 3
+    assign mid_cols = 3
+  endif
+  assign fallbacks = 'pet-turf-dog,pool-turf,landscape-turf,commercial-turf,sports-turf-putting-green,product-cooldeluxe-35' | split: ','
+-%}
+
+{%- style -%}
+  .tm-search-header {
+    margin-bottom: 40px;
+    text-align: center;
+  }
+
+  .tm-search-header .tm-section-title {
+    margin-bottom: 26px;
+  }
+
+  .tm-search-form {
+    position: relative;
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  .tm-search-form main-search,
+  .tm-search-form predictive-search {
+    display: block;
+  }
+
+  .tm-search__reset {
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    background: none;
+    border: 0;
+    color: var(--muted-2);
+    cursor: pointer;
+  }
+
+  .tm-search__reset .svg-wrapper {
+    width: 15px;
+    height: 15px;
+  }
+
+  .tm-search__reset:hover {
+    color: var(--green);
+  }
+
+  .tm-search-header p.tm-search-count {
+    margin: 20px 0 0;
+    font-size: 15px;
+    color: var(--muted);
+  }
+
+  #product-grid .tm-product-grid {
+    row-gap: 28px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  @media screen and (min-width: 990px) {
+    #product-grid .tm-product-grid {
+      grid-template-columns: repeat({{ section.settings.columns_desktop }}, minmax(0, 1fr));
+    }
+  }
+
+  @media screen and (min-width: 750px) and (max-width: 989px) {
+    #product-grid .tm-product-grid {
+      grid-template-columns: repeat({{ mid_cols }}, minmax(0, 1fr));
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    #product-grid .tm-product-grid {
+      grid-template-columns: repeat({{ section.settings.columns_mobile }}, minmax(0, 1fr));
+    }
+  }
+
+  .tm-product-grid product-component {
+    display: block;
+    height: 100%;
+  }
+
+  .tm-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .tm-card .cat-card {
+    flex: 1 1 auto;
+  }
+
+  .tm-card__media {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tm-card__media .tm-card__img--secondary {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+  }
+
+  .cat-card:hover .tm-card__img--secondary {
+    opacity: 1;
+  }
+
+  #product-grid .tm-ratio-portrait .tm-card__media > img:not(.tm-card__img--secondary) {
+    height: auto;
+    aspect-ratio: 3 / 4;
+  }
+
+  #product-grid .tm-ratio-square .tm-card__media > img:not(.tm-card__img--secondary) {
+    height: auto;
+    aspect-ratio: 1 / 1;
+  }
+
+  .tm-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 2;
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 999px;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .tm-badge--sale {
+    background: var(--yellow);
+    color: var(--green-dark);
+  }
+
+  .tm-badge--sold-out {
+    background: var(--ink);
+    color: var(--white);
+  }
+
+  .tm-badge--meta {
+    position: static;
+    align-self: flex-start;
+    background: var(--mint);
+    color: var(--green-dark);
+  }
+
+  .cat-card__vendor {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted-2);
+  }
+
+  .cat-card .rating-star {
+    --letter-spacing: 0.7;
+    --font-size: 1.4;
+    --color-rating-star: var(--star);
+  }
+
+  .tm-card__rating {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .tm-card__rating .rating-count {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .tm-card__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .tm-scope .facets-vertical-sort .facet-filters__label {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .tm-scope .facets-vertical-sort .select__select {
+    border-radius: 999px;
+    border-color: var(--line);
+    background-color: var(--white);
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--ink);
+    padding-right: 36px;
+  }
+
+  .tm-scope .facets-disclosure .facets__summary {
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background-color: var(--white);
+    padding: 9px 16px;
+    box-shadow: none;
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--ink);
+  }
+
+  .tm-scope .facets-disclosure .facets__summary:hover {
+    background-color: var(--mint);
+    border-color: var(--green);
+  }
+
+  .tm-scope .active-facets__button {
+    border-color: var(--green);
+    background-color: var(--white);
+    border-radius: 999px;
+    color: var(--ink);
+  }
+
+  .tm-scope .active-facets__button .active-facets__button-inner {
+    background-color: var(--white);
+    color: var(--ink);
+    border-radius: 999px;
+  }
+
+  .tm-scope .active-facets__button:hover {
+    background-color: var(--mint);
+  }
+
+  .tm-scope .active-facets__button:hover .active-facets__button-inner {
+    background-color: var(--mint);
+  }
+
+  .tm-scope .collection--empty h2.title {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 26px;
+    line-height: 1.2;
+    color: var(--ink);
+  }
+
+  .tm-scope .pagination-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+  }
+
+  .tm-scope .pagination__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+  }
+
+  .tm-scope .pagination__item {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    height: 40px;
+    padding: 0 12px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background-color: var(--white);
+    color: var(--ink);
+    font-weight: 700;
+    font-size: 14px;
+    text-decoration: none;
+  }
+
+  .tm-scope .pagination__item:hover {
+    border-color: var(--green);
+    color: var(--green);
+  }
+
+  .tm-scope .pagination__item--current,
+  .tm-scope .pagination__item--current:hover {
+    background-color: var(--green);
+    border-color: var(--green);
+    color: var(--white);
+  }
+
+  .tm-scope .pagination__item-arrow .svg-wrapper svg {
+    width: 14px;
+    height: 14px;
+  }
+{%- endstyle -%}
+
 {% paginate search.results by 24 %}
-  <div class="template-search{% unless search.performed and search.results_count > 0 %} template-search--empty{% endunless %} section-{{ section.id }}-padding">
-    <div class="template-search__header page-width{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
-      <h1 class="h2 center">
+  <div class="tm-scope template-search{% unless search.performed and search.results_count > 0 %} template-search--empty{% endunless %} section-{{ section.id }}-padding">
+    <div class="tm-container template-search__header tm-search-header{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
+      <h1 class="tm-section-title">
         {%- if search.performed -%}
           {{- 'templates.search.title' | t -}}
         {%- else -%}
           {{- 'general.search.search' | t -}}
         {%- endif -%}
       </h1>
-      <div class="template-search__search">
+      <div class="template-search__search tm-search-form tm-ps">
         {%- if settings.predictive_search_enabled -%}
           <predictive-search data-loading-text="{{ 'accessibility.loading' | t }}">
         {%- endif -%}
         <main-search>
-          <form action="{{ routes.search_url }}" method="get" role="search" class="search">
-            <div class="field">
-              <input
-                class="search__input field__input"
-                id="Search-In-Template"
-                type="search"
-                name="q"
-                value="{{ search.terms | escape }}"
-                placeholder="{{ 'general.search.search' | t }}"
-                {%- if settings.predictive_search_enabled -%}
-                  role="combobox"
-                  aria-expanded="false"
-                  aria-owns="predictive-search-results"
-                  aria-controls="predictive-search-results"
-                  aria-haspopup="listbox"
-                  aria-autocomplete="list"
-                  autocorrect="off"
-                  autocomplete="off"
-                  autocapitalize="off"
-                  spellcheck="false"
-                {%- endif -%}
-              >
-              <label class="field__label" for="Search-In-Template">{{ 'general.search.search' | t }}</label>
-              <input name="options[prefix]" type="hidden" value="last">
-
+          <form action="{{ routes.search_url }}" method="get" role="search" class="tm-search tm-search--desktop">
+            <label class="visually-hidden" for="Search-In-Template">{{ 'general.search.search' | t }}</label>
+            <span class="tm-search__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+            </span>
+            <input
+              id="Search-In-Template"
+              type="search"
+              name="q"
+              value="{{ search.terms | escape }}"
+              placeholder="{{ 'general.search.search' | t }}"
               {%- if settings.predictive_search_enabled -%}
-                <div class="predictive-search predictive-search--search-template" tabindex="-1" data-predictive-search>
-                  {%- render 'loading-spinner', class: 'predictive-search__loading-state' -%}
-                </div>
-
-                <span class="predictive-search-status visually-hidden" role="status" aria-hidden="true"></span>
+                role="combobox"
+                aria-expanded="false"
+                aria-owns="predictive-search-results"
+                aria-controls="predictive-search-results"
+                aria-haspopup="listbox"
+                aria-autocomplete="list"
+                autocorrect="off"
+                autocomplete="off"
+                autocapitalize="off"
+                spellcheck="false"
               {%- endif -%}
+            >
+            <input name="options[prefix]" type="hidden" value="last">
 
-              <button
-                type="reset"
-                class="reset__button field__button{% if search.terms == blank %} hidden{% endif %}"
-                aria-label="{{ 'general.search.reset' | t }}"
-              >
-                <span class="svg-wrapper">
-                  {{- 'icon-reset.svg' | inline_asset_content -}}
-                </span>
-              </button>
-              <button type="submit" class="search__button field__button" aria-label="{{ 'general.search.search' | t }}">
-                <span class="svg-wrapper">
-                  {{- 'icon-search.svg' | inline_asset_content -}}
-                </span>
-              </button>
-            </div>
+            <button
+              type="reset"
+              class="tm-search__reset{% if search.terms == blank %} hidden{% endif %}"
+              aria-label="{{ 'general.search.reset' | t }}"
+            >
+              <span class="svg-wrapper">
+                {{- 'icon-reset.svg' | inline_asset_content -}}
+              </span>
+            </button>
+            <button type="submit" class="tm-search__submit" aria-label="{{ 'general.search.search' | t }}">
+              {{- 'general.search.search' | t -}}
+            </button>
           </form>
+
+          {%- if settings.predictive_search_enabled -%}
+            <div class="predictive-search predictive-search--search-template" tabindex="-1" data-predictive-search>
+              {%- render 'loading-spinner', class: 'predictive-search__loading-state' -%}
+            </div>
+
+            <span class="predictive-search-status visually-hidden" role="status" aria-hidden="true"></span>
+          {%- endif -%}
         </main-search>
         {%- if settings.predictive_search_enabled -%}
           </predictive-search>
@@ -135,13 +432,13 @@
       {%- if search.performed -%}
         {%- unless section.settings.enable_filtering or section.settings.enable_sorting -%}
           {%- if search.results_count > 0 -%}
-            <p role="status">
+            <p role="status" class="tm-search-count">
               {{ 'templates.search.results_with_count_and_term' | t: terms: search.terms, count: search.results_count }}
             </p>
           {%- endif -%}
         {%- endunless -%}
         {%- if search.results_count == 0 and search.filters == empty -%}
-          <p role="status">{{ 'templates.search.no_results' | t: terms: search.terms }}</p>
+          <p role="status" class="tm-search-count">{{ 'templates.search.no_results' | t: terms: search.terms }}</p>
         {%- endif -%}
       {%- endif -%}
     </div>
@@ -150,7 +447,7 @@
         and section.settings.filter_type == 'vertical'
         and search.filters != empty
       -%}
-        <facet-filters-form class="facets facets-vertical-sort page-width small-hide">
+        <facet-filters-form class="facets facets-vertical-sort tm-container small-hide">
           <form class="facets-vertical-form" id="FacetSortForm">
             <div class="facet-filters sorting caption">
               <div class="facet-filters__field">
@@ -205,14 +502,14 @@
       {%- endif -%}
       <div
         {% if section.settings.filter_type == 'vertical' %}
-          class="facets-vertical page-width"
+          class="facets-vertical tm-container"
         {% endif %}
       >
         {%- if search.filters != empty -%}
           {%- if section.settings.enable_filtering or section.settings.enable_sorting -%}
             <aside
               aria-labelledby="verticalTitle"
-              class="facets-wrapper{% unless section.settings.enable_filtering %} facets-wrapper--no-filters{% endunless %}{% if section.settings.filter_type != 'vertical' %} page-width{% endif %}"
+              class="facets-wrapper{% unless section.settings.enable_filtering %} facets-wrapper--no-filters{% endunless %}{% if section.settings.filter_type != 'vertical' %} tm-container{% endif %}"
               id="main-search-filters"
               data-id="{{ section.id }}"
             >
@@ -229,7 +526,7 @@
         <div class="product-grid-container" id="ProductGridContainer">
           {%- if search.results.size == 0 and search.filters != empty -%}
             <div
-              class="template-search__results collection collection--empty{% if section.settings.filter_type != 'vertical' %} page-width{% endif %}"
+              class="template-search__results collection collection--empty{% if section.settings.filter_type != 'vertical' %} tm-container{% endif %}"
               id="product-grid"
               data-id="{{ section.id }}"
             >
@@ -247,16 +544,15 @@
             </div>
           {%- else -%}
             <div
-              class="template-search__results collection{% if section.settings.filter_type != 'vertical' %} page-width{% endif %}"
+              class="template-search__results collection{% if section.settings.filter_type != 'vertical' %} tm-container{% endif %}"
               id="product-grid"
               data-id="{{ section.id }}"
             >
               <div class="loading-overlay gradient"></div>
               <ul
-                class="grid product-grid  grid--{{ section.settings.columns_mobile }}-col-tablet-down grid--{{ section.settings.columns_desktop }}-col-desktop"
+                class="tm-grid tm-grid--cats tm-product-grid tm-ratio-{{ section.settings.image_ratio }} product-grid"
                 role="list"
               >
-                {%- assign skip_card_product_styles = false -%}
                 {%- for item in search.results -%}
                   {% assign lazy_load = false %}
                   {%- if forloop.index > 2 -%}
@@ -264,7 +560,7 @@
                   {%- endif -%}
 
                   <li
-                    class="grid__item{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+                    class="{% if settings.animations_reveal_on_scroll %}scroll-trigger animate--slide-in{% endif %}"
                     {% if settings.animations_reveal_on_scroll %}
                       data-cascade
                     {% endif %}
@@ -272,49 +568,164 @@
                     {%- case item.object_type -%}
                       {%- when 'product' -%}
                         {%- capture product_settings -%}{%- if section.settings.product_show_vendor -%}vendor,{%- endif -%}title,price{%- endcapture -%}
-                        {% render 'card-product',
-                          card_product: item,
-                          media_aspect_ratio: section.settings.image_ratio,
-                          image_shape: section.settings.image_shape,
-                          show_secondary_image: section.settings.show_secondary_image,
-                          show_vendor: section.settings.show_vendor,
-                          show_rating: section.settings.show_rating,
-                          lazy_load: lazy_load,
-                          skip_styles: skip_card_product_styles,
-                          product_view_context: 'search'
-                        %}
-                        {%- assign skip_card_product_styles = true -%}
-                      {%- when 'article' -%}
-                        {% render 'article-card',
-                          article: item,
-                          show_image: true,
-                          show_date: section.settings.article_show_date,
-                          show_author: section.settings.article_show_author,
-                          show_badge: true,
-                          media_aspect_ratio: 1,
-                          lazy_load: lazy_load
-                        %}
-                      {%- when 'page' -%}
-                        <div class="article-card-wrapper card-wrapper underline-links-hover">
-                          <div
-                            class="card card--card card--text ratio color-{{ settings.blog_card_color_scheme }}"
-                            style="--ratio-percent: 100%;"
-                          >
-                            <div class="card__content">
-                              <div class="card__information">
-                                <h3 class="card__heading">
-                                  <a href="{{ item.url }}" class="full-unstyled-link">
-                                    {{ item.title | truncate: 50 | escape }}
-                                  </a>
-                                </h3>
+                        {%- liquid
+                          assign roll_width = item.metafields.custom.roll_width.value
+                          assign fallback = fallbacks[forloop.index0] | default: 'product-cooldeluxe-35'
+                        -%}
+                        <product-component view-event-payload="{{ item | standard_event_data: 'view', context: 'search' | escape }}">
+                          <div class="tm-card">
+                            <a href="{{ item.url }}" class="cat-card tm-product-card">
+                              <div class="cat-card__media tm-card__media">
+                                {%- if item.featured_image -%}
+                                  <img
+                                    src="{{ item.featured_image | image_url: width: 640 }}"
+                                    alt="{{ item.featured_image.alt | default: item.title | escape }}"
+                                    width="{{ item.featured_image.width }}"
+                                    height="{{ item.featured_image.height }}"
+                                    {% unless lazy_load == false %}
+                                      loading="lazy"
+                                    {% endunless %}
+                                  >
+                                  {%- if section.settings.show_secondary_image and item.media[1] -%}
+                                    <img
+                                      class="tm-card__img--secondary"
+                                      src="{{ item.media[1] | image_url: width: 640 }}"
+                                      alt="{{ item.media[1].alt | default: item.title | escape }}"
+                                      width="{{ item.media[1].width }}"
+                                      height="{{ item.media[1].height }}"
+                                      loading="lazy"
+                                    >
+                                  {%- endif -%}
+                                {%- else -%}
+                                  <img
+                                    src="{{ fallback | append: '.jpg' | asset_url }}"
+                                    alt="{{ item.title | escape }}"
+                                    width="306"
+                                    height="180"
+                                    loading="lazy"
+                                  >
+                                {%- endif -%}
+                                {%- if item.available == false -%}
+                                  <span class="tm-badge tm-badge--sold-out">
+                                    {{- 'products.product.sold_out' | t -}}
+                                  </span>
+                                {%- elsif item.compare_at_price > item.price and item.available -%}
+                                  <span class="tm-badge tm-badge--sale">
+                                    {{- 'products.product.on_sale' | t -}}
+                                  </span>
+                                {%- endif -%}
                               </div>
-                              <div class="card__badge {{ settings.badge_position }}">
-                                <span class="badge color-{{ settings.color_schemes | first }}">
-                                  {{- 'templates.search.page' | t -}}
+                              <div class="cat-card__body">
+                                {%- if section.settings.show_vendor -%}
+                                  <span class="visually-hidden">{{ 'accessibility.vendor' | t }}</span>
+                                  <span class="cat-card__vendor">{{ item.vendor | escape }}</span>
+                                {%- endif -%}
+                                <span class="cat-card__name">
+                                  {{- item.title | escape -}}
+                                  <svg viewBox="0 0 24 24" fill="none" stroke="#175c3f" stroke-width="2.8"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                                </span>
+                                {%- if section.settings.show_rating and item.metafields.reviews.rating.value != blank -%}
+                                  {% liquid
+                                    assign rating_decimal = 0
+                                    assign decimal = item.metafields.reviews.rating.value.rating | modulo: 1
+                                    if decimal >= 0.3 and decimal <= 0.7
+                                      assign rating_decimal = 0.5
+                                    elsif decimal > 0.7
+                                      assign rating_decimal = 1
+                                    endif
+                                  %}
+                                  <div class="tm-card__rating">
+                                    <div
+                                      class="rating"
+                                      role="img"
+                                      aria-label="{{ 'accessibility.star_reviews_info' | t: rating_value: item.metafields.reviews.rating.value, rating_max: item.metafields.reviews.rating.value.scale_max }}"
+                                    >
+                                      <span
+                                        aria-hidden="true"
+                                        class="rating-star"
+                                        style="--rating: {{ item.metafields.reviews.rating.value.rating | floor }}; --rating-max: {{ item.metafields.reviews.rating.value.scale_max }}; --rating-decimal: {{ rating_decimal }};"
+                                      ></span>
+                                    </div>
+                                    <p class="rating-text caption">
+                                      <span aria-hidden="true">
+                                        {{- item.metafields.reviews.rating.value }} /
+                                        {{ item.metafields.reviews.rating.value.scale_max -}}
+                                      </span>
+                                    </p>
+                                    <p class="rating-count caption">
+                                      <span aria-hidden="true">({{ item.metafields.reviews.rating_count }})</span>
+                                      <span class="visually-hidden">
+                                        {{- item.metafields.reviews.rating_count }}
+                                        {{ 'accessibility.total_reviews' | t -}}
+                                      </span>
+                                    </p>
+                                  </div>
+                                {%- endif -%}
+                                <span class="cat-card__price">
+                                  From
+                                  <b>
+                                    {%- if roll_width -%}
+                                      {{ item.price | divided_by: roll_width | round | money }}
+                                    {%- else -%}
+                                      {{ item.price | money }}
+                                    {%- endif -%}
+                                  </b>
+                                  {%- if roll_width -%}/m²{% endif -%}
                                 </span>
                               </div>
-                            </div>
+                            </a>
                           </div>
+                        </product-component>
+                      {%- when 'article' -%}
+                        <div class="tm-card tm-card--article">
+                          <a href="{{ item.url }}" class="cat-card">
+                            {%- if item.image -%}
+                              <div class="cat-card__media tm-card__media">
+                                <img
+                                  src="{{ item.image | image_url: width: 640 }}"
+                                  alt="{{ item.image.alt | default: item.title | escape }}"
+                                  width="{{ item.image.width }}"
+                                  height="{{ item.image.height }}"
+                                  {% unless lazy_load == false %}
+                                    loading="lazy"
+                                  {% endunless %}
+                                >
+                              </div>
+                            {%- endif -%}
+                            <div class="cat-card__body">
+                              <span class="tm-badge tm-badge--meta">
+                                {{- 'blogs.article.blog' | t -}}
+                              </span>
+                              <span class="cat-card__name">
+                                {{- item.title | truncate: 50 | escape -}}
+                                <svg viewBox="0 0 24 24" fill="none" stroke="#175c3f" stroke-width="2.8"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                              </span>
+                              {%- if section.settings.article_show_date or section.settings.article_show_author -%}
+                                <span class="tm-card__meta">
+                                  {%- if section.settings.article_show_date -%}
+                                    <span class="circle-divider">{{ item.published_at | time_tag: format: 'date' }}</span>
+                                  {%- endif -%}
+                                  {%- if section.settings.article_show_author -%}
+                                    <span>{{ item.author }}</span>
+                                  {%- endif -%}
+                                </span>
+                              {%- endif -%}
+                            </div>
+                          </a>
+                        </div>
+                      {%- when 'page' -%}
+                        <div class="tm-card tm-card--page">
+                          <a href="{{ item.url }}" class="cat-card">
+                            <div class="cat-card__body">
+                              <span class="tm-badge tm-badge--meta">
+                                {{- 'templates.search.page' | t -}}
+                              </span>
+                              <span class="cat-card__name">
+                                {{- item.title | truncate: 50 | escape -}}
+                                <svg viewBox="0 0 24 24" fill="none" stroke="#175c3f" stroke-width="2.8"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                              </span>
+                            </div>
+                          </a>
                         </div>
                     {%- endcase -%}
                   </li>
@@ -332,7 +743,7 @@
 {% endpaginate %}
 {% if section.settings.image_shape == 'arch' %}
   {{ 'mask-arch.svg' | inline_asset_content }}
-{%- endif -%}
+{%- endif %}
 
 {% schema %}
 {
