@@ -458,6 +458,8 @@
   white-space: nowrap; color: #9fbcab; text-align: center; overflow: hidden;
   font-size: min(250px, 17.4vw);
 }
+.tm-footer__wordmark--image { line-height: 0; font-size: 0; }
+.tm-footer__wordmark--image img { display: block; width: 100%; max-width: var(--wordmark-max, 1280px); height: auto; margin: 0 auto; }
 .tm-footer__bottom { margin-top: 28px; font-size: 13px; color: var(--footer-muted); }
 
 /* Mobile-only pieces start hidden */

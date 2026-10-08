@@ -1,6 +1,6 @@
 <product-info
   id="MainProduct-{{ section.id }}"
-  class="section-{{ section.id }}-padding gradient color-{{ section.settings.color_scheme }}"
+  class="section-{{ section.id }}-padding gradient color-{{ section.settings.color_scheme }} tm-scope"
   data-section="{{ section.id }}"
   data-product-id="{{ product.id }}"
   data-update-url="true"
@@ -15,6 +15,9 @@
   {{ 'component-slider.css' | asset_url | stylesheet_tag }}
   {{ 'component-rating.css' | asset_url | stylesheet_tag }}
   {{ 'component-deferred-media.css' | asset_url | stylesheet_tag }}
+  {{ 'homepage.css' | asset_url | stylesheet_tag }}
+  {{ 'turf-product.css' | asset_url | stylesheet_tag }}
+  {{ 'tm-product.css' | asset_url | stylesheet_tag }}
 
   {% unless product.has_only_default_variant %}
     {{ 'component-product-variant-picker.css' | asset_url | stylesheet_tag }}
@@ -74,16 +77,34 @@
 
   {% assign variant_images = product.images | where: 'attached_to_variant?', true | map: 'src' %}
   <product-component view-event-payload="{{ product | standard_event_data: 'view', context: 'page' | escape }}">
-    <div class="page-width">
-      <div class="product product--{{ section.settings.media_size }} product--{{ section.settings.media_position }} product--{{ section.settings.gallery_layout }} product--mobile-{{ section.settings.mobile_thumbnails }} grid grid--1-col {% if product.media.size > 0 %}grid--2-col-tablet{% else %}product--no-media{% endif %}">
-        <div class="grid__item product__media-wrapper">
+    <div class="tm-container">
+      {%- liquid
+        assign crumb = collection
+        if crumb == blank
+          assign crumb = product.metafields.custom.primary_collection.value
+        endif
+      -%}
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <ol>
+          <li>
+            <a href="{{ routes.root_url }}">Home</a>
+          </li>
+          {%- if crumb -%}
+            <li>
+              <a href="{{ crumb.url }}">{{ crumb.title }}</a>
+            </li>
+          {%- endif -%}
+          <li aria-current="page">{{ product.title }}</li>
+        </ol>
+      </nav>
+      <div class="pdp__main product product--{{ section.settings.media_size }} product--{{ section.settings.media_position }} product--{{ section.settings.gallery_layout }} product--mobile-{{ section.settings.mobile_thumbnails }}{% if product.media.size == 0 %} product--no-media{% endif %}">
+        <div class="product__media-wrapper">
           {% render 'product-media-gallery', variant_images: variant_images %}
         </div>
-        <div class="product__info-wrapper grid__item{% if settings.page_width > 1400 and section.settings.media_size == "small" %} product__info-wrapper--extra-padding{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
-          <section
-            id="ProductInfo-{{ section.id }}"
-            class="product__info-container{% if section.settings.enable_sticky_info %} product__column-sticky{% endif %}"
-          >
+        <section
+          id="ProductInfo-{{ section.id }}"
+          class="pdp__info product__info-container{% if section.settings.enable_sticky_info %} product__column-sticky{% endif %}"
+        >
             {%- assign product_form_id = 'product-form-' | append: section.id -%}
 
             {%- for block in section.blocks -%}
@@ -101,6 +122,9 @@
                   </p>
                 {%- when 'title' -%}
                   <div class="product__title" {{ block.shopify_attributes }}>
+                    {%- if product.vendor != blank -%}
+                      <a href="{{ product.vendor | url_for_vendor }}" class="pdp__brand">{{ product.vendor }}</a>
+                    {%- endif -%}
                     <h1>{{ product.title | escape }}</h1>
                     <a href="{{ product.url }}" class="product__title">
                       <h2 class="h1">
@@ -697,7 +721,6 @@
               {{- 'icon-arrow.svg' | inline_asset_content -}}
             </a>
           </section>
-        </div>
       </div>
 
       {% render 'product-media-modal', variant_images: variant_images %}

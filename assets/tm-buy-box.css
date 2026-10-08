@@ -1,0 +1,102 @@
+/* ==========================================================================
+   Turf Mart — default buy box (snippets/tm-buy-box.liquid)
+   Mirrors the calculator's price headline, card and button styles from
+   assets/turf-calculator.css so the default product template matches the
+   turf template. .pdp__status lives in assets/turf-product.css. Tokens come
+   from assets/turf-mart-base.css.
+   ========================================================================== */
+
+.tm-buy { display: block; margin-top: 24px; }
+
+/* ---------- Price ---------- */
+.tm-buy__headline { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 12px; }
+.tm-buy__amount { font-size: 44px; font-weight: 800; line-height: 1; letter-spacing: -0.02em; color: var(--ink); }
+.tm-buy__was { font-size: 16px; color: var(--muted); }
+.tm-buy__save {
+  align-self: center; padding: 4px 10px; border-radius: 999px; background: var(--yellow);
+  color: var(--green-dark); font-size: 12px; font-weight: 800;
+}
+.tm-buy__was[hidden], .tm-buy__save[hidden] { display: none; }
+.tm-buy__tax { margin: 8px 0 0; font-size: 14px; color: var(--muted); }
+.pdp__status-item[hidden] { display: none; }
+
+/* ---------- Card ---------- */
+.tm-buy__card {
+  margin-top: 20px; padding: 24px; border-radius: 16px;
+  background: var(--white); border: 1px solid var(--line);
+}
+
+/* ---------- Variant pills ---------- */
+.tm-buy__option { margin: 0 0 18px; padding: 0; border: 0; min-width: 0; }
+.tm-buy__legend { padding: 0; margin-bottom: 10px; font-size: 14px; font-weight: 800; color: var(--ink); }
+.tm-buy__legend span { font-weight: 600; color: var(--muted); }
+.tm-buy__values { display: flex; flex-wrap: wrap; gap: 8px; }
+.tm-buy__value { position: relative; cursor: pointer; }
+.tm-buy__value input { position: absolute; width: 1px; height: 1px; margin: 0; opacity: 0; }
+.tm-buy__value span {
+  display: inline-flex; align-items: center; justify-content: center; min-width: 52px; min-height: 46px; padding: 0 16px;
+  border: 2px solid var(--line); border-radius: 10px; background: var(--white);
+  font-size: 14px; font-weight: 700; color: var(--ink);
+}
+.tm-buy__value:hover span { border-color: var(--green); }
+.tm-buy__value input:checked + span { border-color: var(--green); background: var(--mint); color: var(--green); }
+.tm-buy__value input:focus-visible + span { outline: 2px solid var(--green); outline-offset: 2px; }
+.tm-buy__value.is-unavailable span { color: var(--muted); text-decoration: line-through; }
+
+/* ---------- Quantity + add to cart ---------- */
+.tm-buy__actions { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; margin-top: 4px; }
+.tm-buy__qty {
+  display: flex; align-items: stretch; height: 56px; border: 2px solid var(--line); border-radius: 10px;
+  background: var(--white); overflow: hidden;
+}
+.tm-buy__qty:focus-within { border-color: var(--green); }
+.tm-buy__qty-btn {
+  flex: none; width: 56px; border: 0; background: transparent; cursor: pointer;
+  font-family: inherit; font-size: 22px; font-weight: 700; color: var(--green);
+}
+.tm-buy__qty-btn:hover { background: var(--mint); }
+.tm-buy__qty input {
+  flex: 1; min-width: 0; width: 100%; border: 0; padding: 0; text-align: center; background: transparent;
+  font-family: inherit; font-size: 16px; font-weight: 800; color: var(--ink); -moz-appearance: textfield; appearance: textfield;
+}
+.tm-buy__qty input:focus { outline: none; }
+.tm-buy__qty input::-webkit-outer-spin-button,
+.tm-buy__qty input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
+.tm-buy__add {
+  height: 56px; display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 0 20px;
+  border: 0; border-radius: 10px; background: var(--green); color: var(--white); cursor: pointer;
+  font-family: inherit; font-size: 16px; font-weight: 800;
+}
+.tm-buy__add:hover:not(:disabled) { background: #1d7a52; }
+.tm-buy__add:disabled { background: var(--line); color: var(--muted); cursor: not-allowed; }
+.tm-buy__add[aria-busy='true'] { cursor: progress; }
+
+/* Shopify dynamic checkout (Shop Pay / Buy it now) */
+.tm-buy__dynamic { margin-top: 12px; }
+.tm-buy__dynamic .shopify-payment-button__button { min-height: 56px; border-radius: 10px; overflow: hidden; }
+.tm-buy__dynamic .shopify-payment-button__button--unbranded {
+  background: var(--ink); color: var(--white); font-family: inherit; font-size: 16px; font-weight: 800;
+}
+.tm-buy__dynamic .shopify-payment-button__button--unbranded:hover:not([disabled]) { background: var(--green-dark); }
+.tm-buy__dynamic .shopify-payment-button__more-options { margin-top: 10px; font-size: 13px; color: var(--muted); }
+
+.tm-buy__error {
+  margin-top: 12px; padding: 12px 14px; border-radius: 10px; font-size: 13px;
+  color: #b2391f; background: rgba(193,68,42,.08);
+}
+.tm-buy__error[hidden] { display: none; }
+
+/* ==========================================================================
+   Mobile ≤ 749px
+   ========================================================================== */
+@media (max-width: 749px) {
+  .tm-buy { margin-top: 20px; }
+  .tm-buy__amount { font-size: 36px; }
+  .tm-buy__tax { font-size: 13px; }
+  .tm-buy__card { padding: 18px 16px; border-radius: 14px; }
+  .tm-buy__actions { gap: 10px; }
+  .tm-buy__qty, .tm-buy__add { height: 52px; }
+  .tm-buy__add { font-size: 15px; padding: 0 14px; }
+  .tm-buy__dynamic .shopify-payment-button__button { min-height: 52px; }
+}

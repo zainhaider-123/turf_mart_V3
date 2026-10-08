@@ -26,13 +26,32 @@
   assign price_min = product.price_min
   assign price_max = product.price_max
   assign available = target.available | default: false
-  assign money_price = price | money
-  assign money_price_min = price_min | money
-  assign money_price_max = price_max | money
+
+  # Turf Mart: synthetic turf is priced per lineal metre; show it per m² instead.
+  assign sqm_suffix = ''
+  if target != null
+    capture sqm_width
+      render 'tm-sqm-width', product: product
+    endcapture
+    assign sqm_width = sqm_width | plus: 0
+    if sqm_width > 0
+      assign sqm_suffix = '/m²'
+      assign price = price | divided_by: sqm_width | round
+      assign price_min = price_min | divided_by: sqm_width | round
+      assign price_max = price_max | divided_by: sqm_width | round
+      if compare_at_price
+        assign compare_at_price = compare_at_price | divided_by: sqm_width | round
+      endif
+    endif
+  endif
+
+  assign money_price = price | money | append: sqm_suffix
+  assign money_price_min = price_min | money | append: sqm_suffix
+  assign money_price_max = price_max | money | append: sqm_suffix
   if settings.currency_code_enabled
-    assign money_price = price | money_with_currency
-    assign money_price_min = price_min | money_with_currency
-    assign money_price_max = price_max | money_with_currency
+    assign money_price = price | money_with_currency | append: sqm_suffix
+    assign money_price_min = price_min | money_with_currency | append: sqm_suffix
+    assign money_price_max = price_max | money_with_currency | append: sqm_suffix
   endif
 
   if target == product and product.price_varies
@@ -68,9 +87,9 @@
               <span>
                 <s class="price-item price-item--regular variant-item__old-price">
                   {% if settings.currency_code_enabled %}
-                    {{ compare_at_price | money_with_currency }}
+                    {{ compare_at_price | money_with_currency }}{{ sqm_suffix }}
                   {% else %}
-                    {{ compare_at_price | money }}
+                    {{ compare_at_price | money }}{{ sqm_suffix }}
                   {% endif %}
                 </s>
               </span>
@@ -96,9 +115,9 @@
           <span>
             <s class="price-item price-item--regular">
               {% if settings.currency_code_enabled %}
-                {{ compare_at_price | money_with_currency }}
+                {{ compare_at_price | money_with_currency }}{{ sqm_suffix }}
               {% else %}
-                {{ compare_at_price | money }}
+                {{ compare_at_price | money }}{{ sqm_suffix }}
               {% endif %}
             </s>
           </span>

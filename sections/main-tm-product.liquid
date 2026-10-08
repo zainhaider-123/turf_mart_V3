@@ -1,17 +1,13 @@
 {%- comment -%}
-  Turf Mart product page (template: product.turf).
-  Ports the mockup's <main class="pdp"> (references/productpage/index.html):
-  breadcrumb, gallery, product info + calculator, trust row, detail tabs,
-  "Complete your project" and "You may also like" (other turf from the same
-  collection). The page's global header
-  and footer come from the theme's header-group/footer-group as on every
-  other template — this section renders page content only.
+  Turf Mart default product page (template: product). Same layout as
+  sections/main-turf-product.liquid — breadcrumb, gallery, product info,
+  trust row, detail tabs, "Complete your project" and "You may also like"
+  (other products from the same collection) —
+  with the turf calculator replaced by a standard buy box (variant pills,
+  quantity, add to cart) from snippets/tm-buy-box.liquid.
 
-  The mockup's <main> wrapper is a <div> here because layout/theme.liquid
-  already provides <main id="MainContent"> around content_for_layout.
-
-  Files: assets/turf-product.css, assets/turf-product.js, snippets/turf-icon.liquid,
-  snippets/turf-calculator.liquid (rendered with block: section).
+  Files: assets/turf-product.css, assets/turf-product.js (gallery, zoom, tabs),
+  assets/tm-buy-box.css / .js, snippets/turf-icon.liquid.
 {%- endcomment -%}
 
 {%- liquid
@@ -35,14 +31,9 @@
 {%- endcapture -%}
 
 {%- capture spec_tail -%}
-  {%- if m.pile_height != blank -%}<tr><th scope="row">Pile height</th><td>{{ m.pile_height }}mm</td></tr>{%- endif -%}
   {%- if m.colour != blank -%}<tr><th scope="row">Colour</th><td>{{ m.colour }}</td></tr>{%- endif -%}
-  {%- if m.heat_reduction != blank -%}<tr><th scope="row">Heat reduction</th><td>{{ m.heat_reduction }}</td></tr>{%- endif -%}
   {%- if m.material != blank -%}<tr><th scope="row">Material</th><td>{{ m.material }}</td></tr>{%- endif -%}
   {%- if m.backing != blank -%}<tr><th scope="row">Backing</th><td>{{ m.backing }}</td></tr>{%- endif -%}
-  {%- if m.roll_width != blank -%}<tr><th scope="row">Roll width</th><td>{{ m.roll_width }}m</td></tr>{%- endif -%}
-  <tr><th scope="row">Sold by</th><td>Lineal metre (4m minimum, 2m steps, 20m max per roll)</td></tr>
-  {%- if m.sand_rate != blank -%}<tr><th scope="row">Sand infill rate</th><td>{{ m.sand_rate }} kg/m²</td></tr>{%- endif -%}
   {%- if m.warranty != blank -%}<tr><th scope="row">Warranty</th><td>{{ m.warranty }}</td></tr>{%- endif -%}
   {%- if m.made_in != blank -%}<tr><th scope="row">Made in</th><td>{{ m.made_in }}</td></tr>{%- endif -%}
 {%- endcapture -%}
@@ -50,6 +41,7 @@
 {%- capture spec_extra -%}
   {%- if variant.sku != blank -%}<tr><th scope="row">SKU</th><td>{{ variant.sku }}</td></tr>{%- endif -%}
   {%- if crumb != blank -%}<tr><th scope="row">Category</th><td>{{ crumb.title }}</td></tr>{%- endif -%}
+  {%- if product.type != blank -%}<tr><th scope="row">Product type</th><td>{{ product.type }}</td></tr>{%- endif -%}
 {%- endcapture -%}
 
 <div class="pdp tm-scope">
@@ -71,7 +63,7 @@
         {%- for media in product.media -%}
           {%- if media.media_type == 'image' -%}
             <button type="button" class="gallery__thumb{% if forloop.first %} is-active{% endif %}" role="listitem"
-              aria-label="Image {{ forloop.index }}"{% if forloop.first %} aria-current="true"{% endif %}
+              data-media-id="{{ media.id }}" aria-label="Image {{ forloop.index }}"{% if forloop.first %} aria-current="true"{% endif %}
               data-src="{{ media | image_url: width: 1400 }}" data-alt="{{ media.alt | escape }}">
               {{ media | image_url: width: 200 | image_tag: alt: '', loading: 'lazy' }}
             </button>
@@ -79,7 +71,7 @@
         {%- endfor -%}
       </div>
       <div class="gallery__stage">
-        {%- assign first = product.featured_media -%}
+        {%- assign first = product.selected_or_first_available_variant.featured_media | default: product.featured_media -%}
         {%- if first -%}
           <img class="gallery__main" data-gallery-main
             src="{{ first | image_url: width: 1400 }}"
@@ -97,28 +89,22 @@
       </div>
     </section>
 
-    {%- comment -%} Product info + calculator + trust {%- endcomment -%}
+    {%- comment -%} Product info + buy box + trust {%- endcomment -%}
     <div class="pdp__info">
       <a href="{{ product.vendor | url_for_vendor }}" class="pdp__brand">{{ product.vendor }}</a>
       <h1 class="pdp__title">{{ product.title }}</h1>
-      {%- if variant.sku != blank -%}<span class="pdp__sku">SKU: {{ variant.sku }}</span>{%- endif -%}
+      <span class="pdp__sku" data-tm-sku{% if variant.sku == blank %} hidden{% endif %}>{% if variant.sku != blank %}SKU: {{ variant.sku }}{% endif %}</span>
       {%- if product.metafields.custom.short_description != blank -%}
         <p class="pdp__intro">{{ product.metafields.custom.short_description }}</p>
       {%- endif -%}
 
-      <ul class="pdp__features">
-        {%- if m.pile_height != blank -%}
-          <li>{% render 'turf-icon', name: 'leaf' %}<span>{{ m.pile_height }}mm{% if m.colour != blank %} {{ m.colour | downcase }}{% endif %}<br>pile</span></li>
-        {%- endif -%}
-        {%- if m.heat_reduction != blank -%}
-          <li>{% render 'turf-icon', name: 'sun' %}<span>{{ m.heat_reduction }} heat<br>reduction</span></li>
-        {%- endif -%}
-        {%- if m.warranty != blank -%}
+      {%- if m.warranty != blank -%}
+        <ul class="pdp__features">
           <li>{% render 'turf-icon', name: 'shield-check' %}<span>{{ m.warranty }}<br>warranty</span></li>
-        {%- endif -%}
-      </ul>
+        </ul>
+      {%- endif -%}
 
-      {% render 'turf-calculator', product: product, block: section %}
+      {% render 'tm-buy-box', product: product, section: section %}
 
       {%- if section.blocks.size > 0 -%}
         <ul class="pdp__trust">
@@ -205,12 +191,14 @@
     capture accessory_cards
       if accessories.size > 0
         for item in accessories
-          render 'turf-accessory-card', item: item
+          if item.id != product.id
+            render 'turf-accessory-card', item: item
+          endif
         endfor
       else
         for handle in acc_handles
           assign item = all_products[handle]
-          if item != blank
+          if item != blank and item.id != product.id
             render 'turf-accessory-card', item: item
           endif
         endfor
@@ -229,7 +217,7 @@
 
     {%- liquid
       comment
-        Similar turf from the same collection: the breadcrumb collection
+        Similar products from the same collection: the breadcrumb collection
         (current collection or custom.primary_collection), else the first of
         the product's collections that holds other products.
       endcomment
@@ -242,39 +230,33 @@
           endif
         endfor
       endif
+      assign rec_count = 0
     -%}
-    {%- capture rec_cards -%}
-      {%- if rec_source != blank and rec_source.products_count > 1 -%}
-          {%- assign shown = 0 -%}
-          {%- for rec in rec_source.products -%}
-            {%- if shown >= 4 -%}{%- break -%}{%- endif -%}
-            {%- if rec.id != product.id and rec.type == 'Synthetic turf' -%}
-              {%- assign shown = shown | plus: 1 -%}
-              {%- capture rec_width -%}{% render 'tm-sqm-width', product: rec %}{%- endcapture -%}
-              <article class="mini-card">
-                {%- if rec.featured_image -%}
-                  {{ rec.featured_image | image_url: width: 400 | image_tag: class: 'mini-card__media', loading: 'lazy' }}
-                {%- endif -%}
-                <div class="mini-card__body">
-                  <span class="mini-card__brand">{{ rec.vendor }}</span>
-                  <span class="mini-card__name">{{ rec.title }}</span>
-                  {%- if rec_width != blank -%}
-                    <span class="mini-card__price">{{ rec.price | divided_by: rec_width | round | money }}<small>/m²</small></span>
-                  {%- else -%}
-                    <span class="mini-card__price">{{ rec.price | money }}</span>
-                  {%- endif -%}
-                  <a href="{{ rec.url }}" class="tm-btn tm-btn--outline-green mini-card__btn">Choose size</a>
-                </div>
-              </article>
-            {%- endif -%}
-          {%- endfor -%}
-      {%- endif -%}
-    {%- endcapture -%}
-    {%- if rec_cards != blank -%}
+    {%- if rec_source != blank and rec_source.products_count > 1 -%}
       <div class="related__group">
         <h2 class="related__title">{{ section.settings.recommendations_heading }}</h2>
         <div class="related__row">
-          {{ rec_cards }}
+          {%- for rec in rec_source.products -%}
+            {%- if rec.id == product.id -%}{%- continue -%}{%- endif -%}
+            {%- assign rec_count = rec_count | plus: 1 -%}
+            {%- if rec_count > 4 -%}{%- break -%}{%- endif -%}
+            <article class="mini-card">
+              {%- if rec.featured_image -%}
+                {{ rec.featured_image | image_url: width: 400 | image_tag: class: 'mini-card__media', loading: 'lazy' }}
+              {%- endif -%}
+              <div class="mini-card__body">
+                <span class="mini-card__brand">{{ rec.vendor }}</span>
+                <span class="mini-card__name">{{ rec.title }}</span>
+                {%- capture rec_width -%}{% render 'tm-sqm-width', product: rec %}{%- endcapture -%}
+                {%- if rec_width != blank -%}
+                  <span class="mini-card__price">{{ rec.price | divided_by: rec_width | round | money }}<small>/m²</small></span>
+                {%- else -%}
+                  <span class="mini-card__price">{% if rec.price_varies %}From {% endif %}{{ rec.price | money }}</span>
+                {%- endif -%}
+                <a href="{{ rec.url }}" class="tm-btn tm-btn--outline-green mini-card__btn">View product</a>
+              </div>
+            </article>
+          {%- endfor -%}
         </div>
       </div>
     {%- endif -%}
@@ -294,39 +276,19 @@
 
 {% schema %}
 {
-  "name": "Turf product page",
+  "name": "Product page",
   "tag": "div",
   "settings": [
-    { "type": "header", "content": "Add-on products" },
-    { "type": "product", "id": "sand_product", "label": "Sand infill bag", "info": "Leave blank to use sand-infill-20kg-bag." },
-    { "type": "product", "id": "pins_product", "label": "Turf pins box", "info": "Leave blank to use turf-pins-box-of-100." },
-    { "type": "product", "id": "tape_product", "label": "Jointing tape roll", "info": "Leave blank to use jointing-tape-100m-roll." },
-    { "type": "product", "id": "glue_product", "label": "Turf glue drum", "info": "Leave blank to use turf-glue-20l-drum." },
-    { "type": "product", "id": "sample_product", "label": "Free sample (optional)", "info": "Leave blank to use free-turf-sample." },
-    { "type": "header", "content": "Pack sizes and rates" },
-    { "type": "number", "id": "default_sand_rate", "label": "Default sand rate (kg/m²)", "default": 18, "info": "Used when a product has no Sand rate metafield." },
-    { "type": "number", "id": "sand_bag_kg", "label": "Sand bag size (kg)", "default": 20 },
-    { "type": "number", "id": "pins_per_sqm", "label": "Pins per m²", "default": 5 },
-    { "type": "number", "id": "pins_per_box", "label": "Pins per box", "default": 100 },
-    { "type": "number", "id": "tape_roll_m", "label": "Tape roll length (m)", "default": 100 },
-    { "type": "number", "id": "glue_m_per_l", "label": "Seam metres per litre of glue", "default": 5 },
-    { "type": "number", "id": "glue_drum_l", "label": "Glue drum size (L)", "default": 20 },
-    { "type": "header", "content": "Roll cutting rules" },
-    { "type": "number", "id": "roll_width", "label": "Default roll width (m)", "info": "Leave blank for 3.71 m. Products with a Roll width metafield override this." },
-    { "type": "number", "id": "lineal_min", "label": "Minimum cut (m)", "default": 4 },
-    { "type": "number", "id": "lineal_max", "label": "Maximum roll length (m)", "default": 20 },
-    { "type": "number", "id": "lineal_step", "label": "Cut step (m)", "default": 2 },
-    { "type": "text", "id": "roll_pick_lengths", "label": "'Select a roll' lengths", "default": "4,6,8,10,12,14,16,20" },
-    { "type": "header", "content": "Display" },
-    { "type": "number", "id": "pay_later_instalments", "label": "Pay-later instalments shown (0 to hide)", "default": 4 },
+    { "type": "header", "content": "Buy box" },
+    { "type": "checkbox", "id": "show_dynamic_checkout", "label": "Show dynamic checkout buttons", "default": true, "info": "Shop Pay, Apple Pay and other express checkouts set up in Payments." },
     { "type": "header", "content": "Delivery" },
     { "type": "text", "id": "delivery_title", "label": "Delivery heading", "default": "Australia-wide delivery" },
-    { "type": "text", "id": "delivery_text", "label": "Delivery line", "default": "$180 per order, cut to size" },
+    { "type": "text", "id": "delivery_text", "label": "Delivery line", "default": "$180 per order" },
     {
       "type": "richtext",
       "id": "delivery_returns",
       "label": "Delivery & returns tab",
-      "default": "<h2>Delivery</h2><p>We deliver Australia-wide. Turf is cut to your lengths and delivered with your sand, pins, tape and glue in one order.</p><ul><li><b>Turf and accessory orders:</b> $180 per order.</li><li><b>Sample-only orders:</b> $50.</li><li><b>Dispatch:</b> in stock, ships in 1–2 days.</li></ul><h2>Returns</h2><p>Turf is cut to order, so cut lengths can't be returned unless faulty. Unopened accessories can be returned within 30 days. Contact us before sending anything back.</p>"
+      "default": "<h2>Delivery</h2><p>We deliver Australia-wide, and accessories ship together with any turf in the same order.</p><ul><li><b>Turf and accessory orders:</b> $180 per order.</li><li><b>Dispatch:</b> in stock, ships in 1–2 days.</li></ul><h2>Returns</h2><p>Unopened accessories can be returned within 30 days. Contact us before sending anything back.</p>"
     },
     { "type": "header", "content": "Complete your project" },
     { "type": "product_list", "id": "complementary_products", "label": "Accessories", "limit": 4 },

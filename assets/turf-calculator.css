@@ -20,14 +20,7 @@
 }
 .turf-calc__gst { margin: 8px 0 0; font-size: 14px; color: var(--muted); }
 
-.pdp__status {
-  margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
-  padding: 16px 18px; border-radius: 12px; background: var(--mint);
-}
-.pdp__status-item { display: flex; align-items: center; gap: 12px; }
-.pdp__status-item svg { width: 30px; height: 30px; flex: none; }
-.pdp__status-item b { display: block; font-size: 14px; font-weight: 800; color: var(--green); }
-.pdp__status-item small { display: block; font-size: 12px; color: var(--muted); margin-top: 2px; }
+/* .pdp__status rules live in assets/turf-product.css (shared with main-tm-product) */
 
 /* ---------- Calculator card ---------- */
 .turf-calc__card {
@@ -123,7 +116,6 @@
   .turf-calc__per-sqm { font-size: 36px; }
   .turf-calc__unit { font-size: 20px; }
   .turf-calc__gst { font-size: 13px; }
-  .pdp__status { grid-template-columns: 1fr; gap: 12px; padding: 14px 16px; }
 
   .turf-calc__card { padding: 18px 16px; border-radius: 14px; }
   .turf-calc__tab { font-size: 12px; padding: 10px 4px; }

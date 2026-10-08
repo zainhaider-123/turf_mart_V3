@@ -60,6 +60,16 @@
 .pdp__features li { display: flex; align-items: center; gap: 10px; font-size: 13px; line-height: 1.35; font-weight: 600; }
 .pdp__features svg { width: 30px; height: 30px; color: var(--green); }
 
+/* ---------- Stock + delivery status (calculator and default buy box) ---------- */
+.pdp__status {
+  margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+  padding: 16px 18px; border-radius: 12px; background: var(--mint);
+}
+.pdp__status-item { display: flex; align-items: center; gap: 12px; }
+.pdp__status-item svg { width: 30px; height: 30px; flex: none; }
+.pdp__status-item b { display: block; font-size: 14px; font-weight: 800; color: var(--green); }
+.pdp__status-item small { display: block; font-size: 12px; color: var(--muted); margin-top: 2px; }
+
 /* ---------- Trust row ---------- */
 .pdp__trust {
   list-style: none; margin: 24px 0 0; padding: 20px 0 0; border-top: 1px solid var(--line);
@@ -179,6 +189,7 @@
   .pdp__features svg { width: 26px; height: 26px; }
 
   .pdp__trust { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 12px; }
+  .pdp__status { grid-template-columns: 1fr; gap: 12px; padding: 14px 16px; }
 
   .details { padding-left: 0; padding-right: 0; }
   .details__tabs { padding: 0 8px; border-radius: 0; border-left: 0; border-right: 0; }

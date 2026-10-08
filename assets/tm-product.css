@@ -1,0 +1,401 @@
+/* tm-product.css — Turf Mart styling for sections/main-product.liquid.
+   Extends turf-product.css (design reference — never edited) + homepage.css tokens.
+   Dawn's component CSS still loads; rules here override where noted. */
+
+/* ---------- Frame guards ---------- */
+
+.pdp__main.product .product__media-wrapper {
+  width: 100%;
+  max-width: none;
+  order: 0;
+}
+
+.product--no-media {
+  max-width: none;
+  margin: 0;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.product--no-media .product__media-wrapper {
+  display: none;
+}
+
+.product--no-media .product__title,
+.product--no-media .product__description,
+.product--no-media .product__tax,
+.product--no-media .product__sku,
+.product--no-media .shopify-payment-terms {
+  text-align: left;
+}
+
+/* Dawn's mobile media bleed would overflow tm-container's 1rem gutter */
+@media (max-width: 749px) {
+  .pdp__main.product .product__media-list {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .pdp__main.product .product__media-wrapper slider-component:not(.thumbnail-slider--no-slide) {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
+/* ---------- Breadcrumb lives in turf-product.css; nothing to add ---------- */
+
+/* ---------- Title block ---------- */
+
+.pdp__info .product__title {
+  margin-bottom: 1.2rem;
+}
+
+.pdp__info .product__title .pdp__brand {
+  display: inline-block;
+}
+
+.pdp__info .product__title h1 {
+  margin: 6px 0 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 44px;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+@media (max-width: 749px) {
+  .pdp__info .product__title h1 {
+    font-size: 30px;
+  }
+}
+
+/* ---------- SKU ---------- */
+
+.pdp__info .product__sku {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+/* ---------- Price ---------- */
+
+.pdp__info .price .badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.pdp__info .price--large .price-item {
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+/* ---------- Quantity ---------- */
+
+.pdp__info .quantity__input,
+.pdp__info .quantity__button {
+  border-radius: 10px;
+  border-color: var(--line);
+}
+
+/* ---------- Buy buttons (homepage .tm-btn look) ---------- */
+
+.pdp__info .product-form__submit {
+  min-height: 52px;
+  border-radius: 9px;
+  background: var(--yellow);
+  border: 2px solid var(--yellow);
+  color: var(--green-dark);
+  font-weight: 800;
+  font-size: 15px;
+  letter-spacing: normal;
+  text-transform: none;
+}
+
+.pdp__info .product-form__submit:hover {
+  background: var(--green);
+  border-color: var(--green);
+  color: var(--white);
+}
+
+.pdp__info .shopify-payment-button__button {
+  border-radius: 10px;
+}
+
+/* ---------- Description panel (.details__panel visual) ---------- */
+
+.pdp__info .product__description {
+  margin: 1.2rem 0 0;
+  padding: 28px 32px;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--body-2);
+}
+
+@media (max-width: 749px) {
+  .pdp__info .product__description {
+    padding: 20px 18px;
+  }
+}
+
+/* ---------- Collapsible tabs (keep <details>/ARIA; panel look) ---------- */
+
+.pdp__info .product__accordion {
+  margin-top: 1.2rem;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+}
+
+.pdp__info .product__accordion summary {
+  padding: 18px 22px;
+  align-items: center;
+}
+
+.pdp__info .product__accordion .summary__title {
+  gap: 10px;
+  align-items: center;
+}
+
+.pdp__info .product__accordion .accordion__title {
+  display: inline-block;
+  max-width: calc(100% - 6rem);
+  min-height: 1.6rem;
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 16px;
+  line-height: 1.3;
+}
+
+.pdp__info .product__accordion .svg-wrapper {
+  fill: var(--green);
+  color: var(--green);
+}
+
+.pdp__info .product__accordion summary > .icon-caret {
+  width: 14px;
+  height: 14px;
+  color: var(--muted);
+  flex: none;
+}
+
+.pdp__info .product__accordion .accordion__content {
+  margin-bottom: 0;
+  padding: 0 22px 20px;
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--body-2);
+}
+
+@media (max-width: 749px) {
+  .pdp__info .product__accordion summary {
+    padding: 16px 18px;
+  }
+
+  .pdp__info .product__accordion .accordion__content {
+    padding: 0 18px 18px;
+  }
+}
+
+/* ---------- RTE typography (description + tab content) ---------- */
+
+.pdp__info .rte h2 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 24px;
+  line-height: 1.15;
+  margin: 28px 0 14px;
+  color: var(--ink);
+}
+
+.pdp__info .rte h2:first-child {
+  margin-top: 0;
+}
+
+.pdp__info .rte h3 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 18px;
+  line-height: 1.2;
+  margin: 22px 0 10px;
+  color: var(--ink);
+}
+
+.pdp__info .rte p {
+  margin: 0 0 14px;
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--body-2);
+}
+
+.pdp__info .rte ul,
+.pdp__info .rte ol {
+  margin: 0 0 14px;
+  padding-left: 20px;
+  font-size: 15px;
+  line-height: 1.8;
+  color: var(--body-2);
+}
+
+.pdp__info .rte a {
+  color: var(--green);
+  text-decoration: underline;
+}
+
+/* ---------- icon-with-text → .pdp__trust look ---------- */
+
+.pdp__info .icon-with-text {
+  --icon-size: 28px;
+  --icon-spacing: 10px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin: 24px 0 0;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+  justify-content: initial;
+}
+
+.pdp__info .icon-with-text--vertical {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.pdp__info .icon-with-text .icon-with-text__item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  width: auto;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+}
+
+.pdp__info .icon-with-text .svg-wrapper {
+  min-width: 28px;
+  min-height: 28px;
+  width: 28px;
+  height: 28px;
+  margin: 0;
+  padding: 0;
+  fill: var(--green);
+  color: var(--green);
+}
+
+.pdp__info .icon-with-text .h4 {
+  padding: 0;
+  margin: 0;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.35;
+  text-align: left;
+  color: var(--ink);
+}
+
+.pdp__info .icon-with-text img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+
+@media (max-width: 1199px) {
+  .pdp__info .icon-with-text,
+  .pdp__info .icon-with-text--vertical {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 990px) and (max-width: 1199px) {
+  .pdp__info .icon-with-text,
+  .pdp__info .icon-with-text--vertical {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 749px) {
+  .pdp__info .icon-with-text,
+  .pdp__info .icon-with-text--vertical {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
+}
+
+/* ---------- Rating ---------- */
+
+.pdp__info .rating-wrapper,
+.pdp__info .rating {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pdp__info .rating .rating-star,
+.pdp__info .rating-wrapper .rating-star {
+  --color-rating-star: var(--star);
+}
+
+.pdp__info .rating-count {
+  font-size: 13px;
+  color: var(--muted);
+  margin: 0;
+}
+
+/* ---------- Inventory ---------- */
+
+.pdp__info .product__inventory {
+  font-size: 13px;
+}
+
+/* ---------- View full details ---------- */
+
+.pdp__info .product__view-details {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 24px;
+  font-weight: 700;
+  color: var(--green);
+}
+
+.pdp__info .product__view-details .icon-arrow {
+  width: 16px;
+  height: 16px;
+}
+
+/* ---------- Complementary / related ---------- */
+
+.pdp__info .product-recommendations__heading,
+.pdp__info .complementary__title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 20px;
+  line-height: 1.2;
+  color: var(--ink);
+}
+
+.pdp__info .product-recommendations .card,
+.pdp__info .product-recommendations .card-wrapper {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+/* ---------- Media polish (Dawn gallery classes kept intact) ---------- */
+
+.pdp__main.product .product__media-item {
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.pdp__main.product .thumbnail {
+  border-radius: 10px;
+}
