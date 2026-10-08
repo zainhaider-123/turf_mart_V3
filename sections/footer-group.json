@@ -11,8 +11,8 @@
   "name": "t:sections.footer.name",
   "type": "footer",
   "sections": {
-    "tm-footer-v2": {
-      "type": "tm-footer-v2",
+    "tm-footer-v3": {
+      "type": "tm-footer-v3",
       "blocks": {
         "shop_pet": {
           "type": "link",
@@ -173,7 +173,7 @@
     }
   },
   "order": [
-    "tm-footer-v2",
+    "tm-footer-v3",
     "tm-quickbar"
   ]
 }
