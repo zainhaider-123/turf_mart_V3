@@ -1,0 +1,407 @@
+/* Turf Mart — Footer v3: logo left · menus middle · mailing form right.
+   Built from Footer v2. Scoped entirely to .tm-footer-v3. */
+
+.tm-footer-v3 {
+  --tm-fv3-bg: var(--green-dark, #0f2f22);
+  --tm-fv3-white: #ffffff;
+  --tm-fv3-link: var(--footer-text, #bcd0c3);
+  --tm-fv3-wordmark: #9fbcab;
+  --tm-fv3-muted: var(--footer-muted, #8fa398);
+  --tm-fv3-outline: var(--outline-dark, #4f7a63);
+  --tm-fv3-placeholder: var(--muted-2, #6b776f);
+  --tm-fv3-yellow: var(--yellow, #f3c11d);
+
+  background: var(--tm-fv3-bg);
+  color: var(--tm-fv3-link);
+  font-family: var(--font-body-family, Helvetica, Arial, sans-serif);
+  font-size: 14px;
+  line-height: 1.4;
+  padding: 74px 0 36px;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
+}
+
+.tm-footer-v3 *,
+.tm-footer-v3 *::before,
+.tm-footer-v3 *::after {
+  box-sizing: border-box;
+}
+
+.tm-footer-v3 a:focus-visible,
+.tm-footer-v3 button:focus-visible {
+  outline: 2px solid var(--tm-fv3-yellow);
+  outline-offset: 3px;
+}
+
+/* ---------- Top row: brand · menus · newsletter ---------- */
+
+.tm-footer-v3__row {
+  display: grid;
+  grid-template-columns: minmax(160px, auto) minmax(0, 1fr) minmax(320px, 440px);
+  column-gap: clamp(40px, 5vw, 96px);
+  align-items: start;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 clamp(40px, 6vw, 120px);
+}
+
+.tm-footer-v3__brand {
+  min-width: 0;
+}
+
+.tm-footer-v3__logo {
+  display: block;
+  width: var(--logo-w, 180px);
+  max-width: 100%;
+}
+
+.tm-footer-v3__logo img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.tm-footer-v3__tagline {
+  margin: 16px 0 0;
+  max-width: var(--logo-w, 180px);
+  color: var(--tm-fv3-link);
+  font-size: 14px;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.tm-footer-v3__cols {
+  display: grid;
+  grid-template-columns: repeat(3, max-content);
+  column-gap: clamp(32px, 4vw, 72px);
+  justify-content: center;
+  min-width: 0;
+}
+
+.tm-footer-v3__col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}
+
+.tm-footer-v3__col-heading {
+  color: var(--tm-fv3-white);
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 17px;
+  margin: 0 0 12px;
+}
+
+.tm-footer-v3__col a {
+  color: var(--tm-fv3-link);
+  text-decoration: none;
+  font-size: 14px;
+  line-height: 16px;
+  margin-bottom: 8px;
+  overflow-wrap: anywhere;
+}
+
+.tm-footer-v3__col a:last-child {
+  margin-bottom: 0;
+}
+
+.tm-footer-v3__col a:hover {
+  color: var(--tm-fv3-white);
+}
+
+/* ---------- Newsletter ---------- */
+
+.tm-footer-v3__newsletter {
+  min-width: 0;
+}
+
+.tm-footer-v3__form {
+  margin: 0;
+}
+
+.tm-footer-v3__heading {
+  display: block;
+  margin: 0;
+  color: var(--tm-fv3-white);
+  font-weight: 700;
+  font-size: clamp(26px, 2.4vw, 32px);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  overflow-wrap: anywhere;
+}
+
+.tm-footer-v3__form-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.tm-footer-v3__input {
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 52px;
+  margin: 0;
+  padding: 0 22px;
+  border: 1px solid var(--tm-fv3-outline);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--tm-fv3-white);
+  font-family: inherit;
+  font-size: 15px;
+  line-height: normal;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.tm-footer-v3__input::placeholder {
+  color: var(--tm-fv3-placeholder);
+  opacity: 1;
+}
+
+.tm-footer-v3__input:focus {
+  border-color: var(--tm-fv3-yellow);
+}
+
+.tm-footer-v3__actions {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+}
+
+.tm-footer-v3__signup {
+  height: 52px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 24px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--tm-fv3-yellow);
+  color: var(--tm-fv3-bg);
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.tm-footer-v3__arrow {
+  width: 52px;
+  height: 52px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid var(--tm-fv3-yellow);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--tm-fv3-yellow);
+  cursor: pointer;
+}
+
+.tm-footer-v3__arrow svg {
+  display: block;
+  width: 22px;
+  height: 22px;
+}
+
+.tm-footer-v3__signup:hover,
+.tm-footer-v3__arrow:hover {
+  filter: brightness(1.05);
+}
+
+.tm-footer-v3__msg {
+  margin: 12px 0 0;
+  font-size: 14px;
+  color: var(--tm-fv3-yellow);
+}
+
+.tm-footer-v3__msg--error {
+  color: #ffb4a8;
+}
+
+/* ---------- Giant wordmark + copyright ---------- */
+
+.tm-footer-v3__wordmark {
+  margin: 74px 7.68% 0 8.3%;
+  font-family: var(--font-heading-family, Helvetica, Arial, sans-serif);
+  font-weight: 800;
+  font-size: min(250px, 17.4vw);
+  line-height: 0.84;
+  letter-spacing: -0.035em;
+  color: var(--tm-fv3-wordmark);
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.tm-footer-v3__wordmark--image {
+  line-height: 0;
+  font-size: 0;
+}
+
+.tm-footer-v3__wordmark--image img {
+  display: block;
+  width: 100%;
+  max-width: var(--wordmark-max, 1280px);
+  height: auto;
+  margin: 0 auto;
+}
+
+.tm-footer-v3__bottom {
+  margin-top: 56px;
+}
+
+.tm-footer-v3__wordmark + .tm-footer-v3__bottom {
+  margin-top: 22.5px;
+}
+
+.tm-footer-v3__copyright {
+  font-size: 13px;
+  line-height: 16px;
+  color: var(--tm-fv3-muted);
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+/* ---------- Small desktop / landscape tablet: 990–1199px ---------- */
+
+@media (max-width: 1199px) {
+  .tm-footer-v3 {
+    padding: 56px 0 40px;
+  }
+  .tm-footer-v3__row {
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-areas:
+      "brand cols"
+      "news news";
+    column-gap: clamp(32px, 5vw, 64px);
+    row-gap: 40px;
+    padding: 0 40px;
+  }
+  .tm-footer-v3__brand { grid-area: brand; }
+  .tm-footer-v3__cols { grid-area: cols; justify-content: start; }
+  .tm-footer-v3__newsletter {
+    grid-area: news;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px 32px;
+    padding-top: 40px;
+    border-top: 1px solid var(--tm-fv3-outline);
+  }
+  .tm-footer-v3__form {
+    display: contents;
+  }
+  .tm-footer-v3__heading {
+    flex: 0 1 auto;
+  }
+  .tm-footer-v3__form-row {
+    flex: 1 1 360px;
+    max-width: 560px;
+    margin-top: 0;
+  }
+  .tm-footer-v3__msg {
+    flex: 1 1 100%;
+    margin: 0;
+  }
+  .tm-footer-v3__wordmark {
+    margin-top: 56px;
+  }
+}
+
+/* ---------- Tablet: 750–989px (stacked) ---------- */
+
+@media (max-width: 989px) {
+  .tm-footer-v3__row {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "brand"
+      "cols"
+      "news";
+  }
+  .tm-footer-v3__cols {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: 24px;
+    justify-content: stretch;
+  }
+  .tm-footer-v3__newsletter {
+    display: block;
+  }
+  .tm-footer-v3__form {
+    display: block;
+  }
+  .tm-footer-v3__form-row {
+    max-width: none;
+    margin-top: 20px;
+  }
+}
+
+/* ---------- Mobile: ≤749px ---------- */
+
+@media (max-width: 749px) {
+  .tm-footer-v3 {
+    padding: 40px 0 calc(106px + env(safe-area-inset-bottom, 0px));
+  }
+  .tm-footer-v3__row {
+    gap: 32px;
+    padding: 0 20px;
+  }
+  .tm-footer-v3__logo {
+    width: min(var(--logo-w, 180px), 160px);
+  }
+  .tm-footer-v3__cols {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: 28px;
+    column-gap: 20px;
+  }
+  .tm-footer-v3__col a {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    margin-bottom: 0;
+    padding: 0;
+  }
+  .tm-footer-v3__newsletter {
+    padding-top: 32px;
+  }
+  .tm-footer-v3__form-row {
+    margin-top: 20px;
+    gap: 8px;
+  }
+  .tm-footer-v3__input {
+    flex: 1 1 0;
+    padding: 0 18px;
+  }
+  .tm-footer-v3__signup {
+    padding: 0 18px;
+  }
+  .tm-footer-v3__wordmark {
+    margin-top: 40px;
+  }
+  .tm-footer-v3__bottom {
+    margin-top: 40px;
+  }
+  .tm-footer-v3__wordmark + .tm-footer-v3__bottom {
+    margin-top: 20px;
+  }
+}
+
+@media (max-width: 359px) {
+  .tm-footer-v3__cols {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .tm-footer-v3__form-row {
+    flex-wrap: wrap;
+  }
+  .tm-footer-v3__input {
+    flex-basis: 100%;
+  }
+}
