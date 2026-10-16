@@ -104,6 +104,13 @@
                 </small>
               </div>
             {%- else -%}
+              {%- comment -%}
+                Outside .cart__ctas on purpose: that wrapper is `display:flex`
+                at >=750px, so the gate would be squeezed into a column beside
+                the checkout button instead of sitting above it.
+              {%- endcomment -%}
+              {%- render 'tm-sample-checkout-gate' -%}
+
               <div class="cart__ctas" {{ block.shopify_attributes }}>
                 <button
                   type="submit"

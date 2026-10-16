@@ -1,0 +1,28 @@
+{%- comment -%}
+  Turf Mart "N of 5 free samples selected" readout, with a pip per sample used.
+  Safe to render on every surface that shows a cart (PDP, cart drawer, cart
+  page, sample picker) — the custom element stays hidden until the first
+  /cart.js read lands and stays hidden again at 0 samples, so it never flashes a
+  wrong number on load. Takes no parameters.
+{%- endcomment -%}
+
+{{ 'tm-samples.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'tm-samples.js' | asset_url }}" defer="defer"></script>
+
+<tm-sample-counter class="tm-sample-counter" aria-live="polite" hidden>
+  <script type="application/json" data-tm-sample-config>
+    {
+      "routes": {
+        "cart": {{ routes.cart_url | json }},
+        "cartAdd": {{ routes.cart_add_url | append: '.js' | json }},
+        "cartChange": {{ routes.cart_change_url | append: '.js' | json }},
+        "cartJs": {{ routes.cart_url | append: '.js' | json }}
+      },
+      "text": {
+        "counter": {{ 'tm_samples.counter' | t | json }}
+      }
+    }
+  </script>
+  <span class="tm-sample-counter__pips" data-pips aria-hidden="true"></span>
+  <span data-text>{{ 'tm_samples.counter' | t }}</span>
+</tm-sample-counter>

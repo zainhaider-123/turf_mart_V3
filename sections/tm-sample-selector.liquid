@@ -1,0 +1,92 @@
+{%- comment -%}
+  Turf Mart Free Sample page — the checkbox picker that replaces the buy box on
+  /products/free-turf-sample. Assign the template suffix "sample" to the sample
+  product in the theme editor.
+
+  The $0 sample product is deliberately not buyable on this page: a bare "Add to
+  cart" would let a customer buy an empty sample line with no product attached,
+  so the picker is the only way to put one in the cart. See
+  references/prompts/free-sample-picker.md.
+{%- endcomment -%}
+
+{%- liquid
+  comment
+    A schema cannot set a default handle on a product setting, so both settings
+    fall back to the store default when left blank (same pattern as
+    snippets/turf-calculator.liquid).
+  endcomment
+  assign sample_p = section.settings.sample_product
+  if sample_p == blank
+    assign sample_p = all_products['free-turf-sample']
+  endif
+  assign sample_v = sample_p.selected_or_first_available_variant
+
+  assign list = section.settings.collection
+  if list == blank
+    assign list = collections['all']
+  endif
+
+  assign heading = section.settings.heading | default: 'tm_samples.picker_heading' | t
+  assign subheading = section.settings.subheading | default: 'tm_samples.picker_subheading' | t
+  assign empty_text = section.settings.empty_text
+-%}
+
+{% if sample_v -%}
+  {{ 'tm-samples.css' | asset_url | stylesheet_tag }}
+  <script src="{{ 'tm-samples.js' | asset_url }}" defer="defer"></script>
+
+  <div class="tm-picker">
+    <h1 class="tm-picker__heading">{{ heading }}</h1>
+    {%- if subheading != blank -%}
+      <p class="tm-picker__subheading">{{ subheading }}</p>
+    {%- endif -%}
+
+    {% render 'tm-sample-counter' %}
+
+    {%- comment -%}
+      The picker's section setting is the single place the cap lives: it is the
+      only config that sends `max`, so the PDP buttons inherit it as their
+      default of 5.
+    {%- endcomment -%}
+    {% render 'tm-sample-picker',
+      sample_variant: sample_v,
+      sample_product: sample_p,
+      collection: list,
+      product_type: section.settings.product_type,
+      limit: section.settings.products_to_show,
+      max: section.settings.max_samples,
+      empty_text: empty_text
+    %}
+  </div>
+{%- else -%}
+  <div class="tm-picker">
+    <h1 class="tm-picker__heading">{{ heading }}</h1>
+    <p class="tm-picker__subheading">{{ subheading }}</p>
+    <p class="tm-picker__empty">{{ section.settings.empty_text | default: 'Free samples are unavailable right now. Please check back soon.' }}</p>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Free sample picker",
+  "tag": "div",
+  "settings": [
+    { "type": "header", "content": "Sample product" },
+    { "type": "product", "id": "sample_product", "label": "Free sample product", "info": "Leave blank to use free-turf-sample." },
+    { "type": "range", "id": "max_samples", "label": "Free samples per order", "min": 1, "max": 10, "step": 1, "default": 5, "info": "The cap applied to the cart drawer, cart page and every Get free sample button." },
+    { "type": "header", "content": "Products to sample" },
+    { "type": "collection", "id": "collection", "label": "Sampleable products", "info": "Leave blank to use the all products collection." },
+    { "type": "text", "id": "product_type", "label": "Product type", "default": "Synthetic turf", "info": "Only products of this exact type are listed. Must match the spelling used in the product admin. Leave blank to list every product type." },
+    { "type": "range", "id": "products_to_show", "label": "Products to show", "min": 4, "max": 50, "step": 1, "default": 24, "info": "Maximum rows shown. The grid never exceeds the collection's first 50 products." },
+    { "type": "header", "content": "Text" },
+    { "type": "text", "id": "heading", "label": "Heading", "info": "Leave blank for the default." },
+    { "type": "text", "id": "subheading", "label": "Subheading", "info": "Leave blank for the default." },
+    { "type": "text", "id": "empty_text", "label": "No products message", "info": "Shown when the collection has nothing to sample at this product type." }
+  ],
+  "presets": [
+    {
+      "name": "Free sample picker"
+    }
+  ]
+}
+{% endschema %}

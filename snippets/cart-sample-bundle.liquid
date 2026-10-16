@@ -1,0 +1,51 @@
+{%- comment -%}
+  Renders the free-sample bundle line in the cart and cart drawer.
+
+  A bundle is one cart line whose line item properties carry the whole
+  selection, all written by assets/tm-samples.js:
+
+    _tm_bundle   "1"                                marker, constant
+    _tm_ids      "10197412544567,10197412151351"   product ids
+    _tm_titles   "Classic 35,CoolPlay 23"          aligned with _tm_ids
+    _tm_handles  "handle-a,handle-b"               aligned with _tm_ids
+
+  Every key is underscore-prefixed, so Dawn's generic property loop renders
+  nothing for this line and the samples are shown here instead. `item` is a
+  cart line; the snippet renders nothing for any line that is not a bundle.
+
+  Titles can legitimately contain commas, so they are displayed as one opaque
+  string. They are only ever *displayed* from here — counting and lookup go
+  through _tm_ids, which is numeric and unambiguous.
+{%- endcomment -%}
+
+{%- comment -%}
+  Self-contained: the bundle block needs assets/tm-samples.css but must never
+  pull in the JS, or the cart page would boot a second sample singleton.
+{%- endcomment -%}
+{{ 'tm-samples.css' | asset_url | stylesheet_tag }}
+
+{%- assign tm_bundle_ids = item.properties['_tm_ids'] -%}
+{%- assign tm_bundle_titles = item.properties['_tm_titles'] -%}
+
+{%- if item.properties['_tm_bundle'] == '1' -%}
+  {%- assign tm_bundle_count = 0 -%}
+  {%- if tm_bundle_ids != blank -%}
+    {%- assign tm_bundle_count = tm_bundle_ids | split: ',' | size -%}
+  {%- endif -%}
+
+  <div class="tm-bundle">
+    <p class="tm-bundle__summary">
+      {%- if tm_bundle_count == 0 -%}
+        {{ 'tm_samples.bundle_none' | t }}
+      {%- elsif tm_bundle_count == 1 -%}
+        {{ 'tm_samples.bundle_summary' | t: count: tm_bundle_count }}
+      {%- else -%}
+        {{ 'tm_samples.bundle_summary_plural' | t: count: tm_bundle_count }}
+      {%- endif -%}
+    </p>
+
+    {%- if tm_bundle_titles != blank -%}
+      <p class="tm-bundle__list">{{ tm_bundle_titles }}</p>
+    {%- endif -%}
+  </div>
+{%- endif -%}
