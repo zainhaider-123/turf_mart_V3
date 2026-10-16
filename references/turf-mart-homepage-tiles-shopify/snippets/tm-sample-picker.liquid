@@ -1,0 +1,117 @@
+{%- comment -%}
+  Turf Mart free-sample picker: a checkbox grid over the sampleable products,
+  with any sample already in the cart shown as checked + locked (plus a Remove
+  control) and one bulk "Add N free samples to cart" button for the pending
+  picks. Rendered by sections/tm-sample-selector.liquid on the Free Sample
+  product's own page:
+    {% render 'tm-sample-picker', sample_variant: sample_v, sample_product: sample_p,
+       collection: list, limit: products_to_show, max: max_samples, empty_text: empty_text %}
+
+  Also rendered by sections/tm-promos.liquid (homepage samples tile) with
+  `stay_on_page: true`, so adding or removing a sample there updates the tile,
+  counter and header count in place instead of going to the cart page.
+
+  Rows are rendered by assets/tm-samples.js from the `items` array below, so the
+  grid stays in sync with the cart without a page reload. No pagination: the
+  customer selects up to the cap across the whole list, which {% paginate %}
+  would break — the loop is capped at `limit` instead. The sample product itself
+  is excluded from its own grid.
+
+  `product_type` narrows the grid to a single product type (accessories, sand,
+  glue etc. are not worth a free sample). It is matched case-sensitively on
+  `product.type`, and blank means "no filter".
+{%- endcomment -%}
+
+{%- liquid
+  assign limit = limit | default: 24
+  assign max = max | default: 5
+  assign empty_text = empty_text | default: 'No products are available to sample yet. Please check back soon.'
+  assign sample_id = sample_product.id | default: 0
+  assign product_type = product_type | default: ''
+-%}
+
+{{ 'tm-samples.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'tm-samples.js' | asset_url }}" defer="defer"></script>
+
+<tm-sample-picker class="tm-sample-picker">
+  <script type="application/json" data-tm-sample-config>
+    {
+      "variantId": {{ sample_variant.id | default: 'null' }},
+      "max": {{ max }},
+      "stayOnPage": {% if stay_on_page %}true{% else %}false{% endif %},
+      "routes": {
+        "cart": {{ routes.cart_url | json }},
+        "cartAdd": {{ routes.cart_add_url | append: '.js' | json }},
+        "cartChange": {{ routes.cart_change_url | append: '.js' | json }},
+        "cartJs": {{ routes.cart_url | append: '.js' | json }}
+      },
+      "items": [
+        {%- liquid
+          assign rows = 0
+          # `collection.products` only ever exposes the collection's first 50
+          # products to Liquid, so the grid tops out there regardless of
+          # `limit`. Skipped (wrong type / the sample product itself) products
+          # used to consume `limit:` scan slots, which silently shortened the
+          # grid; breaking on the row count instead keeps the cap honest.
+          for p in collection.products
+            if rows >= limit
+              break
+            endif
+            assign matched = true
+            if p.id == sample_id
+              assign matched = false
+            endif
+            if product_type != blank and p.type != product_type
+              assign matched = false
+            endif
+            unless matched
+              continue
+            endunless
+            assign rows = rows | plus: 1
+            # Separator goes BEFORE every item but the first. Gating it on
+            # `rows == limit` instead left a trailing comma whenever the
+            # collection held fewer products than the scan limit, which is
+            # invalid JSON and silently killed the whole config.
+            unless rows == 1
+              echo ','
+            endunless
+            echo '{ "id": '
+            echo p.id
+            echo ', "title": '
+            echo p.title | strip_html | json
+            echo ', "handle": '
+            echo p.handle | json
+            echo ', "url": '
+            echo p.url | json
+            echo ', "image": '
+            if p.featured_image
+              echo p.featured_image | image_url: width: 120 | json
+            else
+              echo 'null'
+            endif
+            echo ' }'
+          endfor
+        -%}
+      ],
+      "text": {
+        "inBundle": {{ 'tm_samples.in_bundle' | t | json }},
+        "addSelected": {{ 'tm_samples.add_selected' | t | json }},
+        "addSelectedOne": {{ 'tm_samples.add_selected_one' | t | json }},
+        "remove": {{ 'tm_samples.remove' | t | json }},
+        "removeFromBundle": {{ 'tm_samples.remove_from_bundle' | t | json }},
+        "error": {{ 'tm_samples.error' | t | json }}
+      }
+    }
+  </script>
+  <div class="tm-picker__grid" data-rows role="group" aria-label="{{ 'tm_samples.title' | t }}"></div>
+  {%- if rows == 0 -%}
+    <p class="tm-picker__empty">{{ empty_text }}</p>
+  {%- endif -%}
+  <div class="tm-picker__actions">
+    <button type="button" class="tm-sample-btn" data-add-selected disabled>
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h12"/></svg>
+      <span data-label>{{ 'tm_samples.add_selected' | t: count: 0 }}</span>
+    </button>
+  </div>
+  <div class="tm-sample-error" data-error role="alert" hidden></div>
+</tm-sample-picker>
