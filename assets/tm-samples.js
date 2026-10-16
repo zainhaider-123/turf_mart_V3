@@ -262,6 +262,7 @@
         return res.json();
       })
       .then(function (cart) {
+        syncHeaderCount(cart);
         var parsed = parseCart(cart);
         state.count = parsed.count;
         state.byProduct = parsed.byProduct;
@@ -279,6 +280,20 @@
         notify();
       });
     return pending;
+  }
+
+  /* Keeps the header cart count right when a surface adds or removes samples
+     without leaving the page (the homepage picker). Counts units by default, as
+     the header Liquid does with cart.item_count; add data-count="lines" to the
+     .tm-cart-count element if the header switches to cart.items.size. */
+  function syncHeaderCount(cart) {
+    if (!cart || !cart.items) return;
+    document.querySelectorAll('.tm-cart-count').forEach(function (el) {
+      var n = el.getAttribute('data-count') === 'lines' ? cart.items.length : cart.item_count;
+      el.textContent = n;
+      var link = el.closest('a');
+      if (link && link.hasAttribute('aria-label')) link.setAttribute('aria-label', 'Cart, ' + n + ' items');
+    });
   }
 
   /* Dawn re-renders the drawer's sections in place, so a debounced refetch of
@@ -355,6 +370,12 @@
         /* fall through to cart page */
       }
     }
+    /* Surfaces that set stayOnPage (the homepage picker) keep the customer on
+       the page: re-read the cart so every counter, picker and button updates. */
+    if (cfg.stayOnPage) {
+      await hydrate();
+      return data;
+    }
     window.location.href = cfg.routes.cart;
     return data;
   }
@@ -381,6 +402,12 @@
       } catch (e) {
         /* fall through to cart page */
       }
+    }
+    /* Surfaces that set stayOnPage (the homepage picker) keep the customer on
+       the page: re-read the cart so every counter, picker and button updates. */
+    if (cfg.stayOnPage) {
+      await hydrate();
+      return data;
     }
     window.location.href = cfg.routes.cart;
     return data;
@@ -435,15 +462,18 @@
   var gateObserver = null;
   var gateFrame = null;
 
-  /* A half-finished bundle cannot be ordered: the customer must either fill the
-     bundle to the cap or take it out of the cart entirely.
+  /* Customers can order anywhere from 1 up to the cap (5 by default). There is
+     no minimum, so a bundle of 1, 2, 3 or 4 samples checks out normally.
+     Checkout is only held back if the bundle somehow holds MORE than the cap
+     (e.g. an old cart from before the cap was lowered), and the customer is
+     asked to remove the extras.
 
-     This is a UI gate only — see the note in assets/tm-samples.css and the
-     handoff doc. Shopify serves /checkout without consulting the theme, so the
-     only hard enforcement is a Cart and Checkout Validation Function. */
+     This is a UI gate only. Shopify serves /checkout without consulting the
+     theme, so the only hard enforcement is a Cart and Checkout Validation
+     Function. */
 
   function isBlocked() {
-    return state.ready && state.count > 0 && state.count < state.max;
+    return state.ready && state.count > state.max;
   }
 
   function checkoutButtons() {
@@ -529,10 +559,10 @@
       lockCheckout(blocked);
       this.hidden = !blocked;
       if (!blocked) return;
-      var remaining = state.max - state.count;
+      var extra = state.count - state.max;
       this.textEl.textContent = fill(
-        remaining === 1 ? this.cfg.text.blockedOne : this.cfg.text.blockedOther,
-        { count: remaining, max: state.max }
+        extra === 1 ? this.cfg.text.blockedOne : this.cfg.text.blockedOther,
+        { count: extra, max: state.max }
       );
     }
 
