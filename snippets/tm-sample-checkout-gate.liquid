@@ -1,0 +1,58 @@
+{%- comment -%}
+  Blocks checkout while the free-sample bundle is short of the cap.
+
+  Render immediately BEFORE the checkout button on every surface that has one
+  (cart page footer and cart drawer). While the cart holds a partly-filled
+  bundle — 1 to max-1 samples — this disables the checkout button, hides the
+  accelerated-wallet buttons, and offers the customer the only two ways out:
+  finish the bundle or remove it.
+
+  The element starts `hidden` and only shows itself once /cart.js has been read,
+  so an ordinary cart (no samples, or a full bundle) never sees a flash of it.
+
+  IMPORTANT — this is a UI gate, not server-side enforcement. Shopify serves
+  /checkout without consulting the theme, so a customer who types the URL
+  directly, or edits the cart with devtools, can still get through. Hard
+  enforcement needs a Cart and Checkout Validation Function (Shopify Plus for a
+  custom app, otherwise an App Store app). See references/prompts/free-sample-picker.md §2.
+
+  `sample_product` only supplies the "Finish my bundle" link target; the gate
+  does not need a variant.
+{%- endcomment -%}
+
+{{ 'tm-samples.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'tm-samples.js' | asset_url }}" defer="defer"></script>
+
+{%- liquid
+  assign sample_p = sample_product | default: all_products['free-turf-sample']
+-%}
+
+<tm-sample-checkout-gate class="tm-checkout-gate" role="alert" hidden>
+  <script type="application/json" data-tm-sample-config>
+    {
+      "routes": {
+        "cart": {{ routes.cart_url | json }},
+        "cartAdd": {{ routes.cart_add_url | append: '.js' | json }},
+        "cartChange": {{ routes.cart_change_url | append: '.js' | json }},
+        "cartJs": {{ routes.cart_url | append: '.js' | json }}
+      },
+      "text": {
+        "blockedOne": {{ 'tm_samples.checkout_blocked_one' | t: count: 1 | json }},
+        "blockedOther": {{ 'tm_samples.checkout_blocked_other' | t | json }},
+        "removeBundle": {{ 'tm_samples.remove_bundle' | t | json }},
+        "error": {{ 'tm_samples.error' | t | json }}
+      }
+    }
+  </script>
+  <p class="tm-checkout-gate__text" data-text></p>
+  <div class="tm-checkout-gate__actions">
+    {%- if sample_p != blank -%}
+      <a class="tm-checkout-gate__link" data-link href="{{ sample_p.url }}">
+        {{- 'tm_samples.finish_bundle' | t -}}
+      </a>
+    {%- endif -%}
+    <button type="button" class="tm-checkout-gate__remove" data-remove>
+      {{- 'tm_samples.remove_bundle' | t -}}
+    </button>
+  </div>
+</tm-sample-checkout-gate>

@@ -13,6 +13,16 @@
   assign qty_min = variant.quantity_rule.min | default: 1
   assign qty_step = variant.quantity_rule.increment | default: 1
   assign qty_max = variant.quantity_rule.max
+
+  comment
+    Free sample product: editor setting first, then the store's default handle
+    (a schema can't set a default on a product setting).
+  endcomment
+  assign sample_p = section.settings.sample_product
+  if sample_p == blank
+    assign sample_p = all_products['free-turf-sample']
+  endif
+  assign sample_v = sample_p.selected_or_first_available_variant
 -%}
 
 {{ 'tm-buy-box.css' | asset_url | stylesheet_tag }}
@@ -117,4 +127,11 @@
       <div class="tm-buy__error" data-error role="alert" hidden></div>
     {%- endform -%}
   </div>
+
+  {%- comment -%}
+    Free sample. sample_v is the single $0 variant of the sample product; the
+    sample itself is identified by line item properties, not a variant.
+  {%- endcomment -%}
+  {% render 'tm-sample-button', sample_variant: sample_v, product: product %}
+  {% render 'tm-sample-counter' %}
 </tm-buy-box>

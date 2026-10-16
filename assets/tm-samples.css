@@ -1,0 +1,175 @@
+/* ==========================================================================
+   Turf Mart — free samples (snippets/tm-sample-button.liquid,
+   tm-sample-counter.liquid, tm-sample-picker.liquid)
+
+   Button and bulk-add values are ported from the mockup's sample button, which
+   already ships at assets/turf-calculator.css .turf-calc__sample (lines 96-106,
+   123-124), so the calculator's two-column .turf-calc__actions grid keeps its
+   proportions when the shared snippet replaces the old button. All px — Dawn's
+   62.5% root size does not affect them. Tokens come from
+   assets/turf-mart-base.css. No webfonts are declared here.
+   ========================================================================== */
+
+tm-sample-button { display: block; min-width: 0; }
+tm-sample-counter,
+tm-sample-picker { display: block; }
+
+/* ---------- Buttons ---------- */
+.tm-sample-btn {
+  width: 100%; height: 56px;
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  border: 2px solid var(--green); border-radius: 10px;
+  background: var(--white); color: var(--green); cursor: pointer;
+  font-family: inherit; font-size: 15px; font-weight: 800; white-space: nowrap;
+}
+.tm-sample-btn:hover:not(:disabled) { background: var(--mint); }
+.tm-sample-btn:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
+
+/* At the cap the surface says so rather than just going grey. */
+.tm-sample-btn:disabled {
+  background: var(--line-soft); color: var(--muted); border-color: var(--line); cursor: not-allowed;
+}
+.tm-sample-btn.is-in-cart { background: var(--mint); }
+
+/* ---------- Counter ---------- */
+.tm-sample-counter {
+  display: block;
+  margin-top: 10px; padding: 10px 14px; border-radius: 10px;
+  background: var(--mint); color: var(--green);
+  font-size: 13px; font-weight: 800; text-align: center;
+}
+.tm-sample-counter[hidden] { display: none; }
+
+/* In the cart drawer and cart page the counter sits above the line items, not
+   under a buy box, so it needs the cart's own breathing room. */
+.drawer__footer .tm-sample-counter,
+.page-width .tm-sample-counter { margin: 0 0 16px; }
+.tm-sample-counter__pips { display: inline-flex; gap: 4px; margin-right: 8px; vertical-align: middle; }
+.tm-sample-pip {
+  width: 9px; height: 9px; border-radius: 50%;
+  background: transparent; border: 2px solid var(--green); opacity: .45;
+}
+.tm-sample-pip.is-on { background: var(--green); opacity: 1; }
+
+/* ---------- Error ---------- */
+.tm-sample-error {
+  margin-top: 12px; padding: 12px 14px; border-radius: 10px; font-size: 13px;
+  color: #b2391f; background: rgba(193, 68, 42, .08);
+}
+.tm-sample-error[hidden] { display: none; }
+
+/* ==========================================================================
+   Picker (sections/tm-sample-selector.liquid)
+   ========================================================================== */
+.tm-picker { max-width: 1120px; margin: 0 auto; padding: 40px 20px 60px; }
+.tm-picker__heading { margin: 0; font-family: var(--font-display); font-weight: 800; font-size: 32px; line-height: 1.1; letter-spacing: -0.02em; color: var(--ink); }
+.tm-picker__subheading { margin: 10px 0 0; font-size: 16px; line-height: 1.5; color: var(--muted); }
+.tm-picker .tm-sample-counter { margin: 20px 0 0; }
+
+.tm-picker__grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 12px; margin-top: 20px;
+}
+.tm-picker__grid:empty { margin-top: 0; }
+
+.tm-picker__row {
+  position: relative;
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 12px; border: 2px solid var(--line); border-radius: 12px;
+  background: var(--white); cursor: pointer;
+}
+.tm-picker__pick {
+  display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0;
+  padding: 0; margin: 0; cursor: pointer;
+}
+.tm-picker__row:hover { border-color: var(--green); }
+.tm-picker__row input[type='checkbox'] {
+  width: 22px; height: 22px; margin: 0; flex: none;
+  accent-color: var(--green); cursor: pointer;
+}
+.tm-picker__row:has(input:checked) { border-color: var(--green); background: var(--mint); }
+.tm-picker__row:has(input:disabled) { cursor: default; }
+.tm-picker__row:has(input:disabled) .tm-picker__pick { cursor: default; }
+.tm-picker__row:has(input:disabled):hover { border-color: var(--green); }
+.tm-picker__row.is-in-cart input { opacity: .9; }
+
+.tm-picker__img {
+  width: 56px; height: 56px; flex: none; border-radius: 8px;
+  background: var(--paper); object-fit: cover;
+}
+.tm-picker__text { display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1; }
+.tm-picker__title { font-size: 14px; font-weight: 800; line-height: 1.3; color: var(--ink); }
+.tm-picker__meta { font-size: 12px; font-weight: 700; line-height: 1.3; color: var(--green); }
+.tm-picker__remove {
+  flex: none; padding: 6px 10px; border: 1px solid var(--green); border-radius: 8px;
+  background: var(--white); color: var(--green); cursor: pointer;
+  font-family: inherit; font-size: 12px; font-weight: 800; white-space: nowrap;
+}
+.tm-picker__remove:hover { background: var(--mint); }
+.tm-picker__remove:disabled { opacity: .5; cursor: not-allowed; }
+.tm-picker__remove[hidden] { display: none; }
+
+.tm-picker__actions { margin-top: 24px; }
+.tm-picker__actions .tm-sample-btn { max-width: 420px; }
+.tm-picker__empty { margin: 20px 0 0; font-size: 15px; color: var(--muted); }
+
+/* ==========================================================================
+   The bundle line in the cart / drawer
+   ========================================================================== */
+.tm-bundle {
+  margin-top: 6px; padding: 10px 12px;
+  border: 1px solid var(--mint); border-radius: 10px; background: var(--mint);
+}
+.tm-bundle__summary {
+  margin: 0; font-family: var(--font-display); font-size: 14px;
+  font-weight: 800; color: var(--green-dark);
+}
+/* Stored as a comma-joined string. Titles may contain their own commas, which
+   is cosmetic only — counting reads the numeric _tm_ids property. */
+.tm-bundle__list { margin: 6px 0 0; font-size: 13px; line-height: 1.5; color: var(--ink); }
+
+/* ---------- checkout gate ----------
+   Shown only while the bundle holds 1..max-1 samples, immediately above the
+   checkout button. NOTE: this disables the checkout button in the UI only —
+   Shopify serves /checkout without consulting the theme, so it is a speed bump
+   for honest customers, not enforcement. See references/prompts/free-sample-picker.md §2. */
+.tm-checkout-gate {
+  /* Custom elements default to display:inline, which collapses the border onto
+     the first and last line fragments and leaves the block children unpainted.
+     The [hidden] companion rule is required because an author `display`
+     declaration beats the user-agent [hidden] rule. */
+  display: block;
+  margin: 0 0 14px; padding: 14px 16px;
+  border: 1px solid var(--yellow); border-left-width: 4px;
+  /* --paper, not the cart page's own background, so the card actually reads
+     as a card against the colour-scheme background. */
+  border-radius: 10px; background: var(--white);
+}
+.tm-checkout-gate[hidden] { display: none; }
+.tm-checkout-gate__text { margin: 0; font-size: 14px; line-height: 1.5; color: var(--ink); }
+.tm-checkout-gate__actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.tm-checkout-gate__link,
+.tm-checkout-gate__remove {
+  display: inline-flex; align-items: center; height: 40px; padding: 0 16px;
+  border-radius: 8px; font-size: 14px; font-weight: 800; text-decoration: none;
+}
+.tm-checkout-gate__link { background: var(--green); color: var(--white); }
+.tm-checkout-gate__link:hover { background: var(--green-dark); }
+.tm-checkout-gate__remove {
+  background: var(--white); color: var(--green); border: 2px solid var(--green);
+  cursor: pointer;
+}
+.tm-checkout-gate__remove:hover:not(:disabled) { background: var(--mint); }
+.tm-checkout-gate__remove:disabled { opacity: .5; cursor: not-allowed; }
+
+/* ==========================================================================
+   Mobile ≤ 749px
+   ========================================================================== */
+@media (max-width: 749px) {
+  .tm-sample-btn { height: 52px; font-size: 15px; }
+  .tm-picker { padding: 24px 16px 48px; }
+  .tm-picker__heading { font-size: 26px; }
+  .tm-picker__subheading { font-size: 15px; }
+  .tm-picker__grid { grid-template-columns: 1fr; }
+  .tm-picker__actions .tm-sample-btn { max-width: none; }
+}
