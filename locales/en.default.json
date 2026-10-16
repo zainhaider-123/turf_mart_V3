@@ -225,6 +225,29 @@
       "clear_filter": "Remove filter"
     }
   },
+  "tm_samples": {
+    "title": "Free samples",
+    "button": "Get free sample",
+    "in_bundle": "In your bundle",
+    "limit_reached": "Sample limit reached",
+    "counter": "{{ count }} of {{ max }} free samples selected",
+    "picker_heading": "Choose your free samples",
+    "picker_subheading": "Pick up to 5 turf samples and we'll post them out to you free. Turf Mart covers the postage, so there is nothing to pay at checkout.",
+    "add_selected": "Add {{ count }} free samples to my bundle",
+    "add_selected_one": "Add 1 free sample to my bundle",
+    "bundle_title": "Free turf sample bundle",
+    "bundle_summary": "{{ count }} free sample included",
+    "bundle_summary_plural": "{{ count }} free samples included",
+    "bundle_none": "No samples in this bundle yet",
+    "checkout_blocked_one": "Add 1 more free sample to your bundle to check out, or remove the bundle.",
+    "checkout_blocked_other": "Add {{ count }} more free samples to your bundle to check out, or remove the bundle.",
+    "finish_bundle": "Choose my samples",
+    "remove_bundle": "Remove bundle",
+    "remove": "Remove",
+    "remove_from_bundle": "Remove this sample from your bundle",
+    "added": "Added to your bundle",
+    "error": "Sorry, we couldn't add that sample. Please try again."
+  },
   "templates": {
     "search": {
       "no_results": "No results found for “{{ terms }}”. Check the spelling or use a different word or phrase.",

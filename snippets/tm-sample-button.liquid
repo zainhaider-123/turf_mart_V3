@@ -1,0 +1,47 @@
+{%- comment -%}
+  Turf Mart "Get free sample" button. Adds a sample of the current product to the
+  single bundle line in the cart — one line for the whole selection, held on the
+  Free Sample product's single $0 variant (one variant for the whole catalogue,
+  not one variant per product). See assets/tm-samples.js for the property shape.
+    {% render 'tm-sample-button', sample_variant: sample_v, product: product %}
+
+  Renders nothing when there is no sample product or variant, so callers do not
+  need to guard. The 5-sample cap is enforced client-side by
+  assets/tm-samples.js; see references/prompts/free-sample-picker.md section 2.
+{%- endcomment -%}
+
+{%- if sample_variant -%}
+  {{ 'tm-samples.css' | asset_url | stylesheet_tag }}
+  <script src="{{ 'tm-samples.js' | asset_url }}" defer="defer"></script>
+
+  <tm-sample-button class="tm-sample">
+    <script type="application/json" data-tm-sample-config>
+      {
+        "variantId": {{ sample_variant.id }},
+        "productId": {{ product.id }},
+        "productTitle": {{ product.title | strip_html | json }},
+        "productHandle": {{ product.handle | json }},
+        "routes": {
+          "cart": {{ routes.cart_url | json }},
+          "cartAdd": {{ routes.cart_add_url | append: '.js' | json }},
+          "cartChange": {{ routes.cart_change_url | append: '.js' | json }},
+          "cartJs": {{ routes.cart_url | append: '.js' | json }}
+        },
+        "text": {
+          "button": {{ 'tm_samples.button' | t | json }},
+          "inBundle": {{ 'tm_samples.in_bundle' | t | json }},
+          "limitReached": {{ 'tm_samples.limit_reached' | t | json }},
+          "added": {{ 'tm_samples.added' | t | json }},
+          "error": {{ 'tm_samples.error' | t | json }}
+        }
+      }
+    </script>
+
+    <button type="button" class="tm-sample-btn" data-add>
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M4 7.5l8 4.5 8-4.5M12 12v9"/></svg>
+      <span data-label>{{ 'tm_samples.button' | t }}</span>
+    </button>
+
+    <div class="tm-sample-error" data-error role="alert" hidden></div>
+  </tm-sample-button>
+{%- endif -%}

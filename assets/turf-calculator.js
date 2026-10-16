@@ -211,9 +211,6 @@
       this.addButtons = buttons;
       buttons.forEach((b) => b.addEventListener('click', () => this.addToCart()));
 
-      var sample = this.$('[data-add-sample]');
-      if (sample) sample.addEventListener('click', () => this.addSample(sample));
-
       if (this.buyBar) {
         // Move to <body> so theme animations (CSS transforms) can't break position: fixed.
         document.body.appendChild(this.buyBar);
@@ -390,13 +387,6 @@
       var token = Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
       var items = buildCartItems(this.cfg, plan, this.state.addons, token);
       await this.postItems(items);
-    }
-
-    async addSample(button) {
-      if (!this.cfg.sampleVariantId) return;
-      button.disabled = true;
-      await this.postItems([{ id: this.cfg.sampleVariantId, quantity: 1, properties: { 'Sample of': this.cfg.turf.title } }]);
-      button.disabled = false;
     }
 
     async postItems(items) {
