@@ -35,7 +35,7 @@
               assign card_height = 138
             endif
           -%}
-          <article class="product-card{% if section.settings.hide_extra_on_mobile and forloop.index > 4 %} d-only{% endif %}">
+          <a href="{{ product.url }}" class="product-card{% if section.settings.hide_extra_on_mobile and forloop.index > 4 %} d-only{% endif %}">
             <img
               src="{{ card_src }}"
               alt="{{ card_alt | escape }}"
@@ -57,11 +57,11 @@
                   <span class="price__value">{{ product.price | money }}</span>
                 {%- endif -%}
               </div>
-              <a href="{{ product.url }}" class="tm-btn tm-btn--green">
+              <span class="tm-btn tm-btn--green">
                 {{- section.settings.button_label | escape -}}
-              </a>
+              </span>
             </div>
-          </article>
+          </a>
         {%- endfor -%}
       {%- else -%}
         {%- for block in section.blocks -%}
@@ -79,7 +79,7 @@
               assign card_height = 138
             endif
           -%}
-          <article class="product-card{% if block.settings.desktop_only %} d-only{% endif %}" {{ block.shopify_attributes }}>
+          <a href="{{ block.settings.url | default: '#' }}" class="product-card{% if block.settings.desktop_only %} d-only{% endif %}" {{ block.shopify_attributes }}>
             <img
               src="{{ card_src }}"
               alt="{{ card_alt | escape }}"
@@ -95,11 +95,11 @@
                 <span class="price__value">{{ block.settings.price_value | escape }}</span>
                 <span class="price__unit">{{ block.settings.price_unit | escape }}</span>
               </div>
-              <a href="{{ block.settings.url | default: '#' }}" class="tm-btn tm-btn--green">
+              <span class="tm-btn tm-btn--green">
                 {{- section.settings.button_label | escape -}}
-              </a>
+              </span>
             </div>
-          </article>
+          </a>
         {%- endfor -%}
       {%- endif -%}
     </div>

@@ -147,7 +147,8 @@
             "title": "Not sure which turf?",
             "sub_desktop": "Talk to a turf expert on 1300 000 000.",
             "sub_mobile": "Talk to a turf expert.",
-            "url": ""
+            "url": "",
+            "custom_link": "tel:1300000000"
           }
         },
         "diy": {
@@ -332,7 +333,7 @@
           "settings": {
             "icon": "delivery",
             "title": "Australia-wide delivery",
-            "text": "Cut to size, to your door"
+            "text": "<p>Cut to size, to your door</p>"
           }
         },
         "samples": {
@@ -340,7 +341,7 @@
           "settings": {
             "icon": "samples",
             "title": "Free samples",
-            "text": "Feel it before you buy"
+            "text": "<p>Feel it before you buy</p>"
           }
         },
         "price": {
@@ -348,7 +349,7 @@
           "settings": {
             "icon": "shield",
             "title": "Price promise",
-            "text": "Found it cheaper? We'll match it"
+            "text": "<p>Found it cheaper? We'll match it</p>"
           }
         },
         "experts": {
@@ -356,7 +357,7 @@
           "settings": {
             "icon": "chat",
             "title": "Real turf experts",
-            "text": "Call 1300 000 000"
+            "text": "<p>Call <a href=\"tel:1300000000\">1300 000 000</a></p>"
           }
         }
       },

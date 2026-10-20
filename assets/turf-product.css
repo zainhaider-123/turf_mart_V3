@@ -126,7 +126,10 @@
 .mini-card {
   background: var(--white); border: 1px solid var(--line); border-radius: 12px; overflow: hidden;
   display: flex; flex-direction: column;
+  text-decoration: none; color: inherit;
+  transition: box-shadow .15s ease;
 }
+.mini-card:hover { box-shadow: 0 8px 24px rgba(0, 0, 0, .12); }
 .mini-card__media { width: 100%; height: 180px; object-fit: cover; display: block; }
 .mini-card__media--acc { display: flex; align-items: center; justify-content: center; background: var(--mint); }
 .mini-card__media--acc svg { width: 72px; height: 72px; }
