@@ -108,7 +108,97 @@
         "trade",
         "measure",
         "diy"
-      ]
+      ],
+      "disabled": true
+    },
+    "tm_promo_tiles": {
+      "type": "tm-promo-tiles",
+      "blocks": {
+        "samples": {
+          "type": "samples",
+          "settings": {
+            "layout": "picker",
+            "pill": "Free samples",
+            "title": "Feel it before you buy.",
+            "text": "Pick up to 5 turf samples and we'll post them to you.",
+            "button_label": "Order free samples",
+            "product_type": "Synthetic turf",
+            "products_to_show": 6,
+            "max_samples": 5,
+            "all_label": "See all samples"
+          }
+        },
+        "trade": {
+          "type": "trade",
+          "settings": {
+            "pill": "Turf Mart Trade",
+            "title": "Better rates for bigger jobs.",
+            "text": "For installers, landscapers and builders.",
+            "button_label": "Open a trade account",
+            "url": ""
+          },
+          "disabled": true
+        },
+        "measure": {
+          "type": "tile",
+          "settings": {
+            "icon": "chat",
+            "style": "yellow",
+            "title": "Not sure which turf?",
+            "sub_desktop": "Talk to a turf expert on 1300 000 000.",
+            "sub_mobile": "Talk to a turf expert.",
+            "url": ""
+          }
+        },
+        "diy": {
+          "type": "tile",
+          "settings": {
+            "icon": "kit",
+            "style": "white",
+            "title": "Your complete install kit",
+            "sub_desktop": "Turf, sand, pins, tape and glue, all in one order.",
+            "sub_mobile": "Everything in one order.",
+            "url": ""
+          }
+        },
+        "estimate": {
+          "type": "estimate",
+          "settings": {
+            "pill": "Turf calculator",
+            "title": "How much turf do I need?",
+            "text": "Enter your area, or just the length and width, for an instant roll estimate. Then pick your turf for a full quote with sand, pins, tape and glue.",
+            "button_prefix": "Shop",
+            "type_1_label": "Pet turf",
+            "type_1_collection": "pet",
+            "type_2_label": "Pool turf",
+            "type_2_collection": "pool",
+            "type_3_label": "Landscape turf",
+            "type_3_collection": "landscape",
+            "type_4_label": "Commercial turf",
+            "type_4_collection": "commercial",
+            "type_5_label": "Sports turf",
+            "type_5_collection": "sports",
+            "type_6_label": "Eco-friendly turf",
+            "type_6_collection": "eco-friendly",
+            "default_type": 3,
+            "lineal_min": 4,
+            "lineal_max": 20,
+            "lineal_step": 2,
+            "hint_area": "Enter your area to see the rolls you need.",
+            "hint_dims": "Enter the length and width of your lawn to see the rolls you need.",
+            "your_area_label": "Your area:",
+            "coverage_label": "m\u00b2 of turf \u00b7 from"
+          }
+        }
+      },
+      "block_order": [
+        "samples",
+        "estimate",
+        "trade",
+        "measure",
+        "diy"
+      ],
+      "settings": {}
     },
     "tm_best_sellers": {
       "type": "tm-best-sellers",
@@ -282,6 +372,7 @@
     "tm_hero",
     "tm_turf_types",
     "tm_promos",
+    "tm_promo_tiles",
     "tm_best_sellers",
     "tm_feature",
     "tm_reviews",

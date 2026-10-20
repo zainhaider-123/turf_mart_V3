@@ -1,0 +1,148 @@
+/* ==========================================================================
+   Turf Mart — homepage promo tiles: sample picker + quick turf estimate
+   (sections/tm-promo-tiles.liquid). Loads after homepage.css and reuses its
+   tokens, grid and tile styles. All px. The .tm-section--promo-tiles prefix
+   keeps the shared grid rules off the old sections/tm-promos.liquid.
+   ========================================================================== */
+
+/* The picker tile can be taller than the old image tile; the right-hand tiles
+   stretch to match instead of the content overflowing. */
+@media (min-width: 1200px) {
+  .tm-section--promo-tiles .promos { grid-template-rows: minmax(312px, auto) minmax(356px, auto); }
+}
+.tm-section--promo-tiles .promos h2.promo__title { margin: 0; }
+.tm-section--promo-tiles .promos p.promo__text { margin: 0; }
+
+/* ---------- Free-sample picker tile ---------- */
+.promo--picker { gap: 20px; cursor: default; }
+.promo--picker .tm-pick-hero { height: 150px; }
+.promo--picker .promo__body.tm-pick { gap: 12px; padding: 0 6px 6px; align-items: stretch; }
+.promo--picker .tm-pill { align-self: flex-start; }
+.promo--picker .promo__title { font-size: 34px; }
+.promo--picker .promo__text { font-size: 16px; line-height: 1.5; color: var(--body-2); }
+
+.promo--picker .tm-sample-counter { margin: 0; padding: 8px 12px; text-align: left; font-size: 13px; }
+.promo--picker .tm-sample-picker { display: flex; flex-direction: column; gap: 12px; }
+.promo--picker .tm-picker__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 0; }
+.promo--picker .tm-picker__row { padding: 8px 10px; border-width: 1.5px; border-radius: 10px; gap: 6px; }
+.promo--picker .tm-picker__pick { gap: 10px; }
+.promo--picker .tm-picker__row input[type='checkbox'] { width: 18px; height: 18px; }
+.promo--picker .tm-picker__img { width: 40px; height: 40px; border-radius: 6px; }
+.promo--picker .tm-picker__title { font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.promo--picker .tm-picker__meta { font-size: 11px; }
+.promo--picker .tm-picker__meta:empty { display: none; }
+/* Remove = small ✕ on the row corner (its text stays for screen readers) */
+.promo--picker .tm-picker__remove {
+  position: absolute; top: -8px; right: -6px; width: 22px; height: 22px; padding: 0;
+  border: 0; border-radius: 50%; background: var(--ink); color: var(--white);
+  font-size: 0; line-height: 1; display: flex; align-items: center; justify-content: center;
+}
+.promo--picker .tm-picker__remove[hidden] { display: none; }
+.promo--picker .tm-picker__remove::before { content: "✕"; font-size: 12px; }
+.promo--picker .tm-picker__remove:hover { background: var(--green); }
+.promo--picker .tm-picker__actions { margin-top: 2px; }
+.promo--picker .tm-picker__actions .tm-sample-btn {
+  max-width: none; height: 52px; border: 0; border-radius: 9px;
+  background: var(--yellow); color: var(--green-dark);
+}
+.promo--picker .tm-picker__actions .tm-sample-btn:hover:not(:disabled) { background: var(--yellow); filter: brightness(1.05); }
+.promo--picker .tm-picker__actions .tm-sample-btn:disabled { background: var(--line); color: var(--muted); }
+.promo--picker .tm-picker__actions .tm-sample-btn svg { display: none; }
+.promo--picker .tm-picker__empty { margin: 0; font-size: 14px; }
+.tm-pick__all {
+  align-self: center; display: inline-flex; align-items: center; gap: 6px;
+  font-size: 14px; font-weight: 800; color: var(--green); text-decoration: none;
+}
+.tm-pick__all:hover { color: var(--green-dark); text-decoration: underline; }
+
+/* ---------- Quick turf estimate tile (sits in the old trade slot) ---------- */
+.promo--estimate, .promo--estimate *, .promo--picker, .promo--picker * { box-sizing: border-box; }
+tm-turf-estimate { display: grid; }
+.promo--estimate {
+  grid-column: span 2; background: var(--green-dark); color: var(--white);
+  padding: 20px 20px 20px 58px; grid-template-columns: minmax(0, 1fr) 360px; gap: 32px; align-items: center;
+}
+.promo--estimate .promo__body { justify-content: center; }
+.promo--estimate .promo__title { font-size: 34px; }
+.promo--estimate .promo__text { font-size: 16px; line-height: 1.5; color: #d3e4d9; max-width: 380px; }
+
+.tm-est {
+  margin: 0; padding: 20px; border-radius: 10px; background: var(--white); color: var(--ink);
+  display: flex; flex-direction: column; gap: 12px;
+}
+.tm-est__modes { display: flex; gap: 3px; padding: 3px; border-radius: 9px; background: var(--paper); border: 1px solid var(--line); }
+.tm-est__mode {
+  flex: 1; padding: 7px 6px; border: 0; border-radius: 6px; background: transparent; cursor: pointer;
+  font-family: inherit; font-size: 12px; font-weight: 800; color: var(--muted);
+}
+.tm-est__mode[aria-selected='true'] { background: var(--white); color: var(--green); box-shadow: 0 1px 3px rgba(15,47,34,.14); }
+.tm-est__fields { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 10px; }
+/* Turf type always has its own row; row two is Area (full width) or Length | Width,
+   so the card keeps its height when switching tabs. */
+.tm-est__field--wide { grid-column: span 2; }
+.tm-est__field { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+.tm-est__field[hidden] { display: none; }
+.tm-est__field > span { font-size: 12px; font-weight: 700; color: var(--muted); }
+.tm-est__field select,
+.tm-est__field input {
+  width: 100%; height: 46px; margin: 0; border: 2px solid var(--line); border-radius: 9px; background: var(--white);
+  color: var(--ink); font-family: inherit; font-size: 16px; padding: 0 12px; box-shadow: none;
+}
+.tm-est__field select {
+  -webkit-appearance: none; appearance: none; padding-right: 32px; font-size: 14px; font-weight: 700; cursor: pointer;
+  background: var(--white) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23175c3f' stroke-width='2.4'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") right 10px center / 16px no-repeat;
+}
+.tm-est__field select:focus,
+.tm-est__field input:focus { outline: none; border-color: var(--green); }
+
+.tm-est__result {
+  min-height: 100px; display: flex; flex-direction: column; justify-content: center; gap: 1px;
+  padding: 10px 12px; border-radius: 9px; background: var(--mint);
+}
+.tm-est__hint { font-size: 13px; color: var(--muted); }
+.tm-est__rolls { font-size: 16px; font-weight: 800; color: var(--green); }
+.tm-est__meta { font-size: 13px; color: var(--body-2); }
+.tm-est__meta b { color: var(--ink); }
+.tm-est__cta { width: 100%; gap: 8px; padding: 14px 16px; margin: 0 !important; }
+.tm-est__setup { grid-column: 1 / -1; margin: 0; font-size: 13px; color: var(--yellow); }
+
+/* ---------- Tablet ---------- */
+@media (max-width: 1199px) {
+  .promo--picker { flex-direction: column !important; align-items: stretch !important; }
+  .promo--picker .tm-pick-hero { width: 100% !important; height: 160px !important; }
+  .promo--picker .tm-picker__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .promo--estimate { padding-left: 40px; grid-template-columns: minmax(0, 1fr) 340px; min-height: 300px; }
+}
+@media (max-width: 989px) {
+  .promo--picker .tm-picker__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .promo--estimate { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; }
+}
+
+/* ---------- Mobile ---------- */
+@media (max-width: 749px) {
+  /* The image-overlay sample card becomes a white picker card */
+  .promo--picker {
+    height: auto !important; padding: 16px !important; gap: 0; justify-content: flex-start; overflow: visible;
+    background: var(--white); color: var(--ink) !important;
+  }
+  .promo--picker::after { display: none; }
+  .promo--picker .tm-pick-hero { display: none; }
+  .promo--picker .promo__body.tm-pick { position: static; padding: 0; gap: 10px; }
+  .promo--picker .tm-pill { color: var(--green); }
+  .promo--picker .promo__title { font-size: 22px; letter-spacing: 0; }
+  .promo--picker .promo__text { font-size: 14px; }
+  .promo--picker .tm-picker__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+  .promo--picker .tm-picker__row { padding: 6px 8px 6px 6px; }
+  .promo--picker .tm-picker__pick { gap: 8px; }
+  .promo--picker .tm-picker__img { width: 30px; height: 30px; }
+  .promo--picker .tm-picker__title { font-size: 13px; white-space: normal; line-height: 1.2; }
+  .promo--picker .tm-picker__actions .tm-sample-btn { height: 48px; font-size: 14px; }
+
+  .promo--estimate { display: flex; flex-direction: column; align-items: stretch; padding: 20px; gap: 14px; min-height: 0; }
+  .promo--estimate .promo__body { gap: 6px; }
+  .promo--estimate .promo__title { font-size: 22px; line-height: 1.1; letter-spacing: 0; }
+  .promo--estimate .promo__text { font-size: 14px; }
+  .tm-est { padding: 14px; gap: 10px; }
+  .tm-est__fields { gap: 8px; }
+  .tm-est__rolls { font-size: 15px; }
+}

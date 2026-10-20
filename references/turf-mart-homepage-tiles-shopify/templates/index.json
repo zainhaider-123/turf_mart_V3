@@ -1,0 +1,435 @@
+{
+  "sections": {
+    "tm_hero": {
+      "type": "tm-hero",
+      "settings": {
+        "image": "shopify://shop_images/ba2da672-bd85-4319-b86f-13208d5c5bfa.png",
+        "eyebrow": "Australia's biggest range of synthetic turf.",
+        "heading": "Every turf. One store. Priced by the m².",
+        "lead": "Pet, pool, landscape, commercial and sports turf, plus everything to install it.",
+        "cta_label": "Shop all turf",
+        "cta_link": "shopify://collections/all",
+        "mobile_cta_label": "Order free samples",
+        "mobile_cta_link": "",
+        "card_title": "Free samples",
+        "card_text": "Pick up to 5 turf samples and we'll post them to you, free.",
+        "card_link_label": "Order free samples",
+        "card_link": "shopify://products/free-turf-sample"
+      }
+    },
+    "tm_turf_types": {
+      "type": "tm-turf-types",
+      "blocks": {
+        "pet": {
+          "type": "card",
+          "settings": {
+            "collection": "pet",
+            "name": "Pet Turf",
+            "price_prefix": "From",
+            "price_value": "$54.00",
+            "price_unit": "/m²",
+            "url": "",
+            "mobile_only": false
+          }
+        },
+        "pool": {
+          "type": "card",
+          "settings": {
+            "collection": "pool",
+            "name": "Pool Turf",
+            "price_prefix": "From",
+            "price_value": "$57.00",
+            "price_unit": "/m²",
+            "url": "",
+            "mobile_only": false
+          }
+        },
+        "landscape": {
+          "type": "card",
+          "settings": {
+            "collection": "landscape",
+            "name": "Landscape Turf",
+            "price_prefix": "From",
+            "price_value": "$59.00",
+            "price_unit": "/m²",
+            "url": "",
+            "mobile_only": false
+          }
+        },
+        "commercial": {
+          "type": "card",
+          "settings": {
+            "collection": "commercial",
+            "name": "Commercial Turf",
+            "price_prefix": "From",
+            "price_value": "$56.00",
+            "price_unit": "/m²",
+            "url": "",
+            "mobile_only": false
+          }
+        },
+        "sports": {
+          "type": "card",
+          "settings": {
+            "collection": "sports",
+            "name": "Sports Turf",
+            "price_prefix": "From",
+            "price_value": "$58.00",
+            "price_unit": "/m²",
+            "url": "",
+            "mobile_only": false
+          }
+        },
+        "card_mDbWXK": {
+          "type": "card",
+          "settings": {
+            "collection": "eco-friendly",
+            "name": "Eco Friendly",
+            "price_prefix": "From",
+            "price_value": "$50.00",
+            "price_unit": "/m²",
+            "url": "",
+            "mobile_only": false
+          }
+        }
+      },
+      "block_order": [
+        "pet",
+        "pool",
+        "landscape",
+        "commercial",
+        "sports",
+        "card_mDbWXK"
+      ],
+      "settings": {
+        "heading": "Shop by turf type"
+      }
+    },
+    "tm_promos": {
+      "type": "tm-promos",
+      "blocks": {
+        "samples": {
+          "type": "samples",
+          "settings": {
+            "image": "shopify://shop_images/Close-up_of_turf_blades.png",
+            "pill": "Free samples",
+            "title": "Feel it before you buy.",
+            "text": "Pick up to 5 turf samples and we'll post them to you.",
+            "button_label": "Order free samples",
+            "url": "shopify://products/free-turf-sample",
+            "layout": "picker",
+            "product_type": "Synthetic turf",
+            "products_to_show": 6,
+            "max_samples": 5,
+            "all_label": "See all samples"
+          }
+        },
+        "trade": {
+          "type": "trade",
+          "settings": {
+            "image": "shopify://shop_images/Turf_outside_a_commercial_building.png",
+            "pill": "Turf Mart Trade",
+            "title": "Better rates for bigger jobs.",
+            "text": "For installers, landscapers and builders.",
+            "button_label": "Open a trade account",
+            "url": ""
+          },
+          "disabled": true
+        },
+        "measure": {
+          "type": "tile",
+          "settings": {
+            "icon": "chat",
+            "style": "yellow",
+            "title": "Not sure which turf?",
+            "sub_desktop": "Talk to a turf expert on 1300 000 000.",
+            "sub_mobile": "Talk to a turf expert.",
+            "url": ""
+          }
+        },
+        "diy": {
+          "type": "tile",
+          "settings": {
+            "icon": "kit",
+            "style": "white",
+            "title": "Your complete install kit",
+            "sub_desktop": "Turf, sand, pins, tape and glue, all in one order.",
+            "sub_mobile": "Everything in one order.",
+            "url": ""
+          }
+        },
+        "estimate": {
+          "type": "estimate",
+          "settings": {
+            "pill": "Turf calculator",
+            "title": "How much turf do I need?",
+            "text": "Enter your area, or just the length and width, for an instant roll estimate. Then pick your turf for a full quote with sand, pins, tape and glue.",
+            "button_prefix": "Shop",
+            "type_1_label": "Pet turf",
+            "type_1_collection": "pet",
+            "type_2_label": "Pool turf",
+            "type_2_collection": "pool",
+            "type_3_label": "Landscape turf",
+            "type_3_collection": "landscape",
+            "type_4_label": "Commercial turf",
+            "type_4_collection": "commercial",
+            "type_5_label": "Sports turf",
+            "type_5_collection": "sports",
+            "type_6_label": "Eco-friendly turf",
+            "type_6_collection": "eco-friendly",
+            "default_type": 3,
+            "lineal_min": 4,
+            "lineal_max": 20,
+            "lineal_step": 2,
+            "hint_area": "Enter your area to see the rolls you need.",
+            "hint_dims": "Enter the length and width of your lawn to see the rolls you need.",
+            "your_area_label": "Your area:",
+            "coverage_label": "m² of turf · from"
+          }
+        }
+      },
+      "block_order": [
+        "samples",
+        "estimate",
+        "trade",
+        "measure",
+        "diy"
+      ],
+      "settings": {}
+    },
+    "tm_best_sellers": {
+      "type": "tm-best-sellers",
+      "blocks": {
+        "supreme": {
+          "type": "product_card",
+          "settings": {
+            "vendor": "SYNLawn",
+            "name": "Supreme 35",
+            "price_from": "From",
+            "price_value": "$84.00",
+            "price_unit": "/m²",
+            "url": "",
+            "desktop_only": false
+          }
+        },
+        "arena": {
+          "type": "product_card",
+          "settings": {
+            "vendor": "Urban Turf Solutions",
+            "name": "Urban Arena",
+            "price_from": "From",
+            "price_value": "$81.00",
+            "price_unit": "/m²",
+            "url": "",
+            "desktop_only": false
+          }
+        },
+        "pooldeluxe": {
+          "type": "product_card",
+          "settings": {
+            "vendor": "Great Lawn Co",
+            "name": "PoolDeluxe 30",
+            "price_from": "From",
+            "price_value": "$79.00",
+            "price_unit": "/m²",
+            "url": "",
+            "desktop_only": false
+          }
+        },
+        "classic": {
+          "type": "product_card",
+          "settings": {
+            "vendor": "SYNLawn",
+            "name": "Classic 35",
+            "price_from": "From",
+            "price_value": "$69.00",
+            "price_unit": "/m²",
+            "url": "",
+            "desktop_only": false
+          }
+        },
+        "cooldeluxe": {
+          "type": "product_card",
+          "settings": {
+            "vendor": "Great Lawn Co",
+            "name": "CoolDeluxe 35",
+            "price_from": "From",
+            "price_value": "$74.00",
+            "price_unit": "/m²",
+            "url": "",
+            "desktop_only": true
+          }
+        }
+      },
+      "block_order": [
+        "supreme",
+        "arena",
+        "pooldeluxe",
+        "classic",
+        "cooldeluxe"
+      ],
+      "settings": {
+        "heading": "Best sellers",
+        "collection": "frontpage",
+        "products_to_show": 5,
+        "price_prefix": "From",
+        "price_unit": "/m²",
+        "hide_extra_on_mobile": true,
+        "button_label": "Add to cart",
+        "view_all_label": "View all turf",
+        "view_all_url": "shopify://collections/all"
+      }
+    },
+    "tm_feature": {
+      "type": "tm-feature",
+      "settings": {
+        "image": "shopify://shop_images/image_13.png",
+        "eyebrow": "Pet Turf",
+        "heading": "Built for dogs. Easy to hose.",
+        "text": "Tough, quick-draining turf made for busy backyards. No mud, no bare patches",
+        "text_desktop_extra": ", no muddy paws through the house",
+        "button_1_label": "Shop pet turf",
+        "button_1_url": "shopify://collections/pet",
+        "button_2_label": "Get a free sample",
+        "button_2_url": "shopify://products/free-turf-sample"
+      }
+    },
+    "tm_reviews": {
+      "type": "tm-reviews",
+      "blocks": {
+        "review_1": {
+          "type": "review",
+          "settings": {
+            "image": "shopify://shop_images/Customer_photo__dog_on_new_turf.jpg",
+            "rating": "5",
+            "quote": "The dogs are on it all day and it still looks brand new. Hosing it down takes two minutes.",
+            "author": "Sarah T.",
+            "location": "Brisbane, QLD",
+            "tag": "Pet Turf"
+          }
+        },
+        "review_2": {
+          "type": "review",
+          "settings": {
+            "image": "shopify://shop_images/Customer_photo__turf_around_a_pool.png",
+            "rating": "5",
+            "quote": "Looks amazing around the pool and it's not slippery when wet. Delivery was quick and the cut was spot on.",
+            "author": "Mark D.",
+            "location": "Gold Coast, QLD",
+            "tag": "Pool Turf"
+          }
+        },
+        "review_3": {
+          "type": "review",
+          "settings": {
+            "image": "shopify://shop_images/Customer_photo__new_backyard_lawn.png",
+            "rating": "5",
+            "quote": "Ordered samples first, then the full roll. Easy to lay ourselves with the install kit.",
+            "author": "Emma L.",
+            "location": "Sydney, NSW",
+            "tag": "Landscape Turf"
+          }
+        },
+        "review_4": {
+          "type": "review",
+          "settings": {
+            "rating": "5",
+            "quote": "We laid it outside our office entrance. It still looks sharp after a full summer of foot traffic.",
+            "author": "James P.",
+            "location": "Melbourne, VIC",
+            "tag": "Commercial Turf"
+          }
+        },
+        "review_5": {
+          "type": "review",
+          "settings": {
+            "rating": "5",
+            "quote": "Our backyard putting green rolls true. The kids and I are out there every weekend.",
+            "author": "Daniel R.",
+            "location": "Perth, WA",
+            "tag": "Sports Turf"
+          }
+        },
+        "review_6": {
+          "type": "review",
+          "settings": {
+            "rating": "5",
+            "quote": "The calculator made ordering easy. The right rolls, sand and pins all arrived together.",
+            "author": "Priya K.",
+            "location": "Adelaide, SA",
+            "tag": "Landscape Turf"
+          }
+        }
+      },
+      "block_order": [
+        "review_1",
+        "review_2",
+        "review_3",
+        "review_4",
+        "review_5",
+        "review_6"
+      ],
+      "settings": {
+        "heading": "What our customers say",
+        "rating": "4.9",
+        "rating_suffix": "out of 5",
+        "reviews_label": "1,200+ reviews",
+        "reviews_url": "",
+        "show_arrows": true
+      }
+    },
+    "tm_usps": {
+      "type": "tm-usps",
+      "blocks": {
+        "delivery": {
+          "type": "usp",
+          "settings": {
+            "icon": "delivery",
+            "title": "Australia-wide delivery",
+            "text": "Cut to size, to your door"
+          }
+        },
+        "samples": {
+          "type": "usp",
+          "settings": {
+            "icon": "samples",
+            "title": "Free samples",
+            "text": "Feel it before you buy"
+          }
+        },
+        "price": {
+          "type": "usp",
+          "settings": {
+            "icon": "shield",
+            "title": "Price promise",
+            "text": "Found it cheaper? We'll match it"
+          }
+        },
+        "experts": {
+          "type": "usp",
+          "settings": {
+            "icon": "chat",
+            "title": "Real turf experts",
+            "text": "Call 1300 000 000"
+          }
+        }
+      },
+      "block_order": [
+        "delivery",
+        "samples",
+        "price",
+        "experts"
+      ],
+      "settings": {}
+    }
+  },
+  "order": [
+    "tm_hero",
+    "tm_turf_types",
+    "tm_promos",
+    "tm_best_sellers",
+    "tm_feature",
+    "tm_reviews",
+    "tm_usps"
+  ]
+}

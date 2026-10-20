@@ -7,6 +7,10 @@
     {% render 'tm-sample-picker', sample_variant: sample_v, sample_product: sample_p,
        collection: list, limit: products_to_show, max: max_samples, empty_text: empty_text %}
 
+  Also rendered by sections/tm-promo-tiles.liquid (homepage samples tile) with
+  `stay_on_page: true`, so adding or removing a sample there updates the tile,
+  counter and header count in place instead of going to the cart page.
+
   Rows are rendered by assets/tm-samples.js from the `items` array below, so the
   grid stays in sync with the cart without a page reload. No pagination: the
   customer selects up to the cap across the whole list, which {% paginate %}
@@ -34,6 +38,7 @@
     {
       "variantId": {{ sample_variant.id | default: 'null' }},
       "max": {{ max }},
+      "stayOnPage": {% if stay_on_page %}true{% else %}false{% endif %},
       "routes": {
         "cart": {{ routes.cart_url | json }},
         "cartAdd": {{ routes.cart_add_url | append: '.js' | json }},
