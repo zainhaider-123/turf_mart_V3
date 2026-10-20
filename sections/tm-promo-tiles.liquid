@@ -140,7 +140,12 @@
                         if t_price != blank
                           assign t_from = t_price | times: 100
                         else
-                          assign t_from = t_coll.price_min | divided_by: roll_width
+                          # Collection has no price_min/price_max of its own (that's a Product
+                          # property); find the collection's cheapest product instead. Only the
+                          # first 50 products are visible to Liquid, same cap as elsewhere in
+                          # this theme, so a turf-only collection under that size is exact.
+                          assign t_cheapest = t_coll.products | sort: 'price_min' | first
+                          assign t_from = t_cheapest.price_min | divided_by: roll_width
                         endif
                       -%}
                       <option value="{{ t_coll.handle }}" data-url="{{ t_coll.url }}" data-from="{{ t_from | round }}"{% if i == default_index %} selected{% endif %}>{{ t_label | escape }}</option>
