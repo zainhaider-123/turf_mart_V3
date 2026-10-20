@@ -16,7 +16,7 @@
               <svg viewBox="0 0 24 24" fill="none" stroke="#175c3f" stroke-width="1.8"><path d="M3 7h11v9H3z"/><path d="M14 10h4l3 3v3h-7z"/><circle cx="7" cy="18" r="1.6"/><circle cx="17.5" cy="18" r="1.6"/></svg>
           {%- endcase -%}
           <span class="usp__title">{{ block.settings.title | escape }}</span>
-          <span class="usp__text">{{ block.settings.text | escape }}</span>
+          <div class="usp__text">{{ block.settings.text }}</div>
         </div>
       {%- endfor -%}
     </div>
@@ -64,10 +64,11 @@
           "default": "Australia-wide delivery"
         },
         {
-          "type": "text",
+          "type": "richtext",
           "id": "text",
           "label": "Text",
-          "default": "Cut to size, to your door"
+          "info": "Select text and use the link icon to make it clickable, e.g. a tel: link for a phone number.",
+          "default": "<p>Cut to size, to your door</p>"
         }
       ]
     }
