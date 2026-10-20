@@ -251,7 +251,7 @@
             {%- if rec.id != product.id and rec.type == 'Synthetic turf' -%}
               {%- assign shown = shown | plus: 1 -%}
               {%- capture rec_width -%}{% render 'tm-sqm-width', product: rec %}{%- endcapture -%}
-              <article class="mini-card">
+              <a href="{{ rec.url }}" class="mini-card">
                 {%- if rec.featured_image -%}
                   {{ rec.featured_image | image_url: width: 400 | image_tag: class: 'mini-card__media', loading: 'lazy' }}
                 {%- endif -%}
@@ -263,9 +263,9 @@
                   {%- else -%}
                     <span class="mini-card__price">{{ rec.price | money }}</span>
                   {%- endif -%}
-                  <a href="{{ rec.url }}" class="tm-btn tm-btn--outline-green mini-card__btn">Choose size</a>
+                  <span class="tm-btn tm-btn--outline-green mini-card__btn">Choose size</span>
                 </div>
-              </article>
+              </a>
             {%- endif -%}
           {%- endfor -%}
       {%- endif -%}

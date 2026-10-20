@@ -209,7 +209,7 @@
 
         {%- when 'tile' -%}
           <a
-            href="{{ block.settings.url | default: '#' }}"
+            href="{{ block.settings.custom_link | default: block.settings.url | default: '#' }}"
             class="promo promo--tile{% if block.settings.style == 'yellow' %} promo--measure{% else %} promo--diy{% endif %}"
             {{ block.shopify_attributes }}
           >
@@ -342,7 +342,8 @@
         { "type": "text", "id": "title", "label": "Title", "default": "How much turf do I need?" },
         { "type": "text", "id": "sub_desktop", "label": "Subtitle (desktop)", "default": "Measure up and order by the m²." },
         { "type": "text", "id": "sub_mobile", "label": "Subtitle (mobile)", "default": "Order by the m²." },
-        { "type": "url", "id": "url", "label": "Link" }
+        { "type": "url", "id": "url", "label": "Link" },
+        { "type": "text", "id": "custom_link", "label": "Custom link (optional)", "info": "For links the Link picker above can't do, like tel:1300000000 or mailto:you@store.com. Overrides the Link field above when filled in." }
       ]
     }
   ],
